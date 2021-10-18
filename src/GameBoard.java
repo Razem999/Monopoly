@@ -10,7 +10,7 @@ public class GameBoard {
         this.gameInterface = gameInterface;
         this.tiles = new ArrayList<>();
 
-        this.tiles.add(new GoTile());
+        this.tiles.add(new GoTile(gameInterface));
         this.tiles.addAll(PropertyTileBuilder.createTiles(gameInterface));
     }
 
@@ -35,6 +35,14 @@ public class GameBoard {
         } else {
             System.out.println("ERROR LANDED ON UNKNOWN TILE, CHECK GAME BOARD FILE");
         }
+    }
+
+    Optional<GameTileI> getTile(int index) {
+        if (index < this.tiles.size()) {
+            return Optional.of(this.tiles.get(index));
+        }
+
+        return Optional.empty();
     }
 
     Optional<String> getTileDescriptionByIndex(int index) {

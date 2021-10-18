@@ -1,5 +1,3 @@
-import org.w3c.dom.Text;
-
 import java.util.Optional;
 
 public class PropertyTile implements GameTileI {
@@ -69,8 +67,36 @@ public class PropertyTile implements GameTileI {
                 "\nRent: $" + this.calculateRent();
         if (this.owner.isPresent()) {
             desc += "\nOwned by: Player" + owner.get().getPlayerID();
+        } else {
+            desc += "\nCan Be Bought";
         }
 
         return desc;
+    }
+
+    @Override
+    public boolean tryBuy(Player player) {
+        if (this.owner.isPresent()) {
+            gameInterface.notifyCannotBuyAlreadyOwned(player, this.owner.get(), this);
+            return false;
+        }
+
+        if (player.getBalance() < this.cost) {
+            gameInterface.notifyCannotBuyTileBalanceReasons(player, this);
+            return false;
+        } else {
+            boolean choice = gameInterface.processSale(this.name, this.cost, player);
+            if (choice) {
+                player.changeBalance(-1 * cost);
+                this.owner = Optional.of(player);
+                gameInterface.notifyPlayerPurchaseConfirm(player, this.name, this.cost);
+
+                return true;
+            } else {
+                gameInterface.notifyPlayerDeclinedPurchase(player, this.name);
+
+                return false;
+            }
+        }
     }
 }

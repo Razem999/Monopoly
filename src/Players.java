@@ -47,9 +47,20 @@ public class Players {
         this.currentPlayerHasRolled = false;
     }
 
-    public boolean currentPlayerRoll(GameBoard gameBoard) {
+    public void currentPlayerBuy(GameBoard gameBoard) {
+        Player currentPlayer = this.getCurrentPlayer();
+
+        Optional<GameTileI> tileOpt = gameBoard.getTile(currentPlayer.getTilePosition());
+        if (tileOpt.isPresent()) {
+            GameTileI tile = tileOpt.get();
+
+            tile.tryBuy(currentPlayer);
+        }
+    }
+
+    public void currentPlayerRoll(GameBoard gameBoard) {
         if (this.currentPlayerHasRolled) {
-            return false;
+            gameInterface.notifyCannotRoll(this.getCurrentPlayer());
         } else {
             Player currentPlayer = this.getCurrentPlayer();
 
@@ -68,8 +79,6 @@ public class Players {
 
             gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
             gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this);
-
-            return true;
         }
     }
 }

@@ -33,6 +33,17 @@ public class TextGameInterface implements GameInterfaceI {
     }
 
     @Override
+    public void notifyPlayerDeclinedPurchase(Player player, String tileName) {
+        System.out.println("Player " + player.getPlayerID() + " declined to purchase " + tileName);
+    }
+
+    @Override
+    public void notifyPlayerPurchaseConfirm(Player player, String tileName, int amount) {
+        System.out.println("Player " + player.getPlayerID() + " bought " + tileName +
+                "for $" + amount);
+    }
+
+    @Override
     public void notifyRentPayment(Player owner, Player payer, int amount) {
         System.out.println("Player " + payer.getPlayerID() + " pays $" + amount + " in rent to Player " + owner.getPlayerID());
     }
@@ -46,11 +57,12 @@ public class TextGameInterface implements GameInterfaceI {
     public void notifyRoll(Player player, int firstRoll, int secondRoll) {
         int rollTotal = firstRoll + secondRoll;
         if (firstRoll == secondRoll) {
-            System.out.println("Player " + player.getPlayerID() + " got a double roll of" +
+            System.out.println("Player " + player.getPlayerID() + " got a double roll of " +
                     rollTotal + "! (" + firstRoll + ", " + secondRoll + ")");
+        } else {
+            System.out.println("Player " + player.getPlayerID() + " rolled " +
+                    rollTotal + " (" + firstRoll + ", " + secondRoll + ")");
         }
-        System.out.println("Player " + player.getPlayerID() + " rolled " +
-                rollTotal + " (" + firstRoll + ", " + secondRoll + ")");
     }
 
     @Override
@@ -63,4 +75,35 @@ public class TextGameInterface implements GameInterfaceI {
         System.out.println("Player " + player.getPlayerID() + " has moved " +
                 tilesMoved + " tiles onto tile number " + newPosition + ":\n" + destinationDescription);
     }
+
+    @Override
+    public void notifyCannotRoll(Player player) {
+        System.out.println("You already rolled!");
+    }
+
+    @Override
+    public void notifyCannotBuyTileKind(Player player, GameTileI tile) {
+        System.out.println("Player " + player.getPlayerID() +
+                        " cannot buy this tile because it is not a buyable tile.\n" +
+                        tile.tileDescription()
+                );
+    }
+
+    @Override
+    public void notifyCannotBuyAlreadyOwned(Player player, Player owner, GameTileI tile) {
+        System.out.println("Player " + player.getPlayerID() +
+                " cannot buy this tile because it is already owned by Player " + owner.getPlayerID() + "\n" +
+                tile.tileDescription());
+    }
+
+    @Override
+    public void notifyCannotBuyTileBalanceReasons(Player player, GameTileI tile) {
+        System.out.println("Player " + player.getPlayerID() +
+                " cannot buy this tile because they have insufficient funds.\n" +
+                "Player Balance: $" + player.getBalance() + "\n" +
+                tile.tileDescription()
+        );
+    }
+
+
 }

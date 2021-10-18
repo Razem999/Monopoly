@@ -15,7 +15,8 @@ public class CommandParser {
                         Help----
                         status [id] - Shows player status, prints current player status if id is not supplied
                         roll - Rolls the dice for the current player
-                        pass - Passes turn to next player"""
+                        pass - Passes turn to next player
+                        buy - Buy current tile if possible"""
         );
     }
 
@@ -79,6 +80,8 @@ public class CommandParser {
 
             Player player = this.players.getCurrentPlayer();
             System.out.println("It is now Player " + player.getPlayerID() + "'s turn.");
+
+            this.printPlayerStatus(this.players.getCurrentPlayer());
         } else {
             System.out.println("You must roll before you can end the turn.");
         }
@@ -90,9 +93,16 @@ public class CommandParser {
             return;
         }
 
-        if (!players.currentPlayerRoll(this.gameBoard)) {
-            System.out.println("You already rolled!");
+        players.currentPlayerRoll(this.gameBoard);
+    }
+
+    private void handleBuy(String command) {
+        if (command.split(" ").length > 1) {
+            System.out.println("'buy' command does not take arguments");
+            return;
         }
+
+        players.currentPlayerBuy(gameBoard);
     }
 
     public void handleCommand(String command) {
@@ -107,6 +117,9 @@ public class CommandParser {
             return;
         } else if (command.startsWith("roll")) {
             handleRoll(command);
+            return;
+        } else if (command.startsWith("buy")) {
+            handleBuy(command);
             return;
         }
 
