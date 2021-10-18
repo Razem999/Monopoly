@@ -99,4 +99,15 @@ public class PropertyTile implements GameTileI {
             }
         }
     }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public boolean isOwnedBy(Player player) {
+        return this.owner.map(value -> value.equals(player)).orElse(false);
+
+    }
 }

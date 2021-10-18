@@ -22,4 +22,14 @@ public class GoTile implements GameTileI {
         gameInterface.notifyCannotBuyTileKind(player, this);
         return false;
     }
+
+    @Override
+    public String getName() {
+        return "GO Tile";
+    }
+
+    @Override
+    public boolean isOwnedBy(Player player) {
+        return false;
+    }
 }

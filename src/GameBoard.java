@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class GameBoard {
     private final List<GameTileI> tiles;
@@ -15,6 +16,10 @@ public class GameBoard {
     }
 
     public void sendPlayerToJail(Player player) {}
+
+    public List<GameTileI> getTilesOwnedByPlayer(Player player) {
+        return this.tiles.stream().filter((GameTileI tile) -> tile.isOwnedBy(player)).collect(Collectors.toList());
+    }
 
     public void advancePlayer(Player player, int tiles, Players players) {
         int unadjustedPosition = player.getTilePosition() + tiles;

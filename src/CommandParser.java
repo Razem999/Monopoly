@@ -16,7 +16,8 @@ public class CommandParser {
                         status [id] - Shows player status, prints current player status if id is not supplied
                         roll - Rolls the dice for the current player
                         pass - Passes turn to next player
-                        buy - Buy current tile if possible"""
+                        buy - Buy current tile if possible
+                        owns [id] - Shows what properties the player owns"""
         );
     }
 
@@ -67,6 +68,44 @@ public class CommandParser {
 
         assert player != null;
         printPlayerStatus(player);
+    }
+
+    private void printPlayerProperties(Player player) {
+        System.out.println("Player " + player.getPlayerID() + " owns:");
+        for (GameTileI gameTile : this.gameBoard.getTilesOwnedByPlayer(player)) {
+            System.out.println(gameTile.getName());
+        }
+    }
+
+    private void handleOwns(String command) {
+        String[] split = command.split(" ");
+
+        Player player = null;
+        if (split.length < 2) {
+            player = players.getCurrentPlayer();
+        } else if (split.length > 2) {
+            System.out.println("'owns' command takes at most one argument");
+            return;
+        } else {
+            String id = split[1];
+            try {
+                int playerID = Integer.parseInt(id);
+
+                Optional<Player> player_opt = players.getPlayerByID(playerID);
+                if (player_opt.isEmpty()) {
+                    System.out.println("No player with that ID");
+                    return;
+                } else {
+                    player = player_opt.get();
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid player id");
+            }
+        }
+
+        assert player != null;
+        printPlayerProperties(player);
     }
 
     private void handlePass(String command) {
@@ -120,6 +159,9 @@ public class CommandParser {
             return;
         } else if (command.startsWith("buy")) {
             handleBuy(command);
+            return;
+        } else if (command.startsWith("owns")) {
+            handleOwns(command);
             return;
         }
 
