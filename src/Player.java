@@ -24,6 +24,10 @@ public class Player {
         return this.tilePosition;
     }
 
+    public void setTilePosition(int tilePosition) {
+        this.tilePosition = tilePosition;
+    }
+
     public int getBalance() {
         return this.balance;
     }

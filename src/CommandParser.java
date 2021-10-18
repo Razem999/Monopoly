@@ -11,9 +11,11 @@ public class CommandParser {
 
     private void printHelp() {
         System.out.println(
-                "Help----\n" +
-                "status [id] - Shows player status, prints current player status if id is not supplied\n" +
-                "pass - Passes turn to next player"
+                """
+                        Help----
+                        status [id] - Shows player status, prints current player status if id is not supplied
+                        roll - Rolls the dice for the current player
+                        pass - Passes turn to next player"""
         );
     }
 
@@ -24,8 +26,8 @@ public class CommandParser {
                     player.getPlayerID() +
                     " has a balance of $" +
                     player.getBalance() +
-                    " and is on tile '" +
-                    tileDescription.get() + "'");
+                    " and is on tile:\n" +
+                    tileDescription.get());
         } else {
             System.out.println("Player " +
                     player.getPlayerID() +
@@ -72,10 +74,25 @@ public class CommandParser {
             return;
         }
 
-        this.players.nextTurn();
+        if (players.canEndCurrentTurn()) {
+            this.players.nextTurn();
 
-        Player player = this.players.getCurrentPlayer();
-        System.out.println("It is now Player " + player.getPlayerID() + "'s turn.");
+            Player player = this.players.getCurrentPlayer();
+            System.out.println("It is now Player " + player.getPlayerID() + "'s turn.");
+        } else {
+            System.out.println("You must roll before you can end the turn.");
+        }
+    }
+
+    private void handleRoll(String command) {
+        if (command.split(" ").length > 1) {
+            System.out.println("'roll' command does not take arguments");
+            return;
+        }
+
+        if (!players.currentPlayerRoll(this.gameBoard)) {
+            System.out.println("You already rolled!");
+        }
     }
 
     public void handleCommand(String command) {
@@ -87,6 +104,9 @@ public class CommandParser {
             return;
         } else if (command.startsWith("pass")) {
             handlePass(command);
+            return;
+        } else if (command.startsWith("roll")) {
+            handleRoll(command);
             return;
         }
 
