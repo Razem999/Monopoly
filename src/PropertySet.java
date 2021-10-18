@@ -3,8 +3,8 @@ public enum PropertySet {
     Yellow,
     Green,
     Blue,
-    Brown,
     LightBlue,
     Pink,
     Orange,
+    Purple,
 }

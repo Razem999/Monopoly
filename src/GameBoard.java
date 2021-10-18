@@ -8,9 +8,8 @@ public class GameBoard {
     GameBoard() {
         this.tiles = new ArrayList<>();
 
-        for (int i = 0; i < 40; i++) {
-            this.tiles.add(new GoTile());
-        }
+        this.tiles.add(new GoTile());
+        this.tiles.addAll(PropertyTileBuilder.createTiles());
     }
 
     Optional<String> getTileDescriptionByIndex(int index) {
