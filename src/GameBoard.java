@@ -42,7 +42,7 @@ public class GameBoard {
         }
     }
 
-    Optional<GameTileI> getTile(int index) {
+    public Optional<GameTileI> getTile(int index) {
         if (index < this.tiles.size()) {
             return Optional.of(this.tiles.get(index));
         }
@@ -50,7 +50,7 @@ public class GameBoard {
         return Optional.empty();
     }
 
-    Optional<String> getTileDescriptionByIndex(int index) {
+    public Optional<String> getTileDescriptionByIndex(int index) {
         if (this.tiles.size() <= index) {
             return Optional.empty();
         }
@@ -58,5 +58,11 @@ public class GameBoard {
         return Optional.of("Tile " +
                 index + "\n" +
                 this.tiles.get(index).tileDescription());
+    }
+
+    public void transferPlayerProperties(Player source, Player destination) {
+        for (GameTileI gameTile : this.getTilesOwnedByPlayer(source)) {
+            gameTile.tryTransferOwnership(destination);
+        }
     }
 }

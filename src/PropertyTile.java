@@ -33,12 +33,15 @@ public class PropertyTile implements GameTileI {
         return this.baseRent;
     }
 
-    private void onLandOccupied(Player player, Player owner) {
+    private void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
         if (player.getBalance() < this.calculateRent()) {
             player.changeBalance(-1 * player.getBalance());
             owner.changeBalance(player.getBalance());
             this.gameInterface.notifyRentPayment(owner, player, player.getBalance());
             this.gameInterface.notifyBankruptcy(player);
+
+            gameBoard.transferPlayerProperties(player, owner);
+            players.removePlayer(player);
         } else {
             owner.changeBalance(this.calculateRent());
             player.changeBalance(-1 * this.calculateRent());
@@ -46,17 +49,9 @@ public class PropertyTile implements GameTileI {
         }
     }
 
-    private void onLandUnoccupied(Player player) {
-
-    }
-
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
-        if (this.owner.isPresent()) {
-            onLandOccupied(player, this.owner.get());
-        } else {
-            onLandUnoccupied(player);
-        }
+        this.owner.ifPresent(value -> onLandOccupied(player, value, gameBoard, players));
     }
 
     @Override
@@ -109,5 +104,11 @@ public class PropertyTile implements GameTileI {
     public boolean isOwnedBy(Player player) {
         return this.owner.map(value -> value.equals(player)).orElse(false);
 
+    }
+
+    @Override
+    public boolean tryTransferOwnership(Player newOwner) {
+        this.owner = Optional.of(newOwner);
+        return true;
     }
 }

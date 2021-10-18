@@ -1,10 +1,10 @@
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Players {
-    private List<Player> players;
+    private final List<Player> players;
     private int currentPlayer;
     private int rollStreak;
     private boolean currentPlayerHasRolled;
@@ -13,12 +13,12 @@ public class Players {
 
     Players(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
-        this.players = Arrays.asList(
-                new Player(0, 1500),
-                new Player(1, 1500),
-                new Player(2, 1500),
-                new Player(3, 1500)
-        );
+        this.players = new ArrayList<>() {{
+            add(new Player(0, 1500));
+            add(new Player(1, 1500));
+            add(new Player(2, 1500));
+            add(new Player(3, 1500));
+        }};
         this.currentPlayer = 0;
         this.currentPlayerHasRolled = false;
         this.rollStreak = 0;
@@ -80,5 +80,11 @@ public class Players {
             gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
             gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this);
         }
+    }
+
+    public void removePlayer(Player player) {
+        this.players.remove(player);
+
+        this.currentPlayer = this.currentPlayer % this.players.size();
     }
 }

@@ -4,4 +4,5 @@ public interface GameTileI {
     boolean tryBuy(Player player);
     String getName();
     boolean isOwnedBy(Player player);
+    boolean tryTransferOwnership(Player newOwner);
 }

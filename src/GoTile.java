@@ -32,4 +32,9 @@ public class GoTile implements GameTileI {
     public boolean isOwnedBy(Player player) {
         return false;
     }
+
+    @Override
+    public boolean tryTransferOwnership(Player newOwner) {
+        return false;
+    }
 }
