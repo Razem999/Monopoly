@@ -1,20 +1,20 @@
-public class GoTile implements GameTileI {
-    public static int passReward = 200;
+public class IncomeTaxTile implements GameTileI{
+    public static int baseCost = -200;
 
     private GameInterfaceI gameInterface;
 
-    GoTile(GameInterfaceI gameInterface) {
+    IncomeTaxTile(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
     }
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
-        player.changeBalance(passReward);
+        player.changeBalance(baseCost);
     }
 
     @Override
     public String tileDescription() {
-        return "Name: GO Tile\nDescription: Gain $200 when passing through.";
+        return "Name: Income Tax\nDescription: Pay $200";
     }
 
     @Override
@@ -25,7 +25,7 @@ public class GoTile implements GameTileI {
 
     @Override
     public String getName() {
-        return "GO Tile";
+        return "Income Tax";
     }
 
     @Override
