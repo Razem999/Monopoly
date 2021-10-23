@@ -12,4 +12,5 @@ public interface GameInterfaceI {
     void notifyCannotBuyTileKind(Player player, GameTileI tile);
     void notifyCannotBuyAlreadyOwned(Player player, Player owner, GameTileI tile);
     void notifyCannotBuyTileBalanceReasons(Player player, GameTileI tile);
+    void notifyYouOwnThis(Player owner);
 }
