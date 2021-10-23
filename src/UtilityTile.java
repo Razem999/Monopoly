@@ -1,50 +1,32 @@
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class Railroad implements GameTileI{
+public class UtilityTile implements GameTileI {
+
     private final String name;
     private final int cost;
-    private int totalOwned;
     private final GameInterfaceI gameInterface;
     private Optional<Player> owner;
 
-    public Railroad(String name, GameInterfaceI gameInterface, int cost) {
+
+    UtilityTile(String name, int cost, GameInterfaceI gameInterface) {
         this.name = name;
+        this.cost = cost;
         this.gameInterface = gameInterface;
         this.owner = Optional.empty();
-        this.cost = cost;
     }
 
-    private int calculateRent() {
-        return 0;
-    }
-
-    private void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
-        if (player.equals(owner)) {
-            this.gameInterface.notifyYouOwnThis(player);
-        }
-        else if (player.getBalance() < this.calculateRent()) {
-            player.changeBalance(-1 * player.getBalance());
-            owner.changeBalance(player.getBalance());
-            this.gameInterface.notifyRentPayment(owner, player, player.getBalance());
-            this.gameInterface.notifyBankruptcy(player);
-
-            gameBoard.transferPlayerProperties(player, owner);
-            players.removePlayer(player);
+    public void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
+        int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+        int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+        if (gameBoard.getPropertiesFilter(TileFilter.utilityFilter()).size() == 2) {
+            player.changeBalance(10 * (firstDie + secondDie));
         } else {
-            owner.changeBalance(this.calculateRent());
-            player.changeBalance(-1 * this.calculateRent());
-            this.gameInterface.notifyRentPayment(owner, player, this.calculateRent());
+            player.changeBalance(4 * (firstDie + secondDie));
         }
+        this.gameInterface.notifyRentPayment(owner, player, player.getBalance());
+        this.gameInterface.notifyBankruptcy(player);
     }
-
-//    private void addRailroadOwned(Player player, Railroad rr) {
-//
-//    }
-//
-//
-//    private int totalRailroadsOwned() {
-//        return totalOwned;
-//    }
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
@@ -53,17 +35,12 @@ public class Railroad implements GameTileI{
 
     @Override
     public String tileDescription() {
-        String desc = "Name: " + this.name +
-                "\nCost: $" + this.cost +
-                "\nRent: $" + this.calculateRent();
+        String desc = "Name: " + this.name + "\nA utility tile";
         if (this.owner.isPresent()) {
-            desc += "\nOwned by: Player" + owner.get().getPlayerID() +
-                "\nRailroads owned: " + this.totalOwned;
-
+            desc += "\nOwned by: Player" + owner.get().getPlayerID();
         } else {
             desc += "\nCan Be Bought";
         }
-
         return desc;
     }
 
@@ -73,7 +50,6 @@ public class Railroad implements GameTileI{
             gameInterface.notifyCannotBuyAlreadyOwned(player, this.owner.get(), this);
             return false;
         }
-
         if (player.getBalance() < this.cost) {
             gameInterface.notifyCannotBuyTileBalanceReasons(player, this);
             return false;
