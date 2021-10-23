@@ -105,5 +105,10 @@ public class TextGameInterface implements GameInterfaceI {
         );
     }
 
+    @Override
+    public void notifyYouOwnThis(Player owner) {
+        System.out.println("You Own This Property!");
+    }
+
 
 }
