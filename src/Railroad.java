@@ -15,12 +15,20 @@ public class Railroad implements GameTileI{
     }
 
     private int calculateRent() {
-        return 0;
+        if(totalOwned == 4) {
+            return 200;
+        } else if (totalOwned == 3) {
+            return 100;
+        } else if (totalOwned == 2) {
+            return 50;
+        } else {
+            return 25;
+        }
     }
 
     private void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
         if (player.equals(owner)) {
-            this.gameInterface.notifyYouOwnThis(player);
+            this.gameInterface.notifyPlayerOwnsThis(player);
         }
         else if (player.getBalance() < this.calculateRent()) {
             player.changeBalance(-1 * player.getBalance());
@@ -31,6 +39,7 @@ public class Railroad implements GameTileI{
             gameBoard.transferPlayerProperties(player, owner);
             players.removePlayer(player);
         } else {
+            totalOwned = gameBoard.getPropertiesFilter(TileFilter.utilityFilter()).size();
             owner.changeBalance(this.calculateRent());
             player.changeBalance(-1 * this.calculateRent());
             this.gameInterface.notifyRentPayment(owner, player, this.calculateRent());

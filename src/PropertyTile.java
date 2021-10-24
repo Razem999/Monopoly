@@ -35,7 +35,7 @@ public class PropertyTile implements GameTileI {
 
     private void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
         if (player.equals(owner)) {
-            this.gameInterface.notifyYouOwnThis(player);
+            this.gameInterface.notifyPlayerOwnsThis(player);
         }
         else if (player.getBalance() < this.calculateRent()) {
             player.changeBalance(-1 * player.getBalance());

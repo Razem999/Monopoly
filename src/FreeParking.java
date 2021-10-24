@@ -1,29 +1,37 @@
-public class GoJail implements GameTileI{
+public class FreeParking implements GameTileI{
+    public static int totalDeposited;
 
     private GameInterfaceI gameInterface;
 
-    GoJail(GameInterfaceI gameInterface) {
+    FreeParking(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
+    }
+
+    public void addTax(int amount) {
+        totalDeposited += amount;
     }
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
-        gameBoard.sendPlayerToJail(player);
+        player.changeBalance(totalDeposited);
+        gameInterface.notifyFreeParkingDeposit(player, totalDeposited);
+        totalDeposited = 0;
     }
 
     @Override
     public String tileDescription() {
-        return "Name: Go To Jail\nDescription: Go to Jail, Do not Pass GO.";
+        return "Name: GO Tile\nDescription: Gain $200 when passing through.";
     }
 
     @Override
     public boolean tryBuy(Player player) {
+        gameInterface.notifyCannotBuyTileKind(player, this);
         return false;
     }
 
     @Override
     public String getName() {
-        return "Go To Jail";
+        return "Free Parking";
     }
 
     @Override
