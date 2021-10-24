@@ -1,14 +1,9 @@
 public class FreeParking implements GameTileI {
     public static int totalDeposited;
 
-    private LuxuryTaxTile ltt;
-    private IncomeTaxTile itt;
     private GameInterfaceI gameInterface;
 
-
-    FreeParking(GameInterfaceI gameInterface, LuxuryTaxTile luxuryTaxTile, IncomeTaxTile incomeTaxTile) {
-        this.ltt = luxuryTaxTile;
-        this.itt = incomeTaxTile;
+    FreeParking(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
     }
 
