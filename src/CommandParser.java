@@ -30,6 +30,11 @@ public class CommandParser {
                     player.getBalance() +
                     " and is on tile:\n" +
                     tileDescription.get());
+            if(player.isInJail() == true) {
+                System.out.println("Player " +
+                        player.getPlayerID() +
+                        " is in Jail!\nRoll a double to get out of Jail.");
+            }
         } else {
             System.out.println("Player " +
                     player.getPlayerID() +
