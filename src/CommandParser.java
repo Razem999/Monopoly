@@ -3,10 +3,12 @@ import java.util.Optional;
 public class CommandParser {
     GameBoard gameBoard;
     Players players;
+    GameInterfaceI gameInterface;
 
-    CommandParser(GameBoard gameBoard, Players players) {
+    CommandParser(GameBoard gameBoard, Players players, GameInterfaceI gameInterface) {
         this.gameBoard = gameBoard;
         this.players = players;
+        this.gameInterface = gameInterface;
     }
 
     private void printHelp() {
@@ -149,8 +151,18 @@ public class CommandParser {
         players.currentPlayerBuy(gameBoard);
     }
 
+    private void handleAuction(String command) {
+        if (command.split(" ").length > 1) {
+            System.out.println("'auction' command does not take arguments");
+            return;
+        }
+
+        gameInterface.startAuction(0, gameBoard, players);
+    }
+
     public void handleCommand(String command) {
-        if (command.equals("help")) {
+        command = command.toLowerCase();
+        if (command.startsWith("help")) {
             printHelp();
             return;
         } else if (command.startsWith("status")) {
@@ -164,6 +176,9 @@ public class CommandParser {
             return;
         } else if (command.startsWith("buy")) {
             handleBuy(command);
+            return;
+        } else if (command.startsWith("auction")) {
+            handleAuction(command);
             return;
         } else if (command.startsWith("owns")) {
             handleOwns(command);
