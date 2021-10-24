@@ -106,9 +106,28 @@ public class TextGameInterface implements GameInterfaceI {
     }
 
     @Override
-    public void notifyYouOwnThis(Player owner) {
+    public void notifyPlayerOwnsThis(Player owner) {
         System.out.println("You Own This Property!");
     }
 
+    @Override
+    public void notifyPlayerInJail(Player player) {
+        System.out.println("Player " + player.getPlayerID() + " is in Jail!\nRoll a double or pay $50 to get out of Jail.");
+    }
+
+    @Override
+    public void notifyPlayerLeftJail(Player player) {
+        System.out.println("Player " + player.getPlayerID() + " left Jail!");
+    }
+
+    @Override
+    public void notifyPlayerStayJail(Player player) {
+        System.out.println("Player " + player.getPlayerID() + " stays in Jail.");
+    }
+
+    @Override
+    public void notifyFreeParkingDeposit(Player player, int amount) {
+        System.out.println("$" + amount + " collected through taxes have been deposited into the account of Player " + player.getPlayerID() + ".");
+    }
 
 }
