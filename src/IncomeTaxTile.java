@@ -1,15 +1,18 @@
 public class IncomeTaxTile implements GameTileI{
     public static int baseCost = -200;
 
+    private FreeParking freeParking;
     private GameInterfaceI gameInterface;
 
-    IncomeTaxTile(GameInterfaceI gameInterface) {
+    IncomeTaxTile(GameInterfaceI gameInterface, FreeParking freeParking) {
+        this.freeParking = freeParking;
         this.gameInterface = gameInterface;
     }
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
         player.changeBalance(baseCost);
+        freeParking.addTax(baseCost);
     }
 
     @Override

@@ -10,9 +10,9 @@ public class GameBoard {
     private final List<PropertyTile> propertyTiles;
 
     GameBoard(GameInterfaceI gameInterface) {
-        IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface);
-        LuxuryTaxTile luxuryTaxTile = new LuxuryTaxTile(gameInterface);
-        FreeParking freeParking = new FreeParking(gameInterface, luxuryTaxTile, incomeTaxTile);
+        FreeParking freeParking = new FreeParking(gameInterface);
+        IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface, freeParking);
+        LuxuryTaxTile luxuryTaxTile = new LuxuryTaxTile(gameInterface, freeParking);
         this.gameInterface = gameInterface;
         this.tiles = new ArrayList<>();
         this.propertyTiles = new ArrayList<>();
