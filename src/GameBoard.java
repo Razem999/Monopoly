@@ -4,21 +4,24 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GameBoard {
+
     private final List<GameTileI> tiles;
     private final GameInterfaceI gameInterface;
     private final List<PropertyTile> propertyTiles;
 
     GameBoard(GameInterfaceI gameInterface) {
+        IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface);
+        LuxuryTaxTile luxuryTaxTile = new LuxuryTaxTile(gameInterface);
+        FreeParking freeParking = new FreeParking(gameInterface, luxuryTaxTile, incomeTaxTile);
         this.gameInterface = gameInterface;
         this.tiles = new ArrayList<>();
         this.propertyTiles = new ArrayList<>();
         propertyTiles.addAll(PropertyTileBuilder.createTiles(gameInterface));
-
         this.tiles.add(new GoTile(gameInterface));
         this.tiles.add(propertyTiles.get(0));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(1));
-        this.tiles.add(new IncomeTaxTile(gameInterface));
+        this.tiles.add(incomeTaxTile);
         this.tiles.add(new Railroad("Reading Railroad", gameInterface, 200));
         this.tiles.add(propertyTiles.get(2));
         this.tiles.add(new EmptyTile());
@@ -34,7 +37,7 @@ public class GameBoard {
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(9));
         this.tiles.add(propertyTiles.get(10));
-        this.tiles.add(new FreeParking(gameInterface));
+        this.tiles.add(freeParking);
         this.tiles.add(propertyTiles.get(11));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(12));
@@ -52,7 +55,7 @@ public class GameBoard {
         this.tiles.add(new Railroad("Short Line Railroad", gameInterface, 200));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(20));
-        this.tiles.add(new LuxuryTaxTile(gameInterface));
+        this.tiles.add(luxuryTaxTile);
         this.tiles.add(propertyTiles.get(21));
     }
 
