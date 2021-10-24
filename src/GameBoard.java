@@ -24,7 +24,7 @@ public class GameBoard {
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(3));
         this.tiles.add(propertyTiles.get(4));
-        this.tiles.add(new EmptyTile()); //Jail
+        this.tiles.add(new Jail(gameInterface));
         this.tiles.add(propertyTiles.get(5));
         this.tiles.add(new UtilityTile("Electric Company", 150, gameInterface));
         this.tiles.add(propertyTiles.get(6));
@@ -34,7 +34,7 @@ public class GameBoard {
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(9));
         this.tiles.add(propertyTiles.get(10));
-        this.tiles.add(new EmptyTile()); //Free Parking
+        this.tiles.add(new FreeParking(gameInterface));
         this.tiles.add(propertyTiles.get(11));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(12));
@@ -56,7 +56,10 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(21));
     }
 
-    public void sendPlayerToJail(Player player) {}
+    public void sendPlayerToJail(Player player) {
+        player.setTilePosition(10);
+        player.toggleInJail();
+    }
 
     public List<GameTileI> getTilesOwnedByPlayer(Player player) {
         return this.tiles.stream().filter((GameTileI tile) -> tile.isOwnedBy(player)).collect(Collectors.toList());
@@ -115,5 +118,9 @@ public class GameBoard {
             }
         }
         return result;
+    }
+
+    public void payJailFine(Player player) {
+        player.changeBalance(-1 * (Jail.jailFine));
     }
 }
