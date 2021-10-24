@@ -111,8 +111,8 @@ public class TextGameInterface implements GameInterfaceI {
     }
 
     @Override
-    public void notifyPlayerInJail(Player player) {
-        System.out.println("Player " + player.getPlayerID() + " is in Jail!\nRoll a double or pay $50 to get out of Jail.");
+    public void notifyPlayerSentToJail(Player player) {
+        System.out.println("Player " + player.getPlayerID() + " is sent to Jail!");
     }
 
     @Override

@@ -57,6 +57,7 @@ public class GameBoard {
     }
 
     public void sendPlayerToJail(Player player) {
+        gameInterface.notifyPlayerSentToJail(player);
         player.setTilePosition(10);
         player.toggleInJail();
     }

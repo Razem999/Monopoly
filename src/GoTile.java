@@ -10,6 +10,7 @@ public class GoTile implements GameTileI {
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
         player.changeBalance(passReward);
+        gameInterface.notifyPassGo(player);
     }
 
     @Override
