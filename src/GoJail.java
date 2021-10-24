@@ -13,12 +13,11 @@ public class GoJail implements GameTileI{
 
     @Override
     public String tileDescription() {
-        return "Name: GO Tile\nDescription: Gain $200 when passing through.";
+        return "Name: Go To Jail\nDescription: Go to Jail, Do not Pass GO.";
     }
 
     @Override
     public boolean tryBuy(Player player) {
-        gameInterface.notifyCannotBuyTileKind(player, this);
         return false;
     }
 

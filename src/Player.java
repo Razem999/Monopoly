@@ -5,6 +5,7 @@ public class Player {
     private int playerID;
     private int balance;
     private int tilePosition;
+    private boolean inJail;
 
     private List<PlayerBalanceChangeListener> playerBalanceChangeListeners;
 
@@ -12,6 +13,7 @@ public class Player {
         this.playerID = id;
         this.balance = startingBalance;
         this.tilePosition = 0;
+        this.inJail = false;
 
         this.playerBalanceChangeListeners = new ArrayList<>();
     }
@@ -38,6 +40,14 @@ public class Player {
 
     public boolean hasID(int id) {
         return this.playerID == id;
+    }
+
+    public void toggleInJail() {
+        this.inJail = !inJail;
+    }
+
+    public boolean isInJail() {
+        return this.inJail;
     }
 
     @Override

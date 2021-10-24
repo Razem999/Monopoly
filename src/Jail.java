@@ -1,6 +1,25 @@
+import java.util.Optional;
+
 public class Jail implements GameTileI{
 
+    public static int jailFine = 50;
+    private boolean inJail;
 
+    private GameInterfaceI gameInterfaceI;
+    private Optional<Player> players;
+
+    public Jail(GameInterfaceI gameInterfaceI) {
+        this.inJail = false;
+        this.gameInterfaceI = gameInterfaceI;
+    }
+
+    public void setPlayerToJail(Player player) {
+
+    }
+
+    private void tryBail() {
+
+    }
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
@@ -20,7 +39,7 @@ public class Jail implements GameTileI{
 
     @Override
     public String getName() {
-        return "Just Visiting Jail";
+        return "Just Visiting Jail/Jail";
     }
 
     @Override
