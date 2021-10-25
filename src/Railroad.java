@@ -1,5 +1,14 @@
 import java.util.Optional;
 
+/**
+ * The Railroad class represents the railroads tile from the original game,
+ * where all the railroads cost the same and the rent to pay is correlated
+ * with the number of railroads owned by the Player.
+ *
+ * @author Razem Shahin
+ * @version 1.0
+ * @since 2021-10-25
+ */
 public class Railroad implements GameTileI{
     private final String name;
     private final int cost;
@@ -7,6 +16,13 @@ public class Railroad implements GameTileI{
     private final GameInterfaceI gameInterface;
     private Optional<Player> owner;
 
+    /**
+     * This is the constructor of Railroad with parameters.
+     * The container (owner) is initialized here.
+     * @param name This is the name of the railroad
+     * @param gameInterface This provides text for each action the player takes
+     * @param cost This is the cost of the railroad
+     */
     public Railroad(String name, GameInterfaceI gameInterface, int cost) {
         this.name = name;
         this.gameInterface = gameInterface;
@@ -14,6 +30,11 @@ public class Railroad implements GameTileI{
         this.cost = cost;
     }
 
+    /**
+     * This method is used to check the number of railroads the owner owns, and calculates the rent
+     * the player owes to the owner.
+     * @return int This returns the rent the player owes to the owner
+     */
     private int calculateRent() {
         if(totalOwned == 4) {
             return 200;
@@ -26,6 +47,16 @@ public class Railroad implements GameTileI{
         }
     }
 
+    /**
+     * This method is used to identify the player that landed on an occupied tile, and pay rent to
+     * the player that owns the tile. It checks to see if the player has enough money to be able to
+     * pay the rent. If the player has insufficient funds, the Player paying transfers all his money and
+     * properties to the owner of that tile. Otherwise, they transfer the rent amount to the owner.
+     * @param player This is the Player who is paying
+     * @param owner This is the Player who is receiving the payment
+     * @param gameBoard This is the board in which the tile is situated
+     * @param players This is a list of players playing the game
+     */
     private void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
         if (player.equals(owner)) {
             this.gameInterface.notifyPlayerOwnsThis(player);
@@ -39,21 +70,12 @@ public class Railroad implements GameTileI{
             gameBoard.transferPlayerProperties(player, owner);
             players.removePlayer(player);
         } else {
-            totalOwned = gameBoard.getPropertiesFilter(TileFilter.utilityFilter()).size();
+            this.totalOwned = gameBoard.getPropertiesFilter(TileFilter.utilityFilter()).size();
             owner.changeBalance(this.calculateRent());
             player.changeBalance(-1 * this.calculateRent());
             this.gameInterface.notifyRentPayment(owner, player, this.calculateRent());
         }
     }
-
-//    private void addRailroadOwned(Player player, Railroad rr) {
-//
-//    }
-//
-//
-//    private int totalRailroadsOwned() {
-//        return totalOwned;
-//    }
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
