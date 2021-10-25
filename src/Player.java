@@ -6,7 +6,6 @@ import java.util.List;
  * and whether they are in Jail or not, and will be performing actions in
  * the game which will lead to different events in the game.
  *
- * @author Steven Pham
  * @version 1.0
  * @since 2021-10-25
  */
