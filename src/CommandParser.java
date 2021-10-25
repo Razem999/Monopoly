@@ -3,10 +3,12 @@ import java.util.Optional;
 public class CommandParser {
     GameBoard gameBoard;
     Players players;
+    GameInterfaceI gameInterface;
 
-    CommandParser(GameBoard gameBoard, Players players) {
+    CommandParser(GameBoard gameBoard, Players players, GameInterfaceI gameInterface) {
         this.gameBoard = gameBoard;
         this.players = players;
+        this.gameInterface = gameInterface;
     }
 
     private void printHelp() {
@@ -17,6 +19,7 @@ public class CommandParser {
                         roll - Rolls the dice for the current player
                         pass - Passes turn to next player
                         buy - Buy current tile if possible
+                        auction - Auction current tile if possible
                         owns [id] - Shows what properties the player owns"""
         );
     }
@@ -149,8 +152,23 @@ public class CommandParser {
         players.currentPlayerBuy(gameBoard);
     }
 
+    private void handleAuction(String command) {
+        if (command.split(" ").length > 1) {
+            System.out.println("'auction' command does not take arguments");
+            return;
+        }
+
+        GameTileI tile = gameBoard.getTile(players.getCurrentPlayer().getTilePosition()).orElseThrow();
+        if (tile.isAuctionable()){
+            gameInterface.startAuction(10, gameBoard, players);
+        } else {
+            System.out.println("This tile cannot be auctioned");
+        }
+    }
+
     public void handleCommand(String command) {
-        if (command.equals("help")) {
+        command = command.toLowerCase();
+        if (command.startsWith("help")) {
             printHelp();
             return;
         } else if (command.startsWith("status")) {
@@ -164,6 +182,9 @@ public class CommandParser {
             return;
         } else if (command.startsWith("buy")) {
             handleBuy(command);
+            return;
+        } else if (command.startsWith("auction")) {
+            handleAuction(command);
             return;
         } else if (command.startsWith("owns")) {
             handleOwns(command);

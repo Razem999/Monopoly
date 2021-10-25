@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.PriorityQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Players {
@@ -14,15 +15,31 @@ public class Players {
 
     Players(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
-        this.players = new ArrayList<>() {{
-            add(new Player(0, 1500));
-            add(new Player(1, 1500));
-            add(new Player(2, 1500));
-            add(new Player(3, 1500));
-        }};
+        this.players = createPlayerList(4, 1500);
+
         this.currentPlayer = 0;
         this.currentPlayerHasRolled = false;
         this.rollStreak = 0;
+    }
+    public List<Player> getPlayersList() {
+        return new ArrayList<>(this.players);
+    }
+
+    private List<Player> createPlayerList(int numPlayers, int defaultMoney) {
+        PriorityQueue<PlayerWithRoll> playersPriority = new PriorityQueue<>(numPlayers);
+        for (int i = 0; i < numPlayers; i++) {
+            int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+            int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+
+            playersPriority.add(new PlayerWithRoll(new Player(i, defaultMoney), firstDie + secondDie));
+        }
+
+        List<Player> players = new ArrayList<>();
+        while (!playersPriority.isEmpty()) {
+            players.add(playersPriority.poll().player);
+        }
+
+        return players;
     }
 
     public Optional<Player> getPlayerByID(int id) {
@@ -111,5 +128,19 @@ public class Players {
         currentPlayer.toggleInJail();
         gameInterface.notifyPlayerLeftJail(currentPlayer);
         gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this);
+    }
+}
+
+class PlayerWithRoll implements Comparable<PlayerWithRoll> {
+    public Player player;
+    public int roll;
+
+    public PlayerWithRoll(Player player, int roll) {
+        this.player = player;
+        this.roll = roll;
+    }
+
+    public int compareTo(PlayerWithRoll player) {
+        return Integer.compare(this.roll, player.roll);
     }
 }

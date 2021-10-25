@@ -9,7 +9,7 @@ public class Main {
         GameBoard gameBoard = new GameBoard(textGameInterface);
         Players players = new Players(textGameInterface);
 
-        CommandParser commandParser = new CommandParser(gameBoard, players);
+        CommandParser commandParser = new CommandParser(gameBoard, players, textGameInterface);
 
         while (true) {
             System.out.print("\nPlease enter a command, or 'help'.\n>> ");

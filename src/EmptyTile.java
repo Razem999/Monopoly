@@ -28,4 +28,14 @@ public class EmptyTile implements GameTileI{
     public String tileDescription() {
         return "Name: Empty Tile\nDescription: No event is linked with this tile.";
     }
+
+    @Override
+    public boolean tryCloseAuctionFor(int price, Player player) {
+        return false;
+    }
+
+    @Override
+    public boolean isAuctionable() {
+        return false;
+    }
 }
