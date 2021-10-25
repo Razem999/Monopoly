@@ -1,6 +1,7 @@
 # sysc3110-monopoly
 
 Deliverables:
+  
   UML Diagram: This is a UML class diagram that shows the relationships between alls classes as well as each classes
   methods and variables. This was worked on by all group members at the start of the project to determine all needed methods
   and variables, then was edited when code was done to show any adjustments made during the coding.
