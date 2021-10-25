@@ -17,7 +17,7 @@ Deliverables:
   every addition from each member
  
 Known Issues:
-  - 
+  - None
 
 Changes From Last Milestone:
   - N/A
