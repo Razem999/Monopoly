@@ -3,12 +3,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * The GameBoard class represents the combination of all tiles into the gameboard
+ * that players move around. This determines the order of tiles and the methods
+ * to get information about each tile on the board.
+ *
+ * @version 1.0
+ * @since 2021-10-25
+ */
 public class GameBoard {
 
     private final List<GameTileI> tiles;
     private final GameInterfaceI gameInterface;
     private final List<PropertyTile> propertyTiles;
 
+    /**This is the constructor of GameBoard with a parameter
+     * @param gameInterface This provides text for each action the player takes
+     */
     GameBoard(GameInterfaceI gameInterface) {
         FreeParking freeParking = new FreeParking(gameInterface);
         IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface, freeParking);
@@ -59,16 +70,27 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(21));
     }
 
+    /**This function sends the player to the jail tile
+     * @param player This provides the player who landed on the tile
+     */
     public void sendPlayerToJail(Player player) {
         gameInterface.notifyPlayerSentToJail(player);
         player.setTilePosition(10);
         player.toggleInJail();
     }
 
+    /**This function sends a list of all the players owned properties
+     * @param player This provides the player requested this operation
+     */
     public List<GameTileI> getTilesOwnedByPlayer(Player player) {
         return this.tiles.stream().filter((GameTileI tile) -> tile.isOwnedBy(player)).collect(Collectors.toList());
     }
 
+    /**This function advances the player a certain number of tiles around the gameboard
+     * @param player This provides the player who is moving
+     * @param tiles This provides the number of tiles the player will advance
+     * @param players This provides the list of all players
+     */
     public void advancePlayer(Player player, int tiles, Players players) {
         int unadjustedPosition = player.getTilePosition() + tiles;
         boolean didPassGo = unadjustedPosition > this.tiles.size();
@@ -90,6 +112,9 @@ public class GameBoard {
         }
     }
 
+    /**This function gets a specified tile
+     * @param index this in the position in the ArrayList tiles that desired tile is at
+     */
     public Optional<GameTileI> getTile(int index) {
         if (index < this.tiles.size()) {
             return Optional.of(this.tiles.get(index));
@@ -98,6 +123,9 @@ public class GameBoard {
         return Optional.empty();
     }
 
+    /**This function gets a specified tile's description
+     * @param index this in the position in the ArrayList tiles that desired tile is at
+     */
     public Optional<String> getTileDescriptionByIndex(int index) {
         if (this.tiles.size() <= index) {
             return Optional.empty();
@@ -108,12 +136,19 @@ public class GameBoard {
                 this.tiles.get(index).tileDescription());
     }
 
+    /**This function transfers properties after bankruptcy from one player to another
+     * @param source this is the player who has the property in the beginning
+     * @param destination this is the player who will receive the property from the source player
+     */
     public void transferPlayerProperties(Player source, Player destination) {
         for (GameTileI gameTile : this.getTilesOwnedByPlayer(source)) {
             gameTile.tryTransferOwnership(destination);
         }
     }
 
+    /**This function filters all tiles and returns a list of the desired tiles type
+     * @param tileFilter this is the type of filter being used to determine which property types to find
+     */
     public List<GameTileI> getPropertiesFilter(TileFilter tileFilter) {
         List<GameTileI> result = new ArrayList<>();
         for (GameTileI tile : this.tiles) {
@@ -124,6 +159,9 @@ public class GameBoard {
         return result;
     }
 
+    /**This function makes the player pay the bank to get out of jail
+     * @param player this is the player currently in jail
+     */
     public void payJailFine(Player player) {
         player.changeBalance(-1 * (Jail.jailFine));
     }
