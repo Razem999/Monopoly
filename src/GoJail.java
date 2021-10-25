@@ -1,7 +1,19 @@
+/**
+ * The GoJail class represents the Go To Jail tile from the original
+ * game. When a Player lands on this tile, the Player is sent directly
+ * to jail and will not receive Pass Go reward.
+ *
+ * @author Razem Shahin
+ * @version 1.0
+ * @since 2021-10-25
+ */
 public class GoJail implements GameTileI{
 
     private GameInterfaceI gameInterface;
 
+    /**This is the constructor of GoJail with a parameter
+     * @param gameInterface This provides text for each action the player takes
+     */
     GoJail(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
     }

@@ -1,8 +1,20 @@
+/**
+ * The GoTile class represents the Go tile from the original game.
+ * When a Player lands on/passes this tile, the Player receives the
+ * Pass Go reward of $200.
+ *
+ * @author Razem Shahin
+ * @version 1.0
+ * @since 2021-10-25
+ */
 public class GoTile implements GameTileI {
     public static int passReward = 200;
 
     private GameInterfaceI gameInterface;
 
+    /**This is the constructor of GoJail with a parameter
+     * @param gameInterface This provides text for each action the player takes
+     */
     GoTile(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
     }
