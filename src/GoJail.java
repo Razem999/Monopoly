@@ -3,7 +3,6 @@
  * game. When a Player lands on this tile, the Player is sent directly
  * to jail and will not receive Pass Go reward.
  *
- * @author Razem Shahin
  * @version 1.0
  * @since 2021-10-25
  */
