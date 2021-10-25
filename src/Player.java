@@ -10,12 +10,11 @@ import java.util.List;
  * @since 2021-10-25
  */
 public class Player {
-    private int playerID;
+    private final int playerID;
     private int balance;
     private int tilePosition;
-    private boolean inJail;
 
-    private List<PlayerBalanceChangeListener> playerBalanceChangeListeners;
+    private final List<PlayerBalanceChangeListener> playerBalanceChangeListeners;
 
     /**This is the constructor of Player with parameters
      * @param id This is the Player ID
@@ -25,14 +24,13 @@ public class Player {
         this.playerID = id;
         this.balance = startingBalance;
         this.tilePosition = 0;
-        this.inJail = false;
 
         this.playerBalanceChangeListeners = new ArrayList<>();
     }
 
     /**This is another constructor of Player, which is used if we decide
      * to play the game with fewer Players.
-     * @param id
+     * @param id This is the Player ID
      */
     Player(int id) {
         this(id, 0);
