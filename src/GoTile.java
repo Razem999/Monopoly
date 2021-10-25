@@ -3,7 +3,6 @@
  * When a Player lands on/passes this tile, the Player receives the
  * Pass Go reward of $200.
  *
- * @author Steven Pham
  * @version 1.0
  * @since 2021-10-25
  */
