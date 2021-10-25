@@ -1,5 +1,7 @@
 # sysc3110-monopoly
 
+Authors: Callum Coughlan, Steven Pham, Razem Mohammed
+
 Deliverables:
   
   UML Diagram: This is a UML class diagram that shows the relationships between alls classes as well as each classes
@@ -14,3 +16,8 @@ Deliverables:
     
   JAR File: This contains our projects code and documentation. Most files where made and edited by all members. See github contributions for 
   every addition from each member
+ 
+Known Issues:
+  - 
+
+Changes From Last Milestone: N/A
