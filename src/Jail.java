@@ -4,7 +4,6 @@
  * Then the Player will move their position to this tile and movements will be
  * restricted once they are inside jail (not Just Visiting).
  *
- * @author Razem Shahin
  * @version 1.0
  * @since 2021-10-25
  */
