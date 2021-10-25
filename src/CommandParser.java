@@ -1,16 +1,30 @@
 import java.util.Optional;
 
+/**
+ * The CommandParser is where all the commands inputted by the Player is parsed and
+ * an action takes place, depending on the command inputted. The game consists of five
+ * commands to help the Player to proceed with the game.
+ */
 public class CommandParser {
     GameBoard gameBoard;
     Players players;
     GameInterfaceI gameInterface;
 
+    /**This is the constructor of CommandParser with parameters
+     * @param gameBoard This is the board in which the Players are playing on
+     * @param players These are the list of Players playing the game
+     * @param gameInterface This provides text for each action the player takes
+     */
     CommandParser(GameBoard gameBoard, Players players, GameInterfaceI gameInterface) {
         this.gameBoard = gameBoard;
         this.players = players;
         this.gameInterface = gameInterface;
     }
 
+    /**
+     * This method provides the Players with a list of commands and their functionality
+     * to select from.
+     */
     private void printHelp() {
         System.out.println(
                 """
@@ -24,6 +38,11 @@ public class CommandParser {
         );
     }
 
+    /**This method prints the status of a specified Player. Status consists
+     * of the Player's ID, balance, tile position, and whether or not the
+     * player is in Jail or not.
+     * @param player This is the Player who will have their status printed
+     */
     private void printPlayerStatus(Player player) {
         Optional<String> tileDescription = gameBoard.getTileDescriptionByIndex(player.getTilePosition());
         if (tileDescription.isPresent()) {
@@ -47,6 +66,11 @@ public class CommandParser {
         }
     }
 
+    /**This method is used to check if the ID provided by a Player is valid or not.
+     * This method calls printPlayerStatus() if command is valid, otherwise prints an
+     * error message
+     * @param command This is the command inputted by the Player
+     */
     private void handleStatus(String command) {
         String[] split = command.split(" ");
 
@@ -78,6 +102,9 @@ public class CommandParser {
         printPlayerStatus(player);
     }
 
+    /**This method is used to print the properties a specified Player owns.
+     * @param player This is the Player who will have their properties printed
+     */
     private void printPlayerProperties(Player player) {
         System.out.println("Player " + player.getPlayerID() + " owns:");
         for (GameTileI gameTile : this.gameBoard.getTilesOwnedByPlayer(player)) {
@@ -85,6 +112,11 @@ public class CommandParser {
         }
     }
 
+    /**This method is used to check if the command provided is valid (checks if Player
+     * ID is valid), and calls printPlayerProperties() if it is valid. Otherwise, it
+     * prints an error message.
+     * @param command This is the command a Player provides
+     */
     private void handleOwns(String command) {
         String[] split = command.split(" ");
 
@@ -116,6 +148,10 @@ public class CommandParser {
         printPlayerProperties(player);
     }
 
+    /**This method is used to check if the command is valid for 'pass'. It checks
+     * to see if the Player can pass his turn or not.
+     * @param command This is the command provided by the Player
+     */
     private void handlePass(String command) {
         if (command.split(" ").length > 1) {
             System.out.println("'pass' command does not take arguments");
@@ -134,6 +170,10 @@ public class CommandParser {
         }
     }
 
+    /**This method is used to check if the command is valid for 'roll'. This
+     * allows the Player to roll the dice.
+     * @param command This is the command provided by the Player
+     */
     private void handleRoll(String command) {
         if (command.split(" ").length > 1) {
             System.out.println("'roll' command does not take arguments");
@@ -143,6 +183,10 @@ public class CommandParser {
         players.currentPlayerRoll(this.gameBoard);
     }
 
+    /**This method is used to check if the command is valid for 'buy'. This allows
+     * the Player to purchase a property
+     * @param command This is the command provided by the Player
+     */
     private void handleBuy(String command) {
         if (command.split(" ").length > 1) {
             System.out.println("'buy' command does not take arguments");
@@ -152,6 +196,10 @@ public class CommandParser {
         players.currentPlayerBuy(gameBoard);
     }
 
+    /**This method is used to check if the command is valid for 'auction'. This allows
+     * the Player to start an auction for a property.
+     * @param command This is the command provided by the Player
+     */
     private void handleAuction(String command) {
         if (command.split(" ").length > 1) {
             System.out.println("'auction' command does not take arguments");
@@ -166,6 +214,10 @@ public class CommandParser {
         }
     }
 
+    /**This method is used to check the command inputted by the Player, and then
+     * calls the method the Player has inputted.
+     * @param command This is the command provided by the Player
+     */
     public void handleCommand(String command) {
         command = command.toLowerCase();
         if (command.startsWith("help")) {

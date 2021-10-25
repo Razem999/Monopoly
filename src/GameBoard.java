@@ -4,12 +4,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * The GameBoard class represents the combination of all tiles into the gameboard
- * that players move around. This determines the order of tiles and the methods
- * to get information about each tile on the board.
- *
- * @version 1.0
- * @since 2021-10-25
+ * The GameBoard is the map where all the tiles are visible to the Player. This
+ * is where the tiles are arranged in order and all the tiles are initialized.
  */
 public class GameBoard {
 
@@ -17,7 +13,8 @@ public class GameBoard {
     private final GameInterfaceI gameInterface;
     private final List<PropertyTile> propertyTiles;
 
-    /**This is the constructor of GameBoard with a parameter
+    /**This is the constructor of GameBoard, where all the properties are initialized
+     * and ordered. The constructor takes in a parameter
      * @param gameInterface This provides text for each action the player takes
      */
     GameBoard(GameInterfaceI gameInterface) {
@@ -70,8 +67,8 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(21));
     }
 
-    /**This function sends the player to the jail tile
-     * @param player This provides the player who landed on the tile
+    /**This method is used to change the Player's position to the Jail tile.
+     * @param player This is the Player sent to Jail
      */
     public void sendPlayerToJail(Player player) {
         gameInterface.notifyPlayerSentToJail(player);
@@ -79,17 +76,19 @@ public class GameBoard {
         player.toggleInJail();
     }
 
-    /**This function sends a list of all the players owned properties
-     * @param player This provides the player requested this operation
+    /**This method is used to get the tiles owned by a Player
+     * @param player This is the Player who owns the tiles
+     * @return This returns a list of tiles the Player owns
      */
     public List<GameTileI> getTilesOwnedByPlayer(Player player) {
         return this.tiles.stream().filter((GameTileI tile) -> tile.isOwnedBy(player)).collect(Collectors.toList());
     }
 
-    /**This function advances the player a certain number of tiles around the gameboard
-     * @param player This provides the player who is moving
-     * @param tiles This provides the number of tiles the player will advance
-     * @param players This provides the list of all players
+    /**This method is used to move the Player from their old position to
+     * the new position.
+     * @param player This is the Player who is moving
+     * @param tiles This is the number of tiles the Player has moved
+     * @param players These are list of Players who owns properties, where a Player could land on
      */
     public void advancePlayer(Player player, int tiles, Players players) {
         int unadjustedPosition = player.getTilePosition() + tiles;
@@ -112,8 +111,9 @@ public class GameBoard {
         }
     }
 
-    /**This function gets a specified tile
-     * @param index this in the position in the ArrayList tiles that desired tile is at
+    /**This method is used to get the tile at a specified index/position.
+     * @param index This is the position of the tile
+     * @return This returns the object at that tile
      */
     public Optional<GameTileI> getTile(int index) {
         if (index < this.tiles.size()) {
@@ -123,8 +123,9 @@ public class GameBoard {
         return Optional.empty();
     }
 
-    /**This function gets a specified tile's description
-     * @param index this in the position in the ArrayList tiles that desired tile is at
+    /**This method is used to get the description of a specified tile.
+     * @param index This is the index of the tile the description is being retrieved from
+     * @return This returns the description of the tile in the specified index
      */
     public Optional<String> getTileDescriptionByIndex(int index) {
         if (this.tiles.size() <= index) {
@@ -136,9 +137,9 @@ public class GameBoard {
                 this.tiles.get(index).tileDescription());
     }
 
-    /**This function transfers properties after bankruptcy from one player to another
-     * @param source this is the player who has the property in the beginning
-     * @param destination this is the player who will receive the property from the source player
+    /**This method is used to transfer properties between Players.
+     * @param source This is the Player who is giving the properties
+     * @param destination This is the Player who is receiving the properties
      */
     public void transferPlayerProperties(Player source, Player destination) {
         for (GameTileI gameTile : this.getTilesOwnedByPlayer(source)) {
@@ -146,8 +147,9 @@ public class GameBoard {
         }
     }
 
-    /**This function filters all tiles and returns a list of the desired tiles type
-     * @param tileFilter this is the type of filter being used to determine which property types to find
+    /**This method is used to filter the properties to their appropriate sets
+     * @param tileFilter This is the interface that arranges the tiles to their sets
+     * @return This returns the list of tiles in a specific set
      */
     public List<GameTileI> getPropertiesFilter(TileFilter tileFilter) {
         List<GameTileI> result = new ArrayList<>();
@@ -159,8 +161,8 @@ public class GameBoard {
         return result;
     }
 
-    /**This function makes the player pay the bank to get out of jail
-     * @param player this is the player currently in jail
+    /**This method is used when a Player leaves Jail by paying the Jail fine.
+     * @param player This is the Player leaving Jail
      */
     public void payJailFine(Player player) {
         player.changeBalance(-1 * (Jail.jailFine));
