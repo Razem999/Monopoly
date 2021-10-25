@@ -4,6 +4,12 @@ import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * The Players class represents all the players currently playing the game
+ *
+ * @version 1.0
+ * @since 2021-10-25
+ */
 public class Players {
     private final List<Player> players;
     private int currentPlayer;
@@ -13,6 +19,9 @@ public class Players {
 
     private final GameInterfaceI gameInterface;
 
+    /**This is the constructor of Players with parameters
+     * @param gameInterface This provides text for each action the player takes
+     */
     Players(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
         this.players = createPlayerList(4, 1500);
@@ -21,10 +30,17 @@ public class Players {
         this.currentPlayerHasRolled = false;
         this.rollStreak = 0;
     }
+
+    /**This function gets the list of players playing the game
+     */
     public List<Player> getPlayersList() {
         return new ArrayList<>(this.players);
     }
 
+    /**This function creates the list of players by adding new players and randomizing turn order
+     * @param numPlayers This provides the number of players wishing to play the game
+     * @param defaultMoney This provides the amount of money each person start the game with
+     */
     private List<Player> createPlayerList(int numPlayers, int defaultMoney) {
         PriorityQueue<PlayerWithRoll> playersPriority = new PriorityQueue<>(numPlayers);
         for (int i = 0; i < numPlayers; i++) {
@@ -42,6 +58,9 @@ public class Players {
         return players;
     }
 
+    /**This function finds a player in the game given an id.
+     * @param id This provides the id of the player the function will look for
+     */
     public Optional<Player> getPlayerByID(int id) {
         for (Player player : this.players) {
             if (player.hasID(id)) {
@@ -52,19 +71,28 @@ public class Players {
         return Optional.empty();
     }
 
+    /**This function gets and returns the player who is currently getting their turn
+     */
     public Player getCurrentPlayer() {
         return this.players.get(currentPlayer);
     }
 
+    /**This function determines if the player has rolled since the player must roll before the next player can
+     */
     public boolean canEndCurrentTurn() {
         return this.currentPlayerHasRolled;
     }
 
+    /**This function goes to the next turn allowing the next player in the order to roll
+     */
     public void nextTurn() {
         this.currentPlayer = (this.currentPlayer + 1) % players.size();
         this.currentPlayerHasRolled = false;
     }
 
+    /**This function gets the current player and lets them buy the property they are currently on.
+     * @param gameBoard This provides the gameboard with all the tiles
+     */
     public void currentPlayerBuy(GameBoard gameBoard) {
         Player currentPlayer = this.getCurrentPlayer();
 
@@ -76,6 +104,9 @@ public class Players {
         }
     }
 
+    /**This function determine the value of the current players roll and determine if its doubles.
+     * @param gameBoard This provides the gameboard with all the tiles
+     */
     public void currentPlayerRoll(GameBoard gameBoard) {
         Player currentPlayer = this.getCurrentPlayer();
         if (currentPlayer.isInJail() && currentPlayerHasRolled == false) {
@@ -118,12 +149,23 @@ public class Players {
         }
     }
 
+    /**This function removes a player from the game by removing them from the player list thereby
+     * removing them from the turn order
+     *
+     * @param player This provides the player to remove from the player list and game
+     */
     public void removePlayer(Player player) {
         this.players.remove(player);
 
         this.currentPlayer = this.currentPlayer % this.players.size();
     }
 
+    /**This function lets the player leave the jail tile
+     * @param currentPlayer This provides the player currently in jail
+     * @param firstDie This provides the value of the first die they roll
+     * @param secondDie This provides the value of the second die they roll
+     * @param gameBoard This provides the gameboard with all the tiles
+     */
     public void leaveJail(Player currentPlayer, int firstDie, int secondDie, GameBoard gameBoard) {
         currentPlayer.toggleInJail();
         gameInterface.notifyPlayerLeftJail(currentPlayer);
