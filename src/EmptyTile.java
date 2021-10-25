@@ -1,3 +1,7 @@
+/**
+ * The EmptyTle represents the community and chance tiles from monopoly without any functionality
+ * to diversify the board so its not just property tiles.
+ */
 public class EmptyTile implements GameTileI{
 
     //Overrides function getName in GameTile interface and returns the name of the tile
