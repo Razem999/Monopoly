@@ -5,7 +5,6 @@ import java.util.Optional;
  * where all the railroads cost the same and the rent to pay is correlated
  * with the number of railroads owned by the Player.
  *
- * @author Razem Shahin
  * @version 1.0
  * @since 2021-10-25
  */
