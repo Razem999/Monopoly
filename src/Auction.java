@@ -6,8 +6,14 @@ public class Auction {
     private int price;
     private Player highestBidder;
 
-    //takes a list of players, the player selecting to auction and the base price of the auction
-    //and initializes the values. Also finds where the player is in the players ArrayList.
+    /**
+     * The Auction class represents the ability to auction properties from the original game,
+     * where all unowned properties that are landed on can be auctioned off rather than bought for base price.
+     *
+     * @param players This is the list of players entering the auction
+     * @param player This is the player that initiated the auction
+     * @param price This is the minimum price the property must sell for in the auction
+     **/
     public Auction(List<Player> players, Player player, int price) {
         currentPlayerIndex = -1;
 
