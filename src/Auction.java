@@ -2,7 +2,7 @@ import java.util.List;
 
 public class Auction {
     private int currentPlayerIndex;
-    private List<Player> players;
+    private final List<Player> players;
     private int price;
     private Player highestBidder;
 
@@ -35,12 +35,7 @@ public class Auction {
 
     //When called it changes the current player to the next player in the ArrayList
     private void advanceAuction() {
-        //if all but one have withdrawn from the auction, case accounts for not being able to mod by 0
-        if (players.size() == 1) {
-            currentPlayerIndex = 0;
-        } else {
-            currentPlayerIndex = (currentPlayerIndex + 1) % (players.size() - 1);
-        }
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
 
     //Takes in a bet amount and sets the new price based on the bet and sets
@@ -57,12 +52,10 @@ public class Auction {
     //When a player types quit, this function is called to remover the player from the players list
     public void withdrawCurrentPlayerFromAuction() {
         players.remove(currentPlayerIndex);
-        advanceAuction();
-    }
 
-    //Gets the current list of active players in the auction
-    public List<Player> getPlayerList() {
-        return players;
+        if (this.currentPlayerIndex >= this.players.size()) {
+            this.currentPlayerIndex = 0;
+        }
     }
 
     //gets the current price/highest bid in the auction
@@ -75,8 +68,15 @@ public class Auction {
         return highestBidder;
     }
 
-    //gets the index of the current player in the ArrayList of players currently in the auction
-    public int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
+    public Player getCurrentBidder() {
+        return this.players.get(currentPlayerIndex);
+    }
+
+    public int getCurrentBidderBalance() {
+        return this.getCurrentBidder().getBalance();
+    }
+
+    public boolean shouldEnd() {
+        return this.players.size() <= 1;
     }
 }

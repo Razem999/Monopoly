@@ -7,7 +7,7 @@ import java.util.Scanner;
  * take.
  */
 public class TextGameInterface implements GameInterfaceI {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     /**
      * This is the constructor of TextGameInterface
@@ -29,12 +29,7 @@ public class TextGameInterface implements GameInterfaceI {
         System.out.println("An auction is starting for " + tile.getName() + " for $" + startingBid);
         Auction auction = new Auction(players.getPlayersList(), players.getCurrentPlayer(), 10);
 
-        while (auction.getPlayerList().size() >= 1) {
-            if ((auction.getHighestBidder() == null) && (auction.getPlayerList().size() < 2)) {
-                System.out.println("The current highest bid is $" + auction.getPrice());
-                doPlayerBid(auction);
-                break;
-            }
+        while (!auction.shouldEnd()) {
             System.out.println("The current highest bid is $" + auction.getPrice());
             doPlayerBid(auction);
         }
@@ -51,29 +46,27 @@ public class TextGameInterface implements GameInterfaceI {
      * @param auction This is the auction the Players are partaking in
      */
     private void doPlayerBid(Auction auction) {
-        String betInput;
-        int currentPlayerBalance = auction.getPlayerList().get(auction.getCurrentPlayerIndex()).getBalance();
-        int currentPlayerID = auction.getPlayerList().get(auction.getCurrentPlayerIndex()).getPlayerID();
-
-        System.out.println("Player " + currentPlayerID + " is placing a bet");
+        Player currentBidder = auction.getCurrentBidder();
+        int currentBidderBalance = auction.getCurrentBidderBalance();
+        System.out.println("Player " + currentBidder.getPlayerID() + " is placing a bet for (type 'quit' to withdraw): ");
 
         while (true) {
-            betInput = scanner.nextLine();
+            String betInput = scanner.nextLine();
             if (betInput.equalsIgnoreCase("quit")) {
                 auction.withdrawCurrentPlayerFromAuction();
                 break;
             }
             try {
-                if ((Integer.parseInt(betInput) <= currentPlayerBalance) && (Integer.parseInt(betInput) > auction.getPrice())) {
+                if ((Integer.parseInt(betInput) <= currentBidderBalance) && (Integer.parseInt(betInput) > auction.getPrice())) {
                     auction.bet(Integer.parseInt(betInput));
                     break;
                 } else if (Integer.parseInt(betInput) <= auction.getPrice()) {
-                    System.out.println("The input value is too low");
+                    System.out.println(">> The that bet amount is too low! (Must be more than " + auction.getPrice() + ")");
                 } else {
-                    System.out.println("You do not have enough money");
+                    System.out.println(">> That bet exceeds your balance!");
                 }
             } catch (NumberFormatException ex) {
-                System.out.println("The input is not a acceptable number");
+                System.out.println(">> That input is not a number!");
             }
         }
     }
@@ -123,7 +116,7 @@ public class TextGameInterface implements GameInterfaceI {
     @Override
     public void notifyPlayerPurchaseConfirm(Player player, String tileName, int amount) {
         System.out.println("Player " + player.getPlayerID() + " bought " + tileName +
-                "for $" + amount);
+                " for $" + amount);
     }
 
     /**Overrides function notifyRentPayment in GameInterfaceI and notifies Players
@@ -279,5 +272,10 @@ public class TextGameInterface implements GameInterfaceI {
     @Override
     public void notifyFreeParkingDeposit(Player player, int amount) {
         System.out.println("$" + amount + " collected through taxes have been deposited into the account of Player " + player.getPlayerID() + ".");
+    }
+
+    @Override
+    public void notifyAuctionCannotStart(GameTileI tile) {
+        System.out.println("The tile " + tile.getName() + " cannot be auctioned");
     }
 }
