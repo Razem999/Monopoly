@@ -1,5 +1,11 @@
 import java.util.Optional;
 
+/**
+ * The PropertyTile class represents a property tile present on the monopoly board
+ *
+ * @version 1.0
+ * @since 2021-10-25
+ */
 public class PropertyTile implements GameTileI {
     private final PropertySet propertySet;
     private final String name;
@@ -14,6 +20,19 @@ public class PropertyTile implements GameTileI {
     private final GameInterfaceI gameInterface;
     private Optional<Player> owner;
 
+    /**This is the constructor of PropertyTile with parameters
+     * @param name This provides the name of the utility tile
+     * @param propertySet This provides colour set that the property is a part of
+     * @param gameInterface This provides text for each action the player takes
+     * @param cost This provides the base cost of the property tile
+     * @param pricePerHouse This is the cost of adding one house to the property tile
+     * @param baseRent This is the rent of the property tile with no houses
+     * @param rent1h This is the rent of the property tile with 1 house
+     * @param rent2h This is the rent of the property tile with 2 houses
+     * @param rent3h This is the rent of the property tile with 3 houses
+     * @param rent4h This is the rent of the property tile with 4 houses
+     * @param rentHotel This is the rent of the property tile with a hotel
+     */
     PropertyTile(String name, PropertySet propertySet, GameInterfaceI gameInterface, int cost, int pricePerHouse, int baseRent, int rent1h, int rent2h, int rent3h, int rent4h, int rentHotel) {
         this.name = name;
         this.propertySet = propertySet;
@@ -29,10 +48,20 @@ public class PropertyTile implements GameTileI {
         this.rentHotel = rentHotel;
     }
 
+    /**This function determines the rent of a property tile
+     */
     private int calculateRent() {
         return this.baseRent;
     }
 
+    /**This function determines the rent when a player lands on a property tile owned
+     * by another player
+     *
+     * @param player This provides the player who landed on the tile
+     * @param owner This provides the owner of the utility tile
+     * @param gameBoard This provides the gameboard with all the tiles
+     * @param players This provides a list of all player in the game
+     */
     private void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
         if (player.equals(owner)) {
             this.gameInterface.notifyPlayerOwnsThis(player);
