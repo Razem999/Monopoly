@@ -1,3 +1,13 @@
+/**
+ * The Jail class represents the Jail/Just Visiting tile from the original
+ * game. When a Player lands on Go To Jail tile, or rolls doubles three times,
+ * Then the Player will move their position to this tile and movements will be
+ * restricted once they are inside jail (not Just Visiting).
+ *
+ * @author Razem Shahin
+ * @version 1.0
+ * @since 2021-10-25
+ */
 import java.util.Optional;
 
 public class Jail implements GameTileI{
@@ -8,17 +18,13 @@ public class Jail implements GameTileI{
     private GameInterfaceI gameInterfaceI;
     private Optional<Player> players;
 
+    /**This is the constructor of Jail with a parameter
+     * @param gameInterfaceI This provides text for each action the player takes
+     */
     public Jail(GameInterfaceI gameInterfaceI) {
         this.inJail = false;
         this.gameInterfaceI = gameInterfaceI;
-    }
-
-    public void setPlayerToJail(Player player) {
-
-    }
-
-    private void tryBail() {
-
+        this.players = Optional.empty();
     }
 
     @Override
@@ -28,8 +34,13 @@ public class Jail implements GameTileI{
 
     @Override
     public String tileDescription() {
-        return "Name: Jail\n" +
-                "Description: Just Visiting Jail.";
+        if (this.players.get().isInJail()) {
+            return "Name: Jail\n" +
+                    "Description: In Jail";
+        } else {
+            return "Name: Jail\n" +
+                    "Description: Just Visiting Jail.";
+        }
     }
 
     @Override

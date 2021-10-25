@@ -20,7 +20,7 @@ public class FreeParking implements GameTileI {
         this.gameInterface = gameInterface;
     }
 
-    /**This method adds the tax into the total tax accumulated
+    /**This method adds the tax into the total tax accumulated.
      * @param amount This is the amount taxed from a Player
      */
     public void addTax(int amount) {
