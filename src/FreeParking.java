@@ -43,4 +43,14 @@ public class FreeParking implements GameTileI {
     public boolean tryTransferOwnership(Player newOwner) {
         return false;
     }
+
+    @Override
+    public boolean tryCloseAuctionFor(int price, Player player){
+        return false;
+    }
+
+    @Override
+    public boolean isAuctionable() {
+        return false;
+    }
 }
