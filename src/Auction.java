@@ -10,7 +10,7 @@ public class Auction {
         currentPlayerIndex = -1;
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).equals(player)) {
-                currentPlayerIndex = (i + 1) % players.size();
+                currentPlayerIndex = i % players.size();
                 break;
             }
         }
@@ -23,7 +23,11 @@ public class Auction {
     }
 
     private void advanceAuction() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % (players.size() - 1);
+        if (players.size() == 1) {
+            currentPlayerIndex = 0;
+        } else {
+            currentPlayerIndex = (currentPlayerIndex + 1) % (players.size() - 1);
+        }
     }
 
     public void bet(int betAmount) {
@@ -44,5 +48,13 @@ public class Auction {
 
     public int getPrice() {
         return price;
+    }
+
+    public Player getHighestBidder() {
+        return highestBidder;
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 }

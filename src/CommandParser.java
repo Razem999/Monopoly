@@ -19,6 +19,7 @@ public class CommandParser {
                         roll - Rolls the dice for the current player
                         pass - Passes turn to next player
                         buy - Buy current tile if possible
+                        auction - Auction current tile if possible
                         owns [id] - Shows what properties the player owns"""
         );
     }
@@ -157,7 +158,12 @@ public class CommandParser {
             return;
         }
 
-        gameInterface.startAuction(0, gameBoard, players);
+        GameTileI tile = gameBoard.getTile(players.getCurrentPlayer().getTilePosition()).orElseThrow();
+        if (tile.isAuctionable()){
+            gameInterface.startAuction(10, gameBoard, players);
+        } else {
+            System.out.println("This tile cannot be auctioned");
+        }
     }
 
     public void handleCommand(String command) {

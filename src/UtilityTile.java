@@ -84,4 +84,18 @@ public class UtilityTile implements GameTileI {
         this.owner = Optional.of(newOwner);
         return true;
     }
+
+    @Override
+    public boolean tryCloseAuctionFor(int price, Player player) {
+        player.changeBalance(-1 * price);
+        this.owner = Optional.of(player);
+        gameInterface.notifyPlayerPurchaseConfirm(player, this.name, price);
+
+        return true;
+    }
+
+    @Override
+    public boolean isAuctionable() {
+        return true;
+    }
 }

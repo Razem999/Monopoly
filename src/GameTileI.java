@@ -5,4 +5,6 @@ public interface GameTileI {
     String getName();
     boolean isOwnedBy(Player player);
     boolean tryTransferOwnership(Player newOwner);
+    boolean tryCloseAuctionFor(int price, Player player);
+    boolean isAuctionable();
 }
