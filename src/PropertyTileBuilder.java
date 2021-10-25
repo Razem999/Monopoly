@@ -1,6 +1,12 @@
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The PropertyTile class provide functions for making property tiles. Simplifies the process.
+ *
+ * @version 1.0
+ * @since 2021-10-25
+ */
 public class PropertyTileBuilder {
     private final PropertySet propertySet;
     private final String name;
@@ -14,22 +20,44 @@ public class PropertyTileBuilder {
     private int rent4h;
     private int rentHotel;
 
+    /**This is the constructor of PropertyTileBuilder with parameters
+     * @param name This provides the name of the utility tile
+     * @param propertySet This provides colour set that the property is a part of
+     * @param textGameInterface This provides text for each action the player takes
+     */
     PropertyTileBuilder(String name, PropertySet propertySet, GameInterfaceI textGameInterface) {
         this.propertySet = propertySet;
         this.name = name;
         this.textGameInterface = textGameInterface;
     }
 
+    /**This function sets the cost of a property tile
+     *
+     * @param cost This provides the cost of the property tile
+     */
     public PropertyTileBuilder setCost(int cost) {
         this.cost = cost;
         return this;
     }
 
+    /**This function sets the price to build a house on the property tile
+     *
+     * @param pricePerHouse This provides the cost of a house
+     */
     public PropertyTileBuilder setPricePerHouse(int pricePerHouse) {
         this.pricePerHouse = pricePerHouse;
         return this;
     }
 
+    /**This function sets the rent of the property tile in all its states
+     *
+     * @param baseRent This provides the rent of the property tile with no houses
+     * @param rent1h This provides the rent of the property tile with 1 house
+     * @param rent2h This provides the rent of the property tile with 2 houses
+     * @param rent3h This provides the rent of the property tile with 3 houses
+     * @param rent4h This provides the rent of the property tile with 4 houses
+     * @param rentHotel This provides the rent of the property tile with a hotel
+     */
     public PropertyTileBuilder setRent(int baseRent, int rent1h, int rent2h, int rent3h, int rent4h, int rentHotel) {
         this.baseRent = baseRent;
         this.rent1h = rent1h;
@@ -40,10 +68,15 @@ public class PropertyTileBuilder {
         return this;
     }
 
+    /**This function returns the property tile with all its information set
+     */
     public PropertyTile getPropertyTile() {
         return new PropertyTile(name, propertySet, textGameInterface, cost, pricePerHouse, baseRent, rent1h, rent2h, rent3h, rent4h, rentHotel);
     }
 
+    /**This function creates and returns all the tiles from the monopoly game
+     * @param gameInterface This provides text for each action the player takes
+     */
     public static List<PropertyTile> createTiles(GameInterfaceI gameInterface) {
         List<PropertyTile> properties = new LinkedList<>();
 
