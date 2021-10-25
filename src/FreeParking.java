@@ -4,7 +4,6 @@
  * Tax Tile or Luxury Tax Tile, and deposits the total amount into a Player's
  * balance once they land on this tile.
  *
- * @author Razem Shahin
  * @version 1.0
  * @since 2021-10-25
  */
