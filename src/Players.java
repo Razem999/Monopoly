@@ -15,7 +15,7 @@ public class Players {
     private int currentPlayer;
     private int rollStreak;
     private boolean currentPlayerHasRolled;
-    private int rollsInJail;
+    private boolean currentPlayerHasActed;
 
     private final GameInterfaceI gameInterface;
 
@@ -29,6 +29,7 @@ public class Players {
         this.currentPlayer = 0;
         this.currentPlayerHasRolled = false;
         this.rollStreak = 0;
+        this.currentPlayerHasActed = false;
     }
 
     /**This function gets the list of players playing the game
@@ -88,6 +89,7 @@ public class Players {
     public void nextTurn() {
         this.currentPlayer = (this.currentPlayer + 1) % players.size();
         this.currentPlayerHasRolled = false;
+        this.currentPlayerHasActed = false;
     }
 
     /**This function gets the current player and lets them buy the property they are currently on.
@@ -100,8 +102,42 @@ public class Players {
         if (tileOpt.isPresent()) {
             GameTileI tile = tileOpt.get();
 
-            tile.tryBuy(currentPlayer);
+            if (tile.tryBuy(currentPlayer)) {
+                this.currentPlayerHasActed = true;
+            }
         }
+    }
+
+    public void currentPlayerStartAuction(GameBoard gameBoard) {
+        GameTileI tile = gameBoard.getTile(this.getCurrentPlayer().getTilePosition()).orElseThrow();
+        if (tile.isAuctionable()){
+            gameInterface.startAuction(10, gameBoard, this);
+            this.currentPlayerHasActed = true;
+        } else {
+            gameInterface.notifyAuctionCannotStart(tile);
+        }
+    }
+
+    /**This function handles the rolls of players currently inside jail
+     * @param gameBoard This provides the gameboard with all the tiles
+     * @param currentPlayer The player rolling
+     */
+    private void handleJailedPlayerRoll(GameBoard gameBoard, Player currentPlayer) {
+        int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+        int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+        gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
+        if (firstDie == secondDie) {
+            gameBoard.handleSuccessfulJailedPlayerRoll(currentPlayer);
+            gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this);
+        } else {
+            gameBoard.handleFailedJailedPlayerRoll(currentPlayer);
+
+            if (!gameBoard.isPlayerInJail(currentPlayer)) {
+                gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this);
+            }
+        }
+
+        this.currentPlayerHasRolled = true;
     }
 
     /**This function determine the value of the current players roll and determine if its doubles.
@@ -109,26 +145,14 @@ public class Players {
      */
     public void currentPlayerRoll(GameBoard gameBoard) {
         Player currentPlayer = this.getCurrentPlayer();
-        if (currentPlayer.isInJail() && currentPlayerHasRolled == false) {
-            int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-            int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-            gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
-            if (firstDie == secondDie) {
-                leaveJail(currentPlayer, firstDie, secondDie, gameBoard);
-            } else {
-                gameInterface.notifyPlayerStayJail(currentPlayer);
-                rollsInJail += 1;
-                if (rollsInJail == 3) {
-                    gameBoard.payJailFine(currentPlayer);
-                    leaveJail(currentPlayer, firstDie, secondDie, gameBoard);
-                    rollsInJail = 0;
-                }
-            }
-        }
-        else if (this.currentPlayerHasRolled) {
+        if (currentPlayerHasRolled) {
             gameInterface.notifyCannotRoll(this.getCurrentPlayer());
-        } else {
+            return;
+        }
 
+        if (gameBoard.isPlayerInJail(currentPlayer)) {
+            handleJailedPlayerRoll(gameBoard, currentPlayer);
+        } else {
             int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
             int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
 
@@ -136,8 +160,11 @@ public class Players {
                 rollStreak++;
 
                 if (rollStreak == 3) {
-                    gameBoard.sendPlayerToJail(currentPlayer);
+                    gameBoard.jailPlayer(currentPlayer);
                     this.currentPlayerHasRolled = true;
+                    rollStreak = 0;
+
+                    return;
                 }
             } else {
                 this.currentPlayerHasRolled = true;
@@ -158,18 +185,6 @@ public class Players {
         this.players.remove(player);
 
         this.currentPlayer = this.currentPlayer % this.players.size();
-    }
-
-    /**This function lets the player leave the jail tile
-     * @param currentPlayer This provides the player currently in jail
-     * @param firstDie This provides the value of the first die they roll
-     * @param secondDie This provides the value of the second die they roll
-     * @param gameBoard This provides the gameboard with all the tiles
-     */
-    public void leaveJail(Player currentPlayer, int firstDie, int secondDie, GameBoard gameBoard) {
-        currentPlayer.toggleInJail();
-        gameInterface.notifyPlayerLeftJail(currentPlayer);
-        gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this);
     }
 }
 

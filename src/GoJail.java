@@ -19,7 +19,7 @@ public class GoJail implements GameTileI{
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
-        gameBoard.sendPlayerToJail(player);
+        gameBoard.jailPlayer(player);
     }
 
     @Override

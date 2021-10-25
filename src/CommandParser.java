@@ -52,7 +52,7 @@ public class CommandParser {
                     player.getBalance() +
                     " and is on tile:\n" +
                     tileDescription.get());
-            if(player.isInJail() == true) {
+            if(gameBoard.isPlayerInJail(player)) {
                 System.out.println("Player " +
                         player.getPlayerID() +
                         " is in Jail!\nRoll a double to get out of Jail.");
@@ -206,12 +206,7 @@ public class CommandParser {
             return;
         }
 
-        GameTileI tile = gameBoard.getTile(players.getCurrentPlayer().getTilePosition()).orElseThrow();
-        if (tile.isAuctionable()){
-            gameInterface.startAuction(10, gameBoard, players);
-        } else {
-            System.out.println("This tile cannot be auctioned");
-        }
+        this.players.currentPlayerStartAuction(gameBoard);
     }
 
     /**This method is used to check the command inputted by the Player, and then

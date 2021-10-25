@@ -10,34 +10,41 @@ public class GameBoard {
 
     private final List<GameTileI> tiles;
     private final GameInterfaceI gameInterface;
-    private final List<PropertyTile> propertyTiles;
+    private final int jailIndex;
+    private final Jail jailTile;
 
     /**This is the constructor of GameBoard with a parameter
      * @param gameInterface This provides text for each action the player takes
      */
     GameBoard(GameInterfaceI gameInterface) {
+        this.jailIndex = 10;
+        this.jailTile = new Jail();
+
         FreeParking freeParking = new FreeParking(gameInterface);
         IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface, freeParking);
         LuxuryTaxTile luxuryTaxTile = new LuxuryTaxTile(gameInterface, freeParking);
         this.gameInterface = gameInterface;
         this.tiles = new ArrayList<>();
-        this.propertyTiles = new ArrayList<>();
-        propertyTiles.addAll(PropertyTileBuilder.createTiles(gameInterface));
+        List<PropertyTile> propertyTiles = new ArrayList<>(PropertyTileBuilder.createTiles(gameInterface));
+
         this.tiles.add(new GoTile(gameInterface));
         this.tiles.add(propertyTiles.get(0));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(1));
         this.tiles.add(incomeTaxTile);
+
         this.tiles.add(new Railroad("Reading Railroad", gameInterface, 200));
         this.tiles.add(propertyTiles.get(2));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(3));
         this.tiles.add(propertyTiles.get(4));
-        this.tiles.add(new Jail(gameInterface));
+
+        this.tiles.add(this.jailTile);
         this.tiles.add(propertyTiles.get(5));
         this.tiles.add(new UtilityTile("Electric Company", 150, gameInterface));
         this.tiles.add(propertyTiles.get(6));
         this.tiles.add(propertyTiles.get(7));
+
         this.tiles.add(new Railroad("Pennsylvania Railroad", gameInterface, 200));
         this.tiles.add(propertyTiles.get(8));
         this.tiles.add(new EmptyTile());
@@ -63,15 +70,6 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(20));
         this.tiles.add(luxuryTaxTile);
         this.tiles.add(propertyTiles.get(21));
-    }
-
-    /**This method sends the current player to jail
-     * @param player This provides the player being sent to jail
-     */
-    public void sendPlayerToJail(Player player) {
-        gameInterface.notifyPlayerSentToJail(player);
-        player.setTilePosition(10);
-        player.toggleInJail();
     }
 
     /**This method gets all tiles owned by a specific player
@@ -158,6 +156,45 @@ public class GameBoard {
      * @param player This provides the player currently paying to get out of jail
      */
     public void payJailFine(Player player) {
+        gameInterface.notifyPlayerLeftJail(player);
         player.changeBalance(-1 * (Jail.jailFine));
+        this.jailTile.unjailPlayer(player);
     }
+
+    /**This method jails a player
+     * @param player This provides the player currently going to jail
+     */
+    public void jailPlayer(Player player) {
+        gameInterface.notifyPlayerSentToJail(player);
+        player.setTilePosition(this.jailIndex);
+        this.jailTile.jailPlayer(player);
+    }
+
+    /**This method returns whether a player is in jail or not
+     * @param player This provides the player in question
+     */
+    public boolean isPlayerInJail(Player player) {
+        return this.jailTile.isPlayerJailed(player);
+    }
+
+    /**This method handles a roll that does not free a jailed player immediately
+     * @param player This provides the player in question
+     */
+    public void handleFailedJailedPlayerRoll(Player player) {
+        jailTile.incrementPlayerRolls(player);
+        if (jailTile.hasPlayerRolledOutOfJail(player)) {
+            this.payJailFine(player);
+        } else {
+            gameInterface.notifyPlayerStayJail(player);
+        }
+    }
+
+    /**This method handles a roll that frees a jailed player immediately
+     * @param player This provides the player in question
+     */
+    public void handleSuccessfulJailedPlayerRoll(Player player) {
+        gameInterface.notifyPlayerLeftJail(player);
+        jailTile.unjailPlayer(player);
+    }
+
 }

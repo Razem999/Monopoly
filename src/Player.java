@@ -72,20 +72,6 @@ public class Player {
         return this.playerID == id;
     }
 
-    /**This method is used set the Player in Jail or release the Player
-     * from Jail
-     */
-    public void toggleInJail() {
-        this.inJail = !inJail;
-    }
-
-    /**This method is used to check if the Player is in Jail
-     * @return This returns true if the Player is in Jail, otherwise false
-     */
-    public boolean isInJail() {
-        return this.inJail;
-    }
-
     /**Overrides function equals to check if the object Provided is a Player or not
      * @param p This is the object provided for identification
      * @return This returns true if the object is a Player, otherwise false
