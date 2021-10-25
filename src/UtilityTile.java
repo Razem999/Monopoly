@@ -1,6 +1,13 @@
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * The UtilityTiles class represents the Utility tiles from the original
+ * monopoly gameboard. (Water works and Electric company)
+ *
+ * @version 1.0
+ * @since 2021-10-25
+ */
 public class UtilityTile implements GameTileI {
 
     private final String name;
@@ -9,6 +16,11 @@ public class UtilityTile implements GameTileI {
     private Optional<Player> owner;
 
 
+    /**This is the constructor of GameBoard with a parameter
+     * @param name This provides the name of the utility tile
+     * @param cost This provides the base cost of the utility tile
+     * @param gameInterface This provides text for each action the player takes
+     */
     UtilityTile(String name, int cost, GameInterfaceI gameInterface) {
         this.name = name;
         this.cost = cost;
@@ -16,7 +28,14 @@ public class UtilityTile implements GameTileI {
         this.owner = Optional.empty();
     }
 
-    public void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
+    /**This function determines the rent when a player lands on a utility tile owned
+     * by another player
+     *
+     * @param player This provides the player who landed on the tile
+     * @param owner This provides the owner of the utility tile
+     * @param gameBoard This provides the gameboard with all the tiles
+     */
+    public void onLandOccupied(Player player, Player owner, GameBoard gameBoard) {
         int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
         int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
         if (gameBoard.getPropertiesFilter(TileFilter.utilityFilter()).size() == 2) {
@@ -30,7 +49,7 @@ public class UtilityTile implements GameTileI {
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
-        this.owner.ifPresent(value -> onLandOccupied(player, value, gameBoard, players));
+        this.owner.ifPresent(value -> onLandOccupied(player, value, gameBoard));
     }
 
     @Override
