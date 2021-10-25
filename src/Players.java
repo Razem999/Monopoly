@@ -131,15 +131,29 @@ public class Players {
     }
 }
 
+/**
+ * The PlayerWithRoll class represents each player with their given priority based on how they roll
+ * at the beginning of the game. This class help to determine turn order
+ *
+ * @version 1.0
+ * @since 2021-10-25
+ */
 class PlayerWithRoll implements Comparable<PlayerWithRoll> {
     public Player player;
     public int roll;
 
+    /**This is the constructor of PlayerWithRoll with parameters
+     * @param player the player who has just roll
+     * @param roll the value of the players roll
+     */
     public PlayerWithRoll(Player player, int roll) {
         this.player = player;
         this.roll = roll;
     }
 
+    /**This function compares a player with a roll to a new roll by another player
+     * @param player This provides the player who has a roll already assigned to them
+     */
     public int compareTo(PlayerWithRoll player) {
         return Integer.compare(this.roll, player.roll);
     }
