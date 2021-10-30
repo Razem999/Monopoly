@@ -19,4 +19,5 @@ public interface GameInterfaceI {
     void notifyPlayerStayJail(Player player);
     void notifyFreeParkingDeposit(Player player, int amount);
     void notifyAuctionCannotStart(GameTileI tile);
+    void notifyPlayerTaxPayment(Player player, int amount);
 }

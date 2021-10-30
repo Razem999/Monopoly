@@ -8,8 +8,8 @@ import java.util.Optional;
 public class LuxuryTaxTile implements GameTileI {
     public static int baseCost = -100;
 
-    private FreeParking freeParking;
-    private GameInterfaceI gameInterface;
+    private final FreeParking freeParking;
+    private final GameInterfaceI gameInterface;
 
     /**This is the constructor for LuxuryTaxTile with parameters
      * @param gameInterface This provides text for each action the player takes
@@ -30,6 +30,7 @@ public class LuxuryTaxTile implements GameTileI {
     public void onLand(Player player, GameBoard gameBoard, Players players) {
         player.changeBalance(baseCost);
         freeParking.addTax(baseCost);
+        this.gameInterface.notifyPlayerTaxPayment(player, baseCost);
     }
 
     /**Overrides function tileDescription in GameTileI and prints the tile's

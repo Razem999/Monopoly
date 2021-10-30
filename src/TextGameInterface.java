@@ -285,4 +285,9 @@ public class TextGameInterface implements GameInterfaceI {
     public void notifyAuctionCannotStart(GameTileI tile) {
         System.out.println("The tile " + tile.getName() + " cannot be auctioned");
     }
+
+    @Override
+    public void notifyPlayerTaxPayment(Player player, int amount) {
+        System.out.println("Player " + player.getPlayerID() + " must pay a tax of $" + amount + ".");
+    }
 }

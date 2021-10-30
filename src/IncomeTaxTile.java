@@ -9,6 +9,7 @@ public class IncomeTaxTile implements GameTileI {
     public static int baseCost = -200;
 
     private final FreeParking freeParking;
+    private final GameInterfaceI gameInterface;
 
     /**This is the constructor for IncomeTaxTile with parameters
      * @param gameInterface This provides text for each action the player takes
@@ -16,6 +17,7 @@ public class IncomeTaxTile implements GameTileI {
      */
     IncomeTaxTile(GameInterfaceI gameInterface, FreeParking freeParking) {
         this.freeParking = freeParking;
+        this.gameInterface = gameInterface;
     }
 
     /**Overrides function onLand in GameTileI and deducts any Player's balance,
@@ -28,6 +30,7 @@ public class IncomeTaxTile implements GameTileI {
     public void onLand(Player player, GameBoard gameBoard, Players players) {
         player.changeBalance(baseCost);
         freeParking.addTax(baseCost);
+        this.gameInterface.notifyPlayerTaxPayment(player, baseCost);
     }
 
     /**Overrides function tileDescription in GameTileI and prints the tile's
