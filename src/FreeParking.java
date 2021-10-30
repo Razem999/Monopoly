@@ -1,3 +1,5 @@
+import java.util.Optional;
+
 /**
  * The FreeParking class represents the Free Parking tile from the original
  * game, which accumulates taxes collected from players that land on Income
@@ -10,7 +12,7 @@
 public class FreeParking implements GameTileI {
     public static int totalDeposited;
 
-    private GameInterfaceI gameInterface;
+    private final GameInterfaceI gameInterface;
 
     /**This is the constructor of FreeParking with a parameter
      * @param gameInterface This provides text for each action the player takes
@@ -39,33 +41,12 @@ public class FreeParking implements GameTileI {
     }
 
     @Override
-    public boolean tryBuy(Player player) {
-        gameInterface.notifyCannotBuyTileKind(player, this);
-        return false;
-    }
-
-    @Override
     public String getName() {
         return "Free Parking";
     }
 
     @Override
-    public boolean isOwnedBy(Player player) {
-        return false;
-    }
-
-    @Override
-    public boolean tryTransferOwnership(Player newOwner) {
-        return false;
-    }
-
-    @Override
-    public boolean tryCloseAuctionFor(int price, Player player){
-        return false;
-    }
-
-    @Override
-    public boolean isAuctionable() {
-        return false;
+    public Optional<BuyableI> asBuyable() {
+        return Optional.empty();
     }
 }

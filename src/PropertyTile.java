@@ -6,7 +6,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 2021-10-25
  */
-public class PropertyTile implements GameTileI {
+public class PropertyTile implements BuyableI {
     private final PropertySet propertySet;
     private final String name;
     private final int cost;
@@ -102,34 +102,41 @@ public class PropertyTile implements GameTileI {
     }
 
     @Override
-    public boolean tryBuy(Player player) {
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public void buy(Player player) {
         if (this.owner.isPresent()) {
             gameInterface.notifyCannotBuyAlreadyOwned(player, this.owner.get(), this);
-            return false;
+            return;
         }
 
         if (player.getBalance() < this.cost) {
             gameInterface.notifyCannotBuyTileBalanceReasons(player, this);
-            return false;
         } else {
             boolean choice = gameInterface.processSale(this.name, this.cost, player);
             if (choice) {
                 player.changeBalance(-1 * cost);
                 this.owner = Optional.of(player);
                 gameInterface.notifyPlayerPurchaseConfirm(player, this.name, this.cost);
-
-                return true;
             } else {
                 gameInterface.notifyPlayerDeclinedPurchase(player, this.name);
-
-                return false;
             }
         }
     }
 
     @Override
-    public String getName() {
-        return this.name;
+    public void transferOwnership(Player newOwner) {
+        this.owner = Optional.of(newOwner);
+    }
+
+    @Override
+    public void closeAuctionFor(int price, Player player) {
+        player.changeBalance(-1 * price);
+        this.owner = Optional.of(player);
+        gameInterface.notifyPlayerPurchaseConfirm(player, this.name, price);
     }
 
     @Override
@@ -139,22 +146,8 @@ public class PropertyTile implements GameTileI {
     }
 
     @Override
-    public boolean tryTransferOwnership(Player newOwner) {
-        this.owner = Optional.of(newOwner);
-        return true;
+    public Optional<BuyableI> asBuyable() {
+        return Optional.of(this);
     }
 
-    @Override
-    public boolean tryCloseAuctionFor(int price, Player player) {
-        player.changeBalance(-1 * price);
-        this.owner = Optional.of(player);
-        gameInterface.notifyPlayerPurchaseConfirm(player, this.name, price);
-
-        return true;
-    }
-
-    @Override
-    public boolean isAuctionable() {
-        return true;
-    }
 }

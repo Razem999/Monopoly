@@ -60,7 +60,7 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(15));
         this.tiles.add(new UtilityTile("Water Works", 150, gameInterface));
         this.tiles.add(propertyTiles.get(16));
-        this.tiles.add(new GoJail(gameInterface));
+        this.tiles.add(new GoJail());
         this.tiles.add(propertyTiles.get(17));
         this.tiles.add(propertyTiles.get(18));
         this.tiles.add(new EmptyTile());
@@ -75,8 +75,11 @@ public class GameBoard {
     /**This method gets all tiles owned by a specific player
      * @param player This provides the player who's owned properties will be displayed
      */
-    public List<GameTileI> getTilesOwnedByPlayer(Player player) {
-        return this.tiles.stream().filter((GameTileI tile) -> tile.isOwnedBy(player)).collect(Collectors.toList());
+    public List<BuyableI> getTilesOwnedByPlayer(Player player) {
+        return this.tiles.stream().filter((GameTileI tile) -> {
+            Optional<BuyableI> buyableTile = tile.asBuyable();
+            return buyableTile.map(buyable -> buyable.isOwnedBy(player)).orElse(false);
+        }).map((GameTileI tile) -> tile.asBuyable().orElseThrow()).collect(Collectors.toList());
     }
 
     /**This method moves a player around the board
@@ -134,8 +137,8 @@ public class GameBoard {
      * @param destination This provides the player who the properties are being transferred to
      */
     public void transferPlayerProperties(Player source, Player destination) {
-        for (GameTileI gameTile : this.getTilesOwnedByPlayer(source)) {
-            gameTile.tryTransferOwnership(destination);
+        for (BuyableI buyableTile : this.getTilesOwnedByPlayer(source)) {
+            buyableTile.transferOwnership(destination);
         }
     }
 

@@ -107,8 +107,8 @@ public class CommandParser {
      */
     private void printPlayerProperties(Player player) {
         System.out.println("Player " + player.getPlayerID() + " owns:");
-        for (GameTileI gameTile : this.gameBoard.getTilesOwnedByPlayer(player)) {
-            System.out.println(gameTile.getName());
+        for (BuyableI buyableTile : this.gameBoard.getTilesOwnedByPlayer(player)) {
+            System.out.println(buyableTile.getName());
         }
     }
 

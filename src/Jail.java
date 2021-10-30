@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The JailedPlayerInfo class keeps track of the players in jail and their roll states.
@@ -83,33 +84,8 @@ public class Jail implements GameTileI {
     }
 
     @Override
-    public boolean tryBuy(Player player) {
-        return false;
-    }
-
-    @Override
     public String getName() {
         return "Jail";
-    }
-
-    @Override
-    public boolean isOwnedBy(Player player) {
-        return false;
-    }
-
-    @Override
-    public boolean tryTransferOwnership(Player newOwner) {
-        return false;
-    }
-
-    @Override
-    public boolean tryCloseAuctionFor(int price, Player player) {
-        return false;
-    }
-
-    @Override
-    public boolean isAuctionable() {
-        return false;
     }
 
     /** This function jails a player
@@ -177,5 +153,10 @@ public class Jail implements GameTileI {
      */
     public boolean isPlayerJailed(Player player) {
         return this.findPlayer(player) != -1;
+    }
+
+    @Override
+    public Optional<BuyableI> asBuyable() {
+        return Optional.empty();
     }
 }

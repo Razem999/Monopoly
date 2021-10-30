@@ -20,12 +20,11 @@ public class TextGameInterface implements GameInterfaceI {
      * This method keeps on requesting an amount higher than the highest bid from each Player, till the Players
      * quit the auction and there is only one remaining bidder.
      * @param startingBid This is the starting amount of the tile the Players are trying to acquire
-     * @param gameBoard This is the board in which the property is situated
+     * @param tile This is the tile being auctioned
      * @param players These are the players taking part in the auction
      */
     @Override
-    public void startAuction(int startingBid, GameBoard gameBoard, Players players) {
-        GameTileI tile = gameBoard.getTile(players.getCurrentPlayer().getTilePosition()).orElseThrow();
+    public void startAuction(int startingBid, BuyableI tile, Players players) {
         System.out.println("An auction is starting for " + tile.getName() + " for $" + startingBid);
         Auction auction = new Auction(players.getPlayersList(), players.getCurrentPlayer(), 10);
 
@@ -35,7 +34,7 @@ public class TextGameInterface implements GameInterfaceI {
         }
 
         if (auction.getHighestBidder() != null) {
-            tile.tryCloseAuctionFor(auction.getPrice(), auction.getHighestBidder());
+            tile.closeAuctionFor(auction.getPrice(), auction.getHighestBidder());
         } else {
             System.out.println("No one has purchased this property");
         }

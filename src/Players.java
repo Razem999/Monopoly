@@ -102,16 +102,22 @@ public class Players {
         if (tileOpt.isPresent()) {
             GameTileI tile = tileOpt.get();
 
-            if (tile.tryBuy(currentPlayer)) {
+            Optional<BuyableI> buyableTile = tile.asBuyable();
+            if (buyableTile.isPresent()) {
+                buyableTile.get().buy(currentPlayer);
                 this.currentPlayerHasActed = true;
+            } else {
+                gameInterface.notifyCannotBuyTileKind(currentPlayer, tile);
             }
         }
     }
 
     public void currentPlayerStartAuction(GameBoard gameBoard) {
         GameTileI tile = gameBoard.getTile(this.getCurrentPlayer().getTilePosition()).orElseThrow();
-        if (tile.isAuctionable()){
-            gameInterface.startAuction(10, gameBoard, this);
+
+        Optional<BuyableI> buyableTile = tile.asBuyable();
+        if (buyableTile.isPresent()){
+            gameInterface.startAuction(10, buyableTile.get(), this);
             this.currentPlayerHasActed = true;
         } else {
             gameInterface.notifyAuctionCannotStart(tile);

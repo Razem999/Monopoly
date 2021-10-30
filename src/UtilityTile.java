@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @version 1.0
  * @since 2021-10-25
  */
-public class UtilityTile implements GameTileI {
+public class UtilityTile implements BuyableI {
 
     private final String name;
     private final int cost;
@@ -64,26 +64,21 @@ public class UtilityTile implements GameTileI {
     }
 
     @Override
-    public boolean tryBuy(Player player) {
+    public void buy(Player player) {
         if (this.owner.isPresent()) {
             gameInterface.notifyCannotBuyAlreadyOwned(player, this.owner.get(), this);
-            return false;
+            return;
         }
         if (player.getBalance() < this.cost) {
             gameInterface.notifyCannotBuyTileBalanceReasons(player, this);
-            return false;
         } else {
             boolean choice = gameInterface.processSale(this.name, this.cost, player);
             if (choice) {
                 player.changeBalance(-1 * cost);
                 this.owner = Optional.of(player);
                 gameInterface.notifyPlayerPurchaseConfirm(player, this.name, this.cost);
-
-                return true;
             } else {
                 gameInterface.notifyPlayerDeclinedPurchase(player, this.name);
-
-                return false;
             }
         }
     }
@@ -94,27 +89,25 @@ public class UtilityTile implements GameTileI {
     }
 
     @Override
+    public Optional<BuyableI> asBuyable() {
+        return Optional.empty();
+    }
+
+    @Override
     public boolean isOwnedBy(Player player) {
         return this.owner.map(value -> value.equals(player)).orElse(false);
     }
 
     @Override
-    public boolean tryTransferOwnership(Player newOwner) {
+    public void transferOwnership(Player newOwner) {
         this.owner = Optional.of(newOwner);
-        return true;
     }
 
     @Override
-    public boolean tryCloseAuctionFor(int price, Player player) {
+    public void closeAuctionFor(int price, Player player) {
         player.changeBalance(-1 * price);
         this.owner = Optional.of(player);
         gameInterface.notifyPlayerPurchaseConfirm(player, this.name, price);
-
-        return true;
     }
 
-    @Override
-    public boolean isAuctionable() {
-        return true;
-    }
 }

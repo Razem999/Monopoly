@@ -1,9 +1,11 @@
+import java.util.Optional;
+
 /**
  * The LuxuryTaxTile class represents the Luxury Tax Tile in the original game, where
  * $100 is deducted from the Player that lands on this tile. The amount deducted is added
  * to the total deposit in FreeParking.
  */
-public class LuxuryTaxTile implements GameTileI{
+public class LuxuryTaxTile implements GameTileI {
     public static int baseCost = -100;
 
     private FreeParking freeParking;
@@ -39,17 +41,6 @@ public class LuxuryTaxTile implements GameTileI{
         return "Name: Luxury Tax\nDescription: Pay $100";
     }
 
-    /**Overrides function tryBuy in GameTileI and notifies Player that this cannot be
-     * purchased
-     * @param player This is the Player attempting to purchase the tile
-     * @return This returns false
-     */
-    @Override
-    public boolean tryBuy(Player player) {
-        gameInterface.notifyCannotBuyTileKind(player, this);
-        return false;
-    }
-
     /**Overrides function getName in GameTileI and returns the tile's
      * name
      * @return This returns the tile's name
@@ -59,42 +50,8 @@ public class LuxuryTaxTile implements GameTileI{
         return "Luxury Tax";
     }
 
-    /**Overrides function isOwnedBy in GameTileI and returns false since this tile cannot be owned
-     * @param player
-     * @return This returns false
-     */
     @Override
-    public boolean isOwnedBy(Player player) {
-        return false;
-    }
-
-    /**Overrides function tryTransferOwnership in GameTileI and returns false this tile cannot be
-     * transferred
-     * @param newOwner
-     * @return This returns false
-     */
-    @Override
-    public boolean tryTransferOwnership(Player newOwner) {
-        return false;
-    }
-
-    /**Overrides function tryCloseAuctionFor in GameTileI and returns false this tile cannot be
-     * auctioned for
-     * @param price
-     * @param player
-     * @return This returns false
-     */
-    @Override
-    public boolean tryCloseAuctionFor(int price, Player player) {
-        return false;
-    }
-
-    /**Overrides function tryCloseAuctionFor in GameTileI and returns false this tile cannot be
-     * auctioned for
-     * @return This returns false
-     */
-    @Override
-    public boolean isAuctionable() {
-        return false;
+    public Optional<BuyableI> asBuyable() {
+        return Optional.empty();
     }
 }
