@@ -8,8 +8,7 @@ import java.util.Optional;
 public class IncomeTaxTile implements GameTileI {
     public static int baseCost = -200;
 
-    private FreeParking freeParking;
-    private GameInterfaceI gameInterface;
+    private final FreeParking freeParking;
 
     /**This is the constructor for IncomeTaxTile with parameters
      * @param gameInterface This provides text for each action the player takes
@@ -17,7 +16,6 @@ public class IncomeTaxTile implements GameTileI {
      */
     IncomeTaxTile(GameInterfaceI gameInterface, FreeParking freeParking) {
         this.freeParking = freeParking;
-        this.gameInterface = gameInterface;
     }
 
     /**Overrides function onLand in GameTileI and deducts any Player's balance,

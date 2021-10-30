@@ -13,7 +13,7 @@ public class UtilityTile implements BuyableI {
     private final String name;
     private final int cost;
     private final GameInterfaceI gameInterface;
-    private Optional<Player> owner;
+    private Optional<Player> playerOwner;
 
 
     /**This is the constructor of GameBoard with a parameter
@@ -25,7 +25,7 @@ public class UtilityTile implements BuyableI {
         this.name = name;
         this.cost = cost;
         this.gameInterface = gameInterface;
-        this.owner = Optional.empty();
+        this.playerOwner = Optional.empty();
     }
 
     /**This function determines the rent when a player lands on a utility tile owned
@@ -49,14 +49,14 @@ public class UtilityTile implements BuyableI {
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
-        this.owner.ifPresent(value -> onLandOccupied(player, value, gameBoard));
+        this.playerOwner.ifPresent(value -> onLandOccupied(player, value, gameBoard));
     }
 
     @Override
     public String tileDescription() {
         String desc = "Name: " + this.name + "\nA utility tile";
-        if (this.owner.isPresent()) {
-            desc += "\nOwned by: Player" + owner.get().getPlayerID();
+        if (this.playerOwner.isPresent()) {
+            desc += "\nOwned by: Player" + playerOwner.get().getPlayerID();
         } else {
             desc += "\nCan Be Bought";
         }
@@ -65,8 +65,8 @@ public class UtilityTile implements BuyableI {
 
     @Override
     public void buy(Player player) {
-        if (this.owner.isPresent()) {
-            gameInterface.notifyCannotBuyAlreadyOwned(player, this.owner.get(), this);
+        if (this.playerOwner.isPresent()) {
+            gameInterface.notifyCannotBuyAlreadyOwned(player, this.playerOwner.get(), this);
             return;
         }
         if (player.getBalance() < this.cost) {
@@ -75,7 +75,7 @@ public class UtilityTile implements BuyableI {
             boolean choice = gameInterface.processSale(this.name, this.cost, player);
             if (choice) {
                 player.changeBalance(-1 * cost);
-                this.owner = Optional.of(player);
+                this.playerOwner = Optional.of(player);
                 gameInterface.notifyPlayerPurchaseConfirm(player, this.name, this.cost);
             } else {
                 gameInterface.notifyPlayerDeclinedPurchase(player, this.name);
@@ -95,18 +95,18 @@ public class UtilityTile implements BuyableI {
 
     @Override
     public boolean isOwnedBy(Player player) {
-        return this.owner.map(value -> value.equals(player)).orElse(false);
+        return this.playerOwner.map(value -> value.equals(player)).orElse(false);
     }
 
     @Override
     public void transferOwnership(Player newOwner) {
-        this.owner = Optional.of(newOwner);
+        this.playerOwner = Optional.of(newOwner);
     }
 
     @Override
     public void closeAuctionFor(int price, Player player) {
         player.changeBalance(-1 * price);
-        this.owner = Optional.of(player);
+        this.playerOwner = Optional.of(player);
         gameInterface.notifyPlayerPurchaseConfirm(player, this.name, price);
     }
 

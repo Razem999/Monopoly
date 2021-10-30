@@ -6,9 +6,10 @@ import java.util.Optional;
  * commands to help the Player to proceed with the game.
  */
 public class CommandParser {
-    GameBoard gameBoard;
-    Players players;
-    GameInterfaceI gameInterface;
+    private final GameBoard gameBoard;
+    private final Players players;
+    private final GameActions gameActions;
+    private final GameInterfaceI gameInterface;
 
     /**This is the constructor of CommandParser with parameters
      * @param gameBoard This is the board in which the Players are playing on
@@ -19,6 +20,7 @@ public class CommandParser {
         this.gameBoard = gameBoard;
         this.players = players;
         this.gameInterface = gameInterface;
+        this.gameActions = new GameActions(gameBoard, players, gameInterface);
     }
 
     /**
@@ -177,7 +179,7 @@ public class CommandParser {
             return;
         }
 
-        players.currentPlayerRoll(this.gameBoard);
+        this.gameActions.currentPlayerRoll();
     }
 
     /**This method is used to check if the command is valid for 'buy'. This allows
@@ -190,7 +192,7 @@ public class CommandParser {
             return;
         }
 
-        players.currentPlayerBuy(gameBoard);
+        this.gameActions.currentPlayerBuy();
     }
 
     /**This method is used to check if the command is valid for 'auction'. This allows
@@ -203,7 +205,7 @@ public class CommandParser {
             return;
         }
 
-        this.players.currentPlayerStartAuction(gameBoard);
+        this.gameActions.currentPlayerStartAuction();
     }
 
     /**This method is used to check the command inputted by the Player, and then

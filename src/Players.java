@@ -13,7 +13,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Players {
     private final List<Player> players;
     private int currentPlayer;
-    private int rollStreak;
     private boolean currentPlayerHasRolled;
     private boolean currentPlayerHasActed;
 
@@ -28,7 +27,6 @@ public class Players {
 
         this.currentPlayer = 0;
         this.currentPlayerHasRolled = false;
-        this.rollStreak = 0;
         this.currentPlayerHasActed = false;
     }
 
@@ -92,96 +90,6 @@ public class Players {
         this.currentPlayerHasActed = false;
     }
 
-    /**This function gets the current player and lets them buy the property they are currently on.
-     * @param gameBoard This provides the gameboard with all the tiles
-     */
-    public void currentPlayerBuy(GameBoard gameBoard) {
-        Player currentPlayer = this.getCurrentPlayer();
-
-        Optional<GameTileI> tileOpt = gameBoard.getTile(currentPlayer.getTilePosition());
-        if (tileOpt.isPresent()) {
-            GameTileI tile = tileOpt.get();
-
-            Optional<BuyableI> buyableTile = tile.asBuyable();
-            if (buyableTile.isPresent()) {
-                buyableTile.get().buy(currentPlayer);
-                this.currentPlayerHasActed = true;
-            } else {
-                gameInterface.notifyCannotBuyTileKind(currentPlayer, tile);
-            }
-        }
-    }
-
-    public void currentPlayerStartAuction(GameBoard gameBoard) {
-        GameTileI tile = gameBoard.getTile(this.getCurrentPlayer().getTilePosition()).orElseThrow();
-
-        Optional<BuyableI> buyableTile = tile.asBuyable();
-        if (buyableTile.isPresent()){
-            gameInterface.startAuction(10, buyableTile.get(), this);
-            this.currentPlayerHasActed = true;
-        } else {
-            gameInterface.notifyAuctionCannotStart(tile);
-        }
-    }
-
-    /**This function handles the rolls of players currently inside jail
-     * @param gameBoard This provides the gameboard with all the tiles
-     * @param currentPlayer The player rolling
-     */
-    private void handleJailedPlayerRoll(GameBoard gameBoard, Player currentPlayer) {
-        int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-        int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-        gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
-        if (firstDie == secondDie) {
-            gameBoard.handleSuccessfulJailedPlayerRoll(currentPlayer);
-            gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this);
-        } else {
-            gameBoard.handleFailedJailedPlayerRoll(currentPlayer);
-
-            if (!gameBoard.isPlayerInJail(currentPlayer)) {
-                gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this);
-            }
-        }
-
-        this.currentPlayerHasRolled = true;
-    }
-
-    /**This function determine the value of the current players roll and determine if its doubles.
-     * @param gameBoard This provides the gameboard with all the tiles
-     */
-    public void currentPlayerRoll(GameBoard gameBoard) {
-        Player currentPlayer = this.getCurrentPlayer();
-        if (currentPlayerHasRolled) {
-            gameInterface.notifyCannotRoll(this.getCurrentPlayer());
-            return;
-        }
-
-        if (gameBoard.isPlayerInJail(currentPlayer)) {
-            handleJailedPlayerRoll(gameBoard, currentPlayer);
-        } else {
-            int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-            int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-
-            if (firstDie == secondDie) {
-                rollStreak++;
-
-                if (rollStreak == 3) {
-                    gameBoard.jailPlayer(currentPlayer);
-                    this.currentPlayerHasRolled = true;
-                    rollStreak = 0;
-
-                    return;
-                }
-            } else {
-                this.currentPlayerHasRolled = true;
-                rollStreak = 0;
-            }
-
-            gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
-            gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this);
-        }
-    }
-
     /**This function removes a player from the game by removing them from the player list thereby
      * removing them from the turn order
      *
@@ -191,6 +99,18 @@ public class Players {
         this.players.remove(player);
 
         this.currentPlayer = this.currentPlayer % this.players.size();
+    }
+
+    public void handleCurrentPlayerActed() {
+        this.currentPlayerHasActed = true;
+    }
+
+    public void handleCurrentPlayerFinishedRolling() {
+        this.currentPlayerHasRolled = true;
+    }
+
+    public boolean hasCurrentPlayerFinishedRolling() {
+        return this.currentPlayerHasActed;
     }
 }
 
