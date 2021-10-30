@@ -1,3 +1,10 @@
+package tiles;
+
+import gameLogic.Player;
+import gameLogic.Players;
+import gameLogic.GameBoard;
+import gameInterface.GameInterfaceI;
+
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,12 +23,12 @@ public class UtilityTile implements BuyableI {
     private Optional<Player> playerOwner;
 
 
-    /**This is the constructor of GameBoard with a parameter
+    /**This is the constructor of gameLogic.GameBoard with a parameter
      * @param name This provides the name of the utility tile
      * @param cost This provides the base cost of the utility tile
      * @param gameInterface This provides text for each action the player takes
      */
-    UtilityTile(String name, int cost, GameInterfaceI gameInterface) {
+    public UtilityTile(String name, int cost, GameInterfaceI gameInterface) {
         this.name = name;
         this.cost = cost;
         this.gameInterface = gameInterface;
@@ -56,7 +63,7 @@ public class UtilityTile implements BuyableI {
     public String tileDescription() {
         String desc = "Name: " + this.name + "\nA utility tile";
         if (this.playerOwner.isPresent()) {
-            desc += "\nOwned by: Player" + playerOwner.get().getPlayerID();
+            desc += "\nOwned by: gameLogic.Player" + playerOwner.get().getPlayerID();
         } else {
             desc += "\nCan Be Bought";
         }

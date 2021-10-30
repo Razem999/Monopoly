@@ -1,3 +1,11 @@
+package gameInterface;
+
+import tiles.BuyableI;
+import tiles.GameTileI;
+import gameLogic.GameBoard;
+import gameLogic.Players;
+import gameLogic.Player;
+
 public interface GameInterfaceI {
     void startAuction(int startingBid, BuyableI tile, Players players);
     boolean processSale(String tileName, int amount, Player buyer);

@@ -1,8 +1,15 @@
+package tiles;
+
+import gameLogic.Player;
+import gameLogic.Players;
+import gameLogic.GameBoard;
+import gameInterface.GameInterfaceI;
+
 import java.util.Optional;
 
 /**
- * The GoTile class represents the Go tile from the original game.
- * When a Player lands on/passes this tile, the Player receives the
+ * The tiles.GoTile class represents the Go tile from the original game.
+ * When a gameLogic.Player lands on/passes this tile, the gameLogic.Player receives the
  * Pass Go reward of $200.
  *
  * @version 1.0
@@ -13,10 +20,10 @@ public class GoTile implements GameTileI {
 
     private final GameInterfaceI gameInterface;
 
-    /**This is the constructor of GoTile with a parameter
+    /**This is the constructor of tiles.GoTile with a parameter
      * @param gameInterface This provides text for each action the player takes
      */
-    GoTile(GameInterfaceI gameInterface) {
+    public GoTile(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
     }
 

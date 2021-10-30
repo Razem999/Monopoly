@@ -1,3 +1,7 @@
+package gameLogic;
+
+import gameInterface.GameInterfaceI;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -5,7 +9,7 @@ import java.util.PriorityQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * The Players class represents all the players currently playing the game
+ * The gameLogic.Players class represents all the players currently playing the game
  *
  * @version 1.0
  * @since 2021-10-25
@@ -18,10 +22,10 @@ public class Players {
 
     private final GameInterfaceI gameInterface;
 
-    /**This is the constructor of Players with parameters
+    /**This is the constructor of gameLogic.Players with parameters
      * @param gameInterface This provides text for each action the player takes
      */
-    Players(GameInterfaceI gameInterface) {
+    public Players(GameInterfaceI gameInterface) {
         this.gameInterface = gameInterface;
         this.players = createPlayerList(4, 1500);
 
@@ -115,7 +119,7 @@ public class Players {
 }
 
 /**
- * The PlayerWithRoll class represents each player with their given priority based on how they roll
+ * The gameLogic.PlayerWithRoll class represents each player with their given priority based on how they roll
  * at the beginning of the game. This class help to determine turn order
  *
  * @version 1.0
@@ -125,7 +129,7 @@ class PlayerWithRoll implements Comparable<PlayerWithRoll> {
     public Player player;
     public int roll;
 
-    /**This is the constructor of PlayerWithRoll with parameters
+    /**This is the constructor of gameLogic.PlayerWithRoll with parameters
      * @param player the player who has just roll
      * @param roll the value of the players roll
      */

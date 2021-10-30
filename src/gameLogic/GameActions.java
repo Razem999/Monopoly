@@ -1,3 +1,9 @@
+package gameLogic;
+
+import gameInterface.GameInterfaceI;
+import tiles.BuyableI;
+import tiles.GameTileI;
+
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -8,7 +14,7 @@ public class GameActions {
 
     private int rollStreak;
 
-    GameActions(GameBoard gameBoard, Players players, GameInterfaceI gameInterface) {
+    public GameActions(GameBoard gameBoard, Players players, GameInterfaceI gameInterface) {
         this.gameBoard = gameBoard;
         this.players = players;
         this.gameInterface = gameInterface;

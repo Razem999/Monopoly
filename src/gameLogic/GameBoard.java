@@ -1,24 +1,29 @@
+package gameLogic;
+
+import gameInterface.GameInterfaceI;
+import tiles.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * The GameBoard class represents the entirety of the monopoly gameboard where all types of tiles are put together
+ * The gameLogic.GameBoard class represents the entirety of the monopoly gameboard where all types of tiles are put together
  */
 public class GameBoard {
 
     private final List<GameTileI> tiles;
     private final GameInterfaceI gameInterface;
     private final int jailIndex;
-    private final Jail jailTile;
+    private final JailTile jailTile;
 
-    /**This is the constructor of GameBoard with a parameter
+    /**This is the constructor of gameLogic.GameBoard with a parameter
      * @param gameInterface This provides text for each action the player takes
      */
-    GameBoard(GameInterfaceI gameInterface) {
+    public GameBoard(GameInterfaceI gameInterface) {
         this.jailIndex = 10;
-        this.jailTile = new Jail();
+        this.jailTile = new JailTile();
 
         FreeParking freeParking = new FreeParking(gameInterface);
         IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface, freeParking);
@@ -33,7 +38,7 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(1));
         this.tiles.add(incomeTaxTile);
 
-        this.tiles.add(new Railroad("Reading Railroad", gameInterface, 200));
+        this.tiles.add(new RailroadTile("Reading Railroad", gameInterface, 200));
         this.tiles.add(propertyTiles.get(2));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(3));
@@ -45,7 +50,7 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(6));
         this.tiles.add(propertyTiles.get(7));
 
-        this.tiles.add(new Railroad("Pennsylvania Railroad", gameInterface, 200));
+        this.tiles.add(new RailroadTile("Pennsylvania Railroad", gameInterface, 200));
         this.tiles.add(propertyTiles.get(8));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(9));
@@ -55,7 +60,7 @@ public class GameBoard {
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(12));
         this.tiles.add(propertyTiles.get(13));
-        this.tiles.add(new Railroad("B. & O. Railroad", gameInterface, 200));
+        this.tiles.add(new RailroadTile("B. & O. Railroad", gameInterface, 200));
         this.tiles.add(propertyTiles.get(14));
         this.tiles.add(propertyTiles.get(15));
         this.tiles.add(new UtilityTile("Water Works", 150, gameInterface));
@@ -65,7 +70,7 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(18));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(19));
-        this.tiles.add(new Railroad("Short Line Railroad", gameInterface, 200));
+        this.tiles.add(new RailroadTile("Short Line Railroad", gameInterface, 200));
         this.tiles.add(new EmptyTile());
         this.tiles.add(propertyTiles.get(20));
         this.tiles.add(luxuryTaxTile);
@@ -160,7 +165,7 @@ public class GameBoard {
      */
     public void payJailFine(Player player) {
         gameInterface.notifyPlayerLeftJail(player);
-        player.changeBalance(-1 * (Jail.jailFine));
+        player.changeBalance(-1 * (JailTile.jailFine));
         this.jailTile.unjailPlayer(player);
     }
 

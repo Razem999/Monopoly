@@ -1,8 +1,12 @@
+package tiles;
+
+import gameInterface.GameInterfaceI;
+
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The PropertyTile class provide functions for making property tiles. Simplifies the process.
+ * The tiles.PropertyTile class provide functions for making property tiles. Simplifies the process.
  *
  * @version 1.0
  * @since 2021-10-25
@@ -10,7 +14,7 @@ import java.util.List;
 public class PropertyTileBuilder {
     private final PropertySet propertySet;
     private final String name;
-    private final GameInterfaceI textGameInterface;
+    private final GameInterfaceI gameInterface;
     private int cost;
     private int pricePerHouse;
     private int baseRent;
@@ -20,7 +24,7 @@ public class PropertyTileBuilder {
     private int rent4h;
     private int rentHotel;
 
-    /**This is the constructor of PropertyTileBuilder with parameters
+    /**This is the constructor of tiles.PropertyTileBuilder with parameters
      * @param name This provides the name of the utility tile
      * @param propertySet This provides colour set that the property is a part of
      * @param textGameInterface This provides text for each action the player takes
@@ -28,7 +32,7 @@ public class PropertyTileBuilder {
     PropertyTileBuilder(String name, PropertySet propertySet, GameInterfaceI textGameInterface) {
         this.propertySet = propertySet;
         this.name = name;
-        this.textGameInterface = textGameInterface;
+        this.gameInterface = textGameInterface;
     }
 
     /**This function sets the cost of a property tile
@@ -71,7 +75,7 @@ public class PropertyTileBuilder {
     /**This function returns the property tile with all its information set
      */
     public PropertyTile getPropertyTile() {
-        return new PropertyTile(name, propertySet, textGameInterface, cost, pricePerHouse, baseRent, rent1h, rent2h, rent3h, rent4h, rentHotel);
+        return new PropertyTile(name, propertySet, gameInterface, cost, pricePerHouse, baseRent, rent1h, rent2h, rent3h, rent4h, rentHotel);
     }
 
     /**This function creates and returns all the tiles from the monopoly game

@@ -1,3 +1,7 @@
+package tiles;
+
+import gameLogic.Player;
+
 public interface BuyableI extends GameTileI {
     void buy(Player player);
     void transferOwnership(Player newOwner);

@@ -1,3 +1,8 @@
+import gameInterface.CommandParser;
+import gameInterface.TextGameInterface;
+import gameLogic.GameBoard;
+import gameLogic.Players;
+
 import java.util.Scanner;
 
 public class Main {

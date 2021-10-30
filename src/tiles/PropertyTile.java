@@ -1,60 +1,73 @@
+package tiles;
+
+import gameLogic.Player;
+import gameLogic.Players;
+import gameLogic.GameBoard;
+import gameInterface.GameInterfaceI;
+
 import java.util.Optional;
 
 /**
- * The Railroad class represents the railroads tile from the original game,
- * where all the railroads cost the same and the rent to pay is correlated
- * with the number of railroads owned by the Player.
+ * The tiles.PropertyTile class represents a property tile present on the monopoly board
  *
  * @version 1.0
  * @since 2021-10-25
  */
-public class Railroad implements BuyableI {
+public class PropertyTile implements BuyableI {
+    private final PropertySet propertySet;
     private final String name;
     private final int cost;
-    private int totalOwned;
+    private final int pricePerHouse;
+    private final int baseRent;
+    private final int rent1h;
+    private final int rent2h;
+    private final int rent3h;
+    private final int rent4h;
+    private final int rentHotel;
     private final GameInterfaceI gameInterface;
     private Optional<Player> owner;
 
-    /**
-     * This is the constructor of Railroad with parameters.
-     * The container (owner) is initialized here.
-     * @param name This is the name of the railroad
+    /**This is the constructor of tiles.PropertyTile with parameters
+     * @param name This provides the name of the utility tile
+     * @param propertySet This provides colour set that the property is a part of
      * @param gameInterface This provides text for each action the player takes
-     * @param cost This is the cost of the railroad
+     * @param cost This provides the base cost of the property tile
+     * @param pricePerHouse This is the cost of adding one house to the property tile
+     * @param baseRent This is the rent of the property tile with no houses
+     * @param rent1h This is the rent of the property tile with 1 house
+     * @param rent2h This is the rent of the property tile with 2 houses
+     * @param rent3h This is the rent of the property tile with 3 houses
+     * @param rent4h This is the rent of the property tile with 4 houses
+     * @param rentHotel This is the rent of the property tile with a hotel
      */
-    public Railroad(String name, GameInterfaceI gameInterface, int cost) {
+    PropertyTile(String name, PropertySet propertySet, GameInterfaceI gameInterface, int cost, int pricePerHouse, int baseRent, int rent1h, int rent2h, int rent3h, int rent4h, int rentHotel) {
         this.name = name;
+        this.propertySet = propertySet;
         this.gameInterface = gameInterface;
         this.owner = Optional.empty();
         this.cost = cost;
+        this.pricePerHouse = pricePerHouse;
+        this.baseRent = baseRent;
+        this.rent1h = rent1h;
+        this.rent2h = rent2h;
+        this.rent3h = rent3h;
+        this.rent4h = rent4h;
+        this.rentHotel = rentHotel;
     }
 
-    /**
-     * This method is used to check the number of railroads the owner owns, and calculates the rent
-     * the player owes to the owner.
-     * @return int This returns the rent the player owes to the owner
+    /**This function determines the rent of a property tile
      */
     private int calculateRent() {
-        if(totalOwned == 4) {
-            return 200;
-        } else if (totalOwned == 3) {
-            return 100;
-        } else if (totalOwned == 2) {
-            return 50;
-        } else {
-            return 25;
-        }
+        return this.baseRent;
     }
 
-    /**
-     * This method is used to identify the player that landed on an occupied tile, and pay rent to
-     * the player that owns the tile. It checks to see if the player has enough money to be able to
-     * pay the rent. If the player has insufficient funds, the Player paying transfers all his money and
-     * properties to the owner of that tile. Otherwise, they transfer the rent amount to the owner.
-     * @param player This is the Player who is paying
-     * @param owner This is the Player who is receiving the payment
-     * @param gameBoard This is the board in which the tile is situated
-     * @param players This is a list of players playing the game
+    /**This function determines the rent when a player lands on a property tile owned
+     * by another player
+     *
+     * @param player This provides the player who landed on the tile
+     * @param owner This provides the owner of the utility tile
+     * @param gameBoard This provides the gameboard with all the tiles
+     * @param players This provides a list of all player in the game
      */
     private void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
         if (player.equals(owner)) {
@@ -69,7 +82,6 @@ public class Railroad implements BuyableI {
             gameBoard.transferPlayerProperties(player, owner);
             players.removePlayer(player);
         } else {
-            this.totalOwned = gameBoard.getPropertiesFilter(TileFilter.utilityFilter()).size();
             owner.changeBalance(this.calculateRent());
             player.changeBalance(-1 * this.calculateRent());
             this.gameInterface.notifyRentPayment(owner, player, this.calculateRent());
@@ -84,12 +96,11 @@ public class Railroad implements BuyableI {
     @Override
     public String tileDescription() {
         String desc = "Name: " + this.name +
+                "\nProperty Set: " + this.propertySet.name() +
                 "\nCost: $" + this.cost +
                 "\nRent: $" + this.calculateRent();
         if (this.owner.isPresent()) {
-            desc += "\nOwned by: Player" + owner.get().getPlayerID() +
-                "\nRailroads owned: " + this.totalOwned;
-
+            desc += "\nOwned by: gameLogic.Player" + owner.get().getPlayerID();
         } else {
             desc += "\nCan Be Bought";
         }
@@ -138,10 +149,12 @@ public class Railroad implements BuyableI {
     @Override
     public boolean isOwnedBy(Player player) {
         return this.owner.map(value -> value.equals(player)).orElse(false);
+
     }
 
     @Override
     public Optional<BuyableI> asBuyable() {
         return Optional.of(this);
     }
+
 }

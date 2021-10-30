@@ -1,9 +1,15 @@
+package tiles;
+
+import gameLogic.Player;
+import gameLogic.Players;
+import gameLogic.GameBoard;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * The JailedPlayerInfo class keeps track of the players in jail and their roll states.
+ * The tiles.JailedPlayerInfo class keeps track of the players in jail and their roll states.
  *
  * @version 1.0
  * @since 2021-10-25
@@ -40,14 +46,14 @@ class JailedPlayerInfo {
 
 /**
  * The Jail class represents the Jail/Just Visiting tile from the original
- * game. When a Player lands on Go To Jail tile, or rolls doubles three times,
- * Then the Player will move their position to this tile and movements will be
+ * game. When a gameLogic.Player lands on Go To Jail tile, or rolls doubles three times,
+ * Then the gameLogic.Player will move their position to this tile and movements will be
  * restricted once they are inside jail (not Just Visiting).
  *
  * @version 1.0
  * @since 2021-10-25
  */
-public class Jail implements GameTileI {
+public class JailTile implements GameTileI {
 
     public static int jailFine = 50;
 
@@ -55,7 +61,7 @@ public class Jail implements GameTileI {
 
     /**This is the constructor of Jail, initially, there are no players in jail
      */
-    public Jail() {
+    public JailTile() {
         this.jailedPlayers = new ArrayList<>();
     }
 
@@ -70,7 +76,7 @@ public class Jail implements GameTileI {
         jailStringBuilder.append("Name: Jail\nDescription: In Jail:\n");
 
         for (JailedPlayerInfo player : this.jailedPlayers) {
-            jailStringBuilder.append("Player: ");
+            jailStringBuilder.append("gameLogic.Player: ");
             jailStringBuilder.append(player.getPlayer().getPlayerID());
             jailStringBuilder.append(" (");
             jailStringBuilder.append(player.getRollsInJail());

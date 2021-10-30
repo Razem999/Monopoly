@@ -1,3 +1,5 @@
+package tiles;
+
 public enum PropertySet {
     Red,
     Yellow,

@@ -1,3 +1,9 @@
+package tiles;
+
+import gameLogic.Player;
+import gameLogic.Players;
+import gameLogic.GameBoard;
+
 import java.util.Optional;
 
 public interface GameTileI {

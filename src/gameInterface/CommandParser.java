@@ -1,9 +1,16 @@
+package gameInterface;
+
+import gameLogic.GameBoard;
+import gameLogic.Players;
+import gameLogic.GameActions;
+import gameLogic.Player;
+
 import java.util.Optional;
 
 /**
- * The CommandParser is where all the commands inputted by the Player is parsed and
+ * The gameInterface.CommandParser is where all the commands inputted by the gameLogic.Player is parsed and
  * an action takes place, depending on the command inputted. The game consists of five
- * commands to help the Player to proceed with the game.
+ * commands to help the gameLogic.Player to proceed with the game.
  */
 public class CommandParser {
     private final GameBoard gameBoard;
@@ -11,12 +18,12 @@ public class CommandParser {
     private final GameActions gameActions;
     private final GameInterfaceI gameInterface;
 
-    /**This is the constructor of CommandParser with parameters
-     * @param gameBoard This is the board in which the Players are playing on
-     * @param players These are the list of Players playing the game
+    /**This is the constructor of gameInterface.CommandParser with parameters
+     * @param gameBoard This is the board in which the gameLogic.Players are playing on
+     * @param players These are the list of gameLogic.Players playing the game
      * @param gameInterface This provides text for each action the player takes
      */
-    CommandParser(GameBoard gameBoard, Players players, GameInterfaceI gameInterface) {
+    public CommandParser(GameBoard gameBoard, Players players, GameInterfaceI gameInterface) {
         this.gameBoard = gameBoard;
         this.players = players;
         this.gameInterface = gameInterface;
@@ -24,7 +31,7 @@ public class CommandParser {
     }
 
     /**
-     * This method provides the Players with a list of commands and their functionality
+     * This method provides the gameLogic.Players with a list of commands and their functionality
      * to select from.
      */
     private void printHelp() {
@@ -40,27 +47,27 @@ public class CommandParser {
         );
     }
 
-    /**This method prints the status of a specified Player. Status consists
-     * of the Player's ID, balance, tile position, and whether or not the
+    /**This method prints the status of a specified gameLogic.Player. Status consists
+     * of the gameLogic.Player's ID, balance, tile position, and whether or not the
      * player is in Jail or not.
-     * @param player This is the Player who will have their status printed
+     * @param player This is the gameLogic.Player who will have their status printed
      */
     private void printPlayerStatus(Player player) {
         Optional<String> tileDescription = gameBoard.getTileDescriptionByIndex(player.getTilePosition());
         if (tileDescription.isPresent()) {
-            System.out.println("Player " +
+            System.out.println("gameLogic.Player " +
                     player.getPlayerID() +
                     " has a balance of $" +
                     player.getBalance() +
                     " and is on tile:\n" +
                     tileDescription.get());
             if(gameBoard.isPlayerInJail(player)) {
-                System.out.println("Player " +
+                System.out.println("gameLogic.Player " +
                         player.getPlayerID() +
                         " is in Jail!\nRoll a double to get out of Jail.");
             }
         } else {
-            System.out.println("Player " +
+            System.out.println("gameLogic.Player " +
                     player.getPlayerID() +
                     " has a balance of $" +
                     player.getBalance() +
@@ -68,10 +75,10 @@ public class CommandParser {
         }
     }
 
-    /**This method is used to check if the ID provided by a Player is valid or not.
+    /**This method is used to check if the ID provided by a gameLogic.Player is valid or not.
      * This method calls printPlayerStatus() if command is valid, otherwise prints an
      * error message
-     * @param command This is the command inputted by the Player
+     * @param command This is the command inputted by the gameLogic.Player
      */
     private void handleStatus(String command) {
         String[] split = command.split(" ");
@@ -104,17 +111,17 @@ public class CommandParser {
         printPlayerStatus(player);
     }
 
-    /**This method is used to print the properties a specified Player owns.
-     * @param player This is the Player who will have their properties printed
+    /**This method is used to print the properties a specified gameLogic.Player owns.
+     * @param player This is the gameLogic.Player who will have their properties printed
      */
     private void printPlayerProperties(Player player) {
-        gameInterface.displayPlayerProperties(player, gameBoard);
+        gameInterface.displayPlayerProperties(player, this.gameBoard);
     }
 
-    /**This method is used to check if the command provided is valid (checks if Player
+    /**This method is used to check if the command provided is valid (checks if gameLogic.Player
      * ID is valid), and calls printPlayerProperties() if it is valid. Otherwise, it
      * prints an error message.
-     * @param command This is the command a Player provides
+     * @param command This is the command a gameLogic.Player provides
      */
     private void handleOwns(String command) {
         String[] split = command.split(" ");
@@ -148,8 +155,8 @@ public class CommandParser {
     }
 
     /**This method is used to check if the command is valid for 'pass'. It checks
-     * to see if the Player can pass his turn or not.
-     * @param command This is the command provided by the Player
+     * to see if the gameLogic.Player can pass his turn or not.
+     * @param command This is the command provided by the gameLogic.Player
      */
     private void handlePass(String command) {
         if (command.split(" ").length > 1) {
@@ -161,7 +168,7 @@ public class CommandParser {
             this.players.nextTurn();
 
             Player player = this.players.getCurrentPlayer();
-            System.out.println("It is now Player " + player.getPlayerID() + "'s turn.");
+            System.out.println("It is now gameLogic.Player " + player.getPlayerID() + "'s turn.");
 
             this.printPlayerStatus(this.players.getCurrentPlayer());
         } else {
@@ -170,8 +177,8 @@ public class CommandParser {
     }
 
     /**This method is used to check if the command is valid for 'roll'. This
-     * allows the Player to roll the dice.
-     * @param command This is the command provided by the Player
+     * allows the gameLogic.Player to roll the dice.
+     * @param command This is the command provided by the gameLogic.Player
      */
     private void handleRoll(String command) {
         if (command.split(" ").length > 1) {
@@ -183,8 +190,8 @@ public class CommandParser {
     }
 
     /**This method is used to check if the command is valid for 'buy'. This allows
-     * the Player to purchase a property
-     * @param command This is the command provided by the Player
+     * the gameLogic.Player to purchase a property
+     * @param command This is the command provided by the gameLogic.Player
      */
     private void handleBuy(String command) {
         if (command.split(" ").length > 1) {
@@ -196,8 +203,8 @@ public class CommandParser {
     }
 
     /**This method is used to check if the command is valid for 'auction'. This allows
-     * the Player to start an auction for a property.
-     * @param command This is the command provided by the Player
+     * the gameLogic.Player to start an auction for a property.
+     * @param command This is the command provided by the gameLogic.Player
      */
     private void handleAuction(String command) {
         if (command.split(" ").length > 1) {
@@ -208,9 +215,9 @@ public class CommandParser {
         this.gameActions.currentPlayerStartAuction();
     }
 
-    /**This method is used to check the command inputted by the Player, and then
-     * calls the method the Player has inputted.
-     * @param command This is the command provided by the Player
+    /**This method is used to check the command inputted by the gameLogic.Player, and then
+     * calls the method the gameLogic.Player has inputted.
+     * @param command This is the command provided by the gameLogic.Player
      */
     public void handleCommand(String command) {
         command = command.toLowerCase();

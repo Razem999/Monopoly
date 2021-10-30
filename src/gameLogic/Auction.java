@@ -1,3 +1,5 @@
+package gameLogic;
+
 import java.util.List;
 
 public class Auction {
@@ -7,7 +9,7 @@ public class Auction {
     private Player highestBidder;
 
     /**
-     * The Auction class represents the ability to auction properties from the original game,
+     * The gameLogic.Auction class represents the ability to auction properties from the original game,
      * where all unowned properties that are landed on can be auctioned off rather than bought for base price.
      *
      * @param players This is the list of players entering the auction
@@ -26,7 +28,7 @@ public class Auction {
         }
         //If the player can't be found throws an exception
         if (currentPlayerIndex == -1) {
-            throw new IllegalArgumentException("Player does not exist");
+            throw new IllegalArgumentException("gameLogic.Player does not exist");
         }
 
         this.players = players;
