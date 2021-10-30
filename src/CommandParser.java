@@ -106,10 +106,7 @@ public class CommandParser {
      * @param player This is the Player who will have their properties printed
      */
     private void printPlayerProperties(Player player) {
-        System.out.println("Player " + player.getPlayerID() + " owns:");
-        for (BuyableI buyableTile : this.gameBoard.getTilesOwnedByPlayer(player)) {
-            System.out.println(buyableTile.getName());
-        }
+        gameInterface.displayPlayerProperties(player, gameBoard);
     }
 
     /**This method is used to check if the command provided is valid (checks if Player

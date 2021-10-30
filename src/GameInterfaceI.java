@@ -1,6 +1,7 @@
 public interface GameInterfaceI {
     void startAuction(int startingBid, BuyableI tile, Players players);
     boolean processSale(String tileName, int amount, Player buyer);
+    void displayPlayerProperties(Player player, GameBoard gameBoard);
     void notifyPlayerDeclinedPurchase(Player player, String tileName);
     void notifyPlayerPurchaseConfirm(Player player, String tileName, int amount);
     void notifyRentPayment(Player owner, Player payer, int amount);

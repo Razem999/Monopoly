@@ -96,6 +96,14 @@ public class TextGameInterface implements GameInterfaceI {
         }
     }
 
+    @Override
+    public void displayPlayerProperties(Player player, GameBoard gameBoard) {
+        System.out.println("Player " + player.getPlayerID() + " owns:");
+        for (BuyableI buyableTile : gameBoard.getTilesOwnedByPlayer(player)) {
+            System.out.println(buyableTile.getName());
+        }
+    }
+
     /**Overrides function notifyPlayerDeclinedPurchase in GameInterfaceI and notifies Players
      * that a Player declined to purchase a property
      * @param player This is the Player who declined purchase
