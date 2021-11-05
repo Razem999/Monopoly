@@ -44,10 +44,10 @@ public class GameActions {
 
         Optional<BuyableI> buyableTile = tile.asBuyable();
         if (buyableTile.isPresent()){
-            gameInterface.startAuction(10, buyableTile.get(), this.players);
+            this.gameInterface.startAuction(10, buyableTile.get(), this.players);
             this.players.handleCurrentPlayerActed();
         } else {
-            gameInterface.notifyAuctionCannotStart(tile);
+            this.gameInterface.notifyAuctionCannotStart(tile);
         }
     }
 
@@ -58,7 +58,7 @@ public class GameActions {
     private void handleJailedPlayerRoll(GameBoard gameBoard, Player currentPlayer) {
         int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
         int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-        gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
+        this.gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
         if (firstDie == secondDie) {
             gameBoard.handleSuccessfulJailedPlayerRoll(currentPlayer);
             gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this.players);
@@ -105,6 +105,7 @@ public class GameActions {
 
             this.gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
             this.gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this.players);
+            this.players.handleCurrentPlayerFinishedRolling();
         }
     }
 

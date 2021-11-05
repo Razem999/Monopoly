@@ -8,7 +8,7 @@ import gameLogic.GameBoard;
 
 /**
  * The tiles.GoJail class represents the Go To Jail tile from the original
- * game. When a gameLogic.Player lands on this tile, the gameLogic.Player is sent directly
+ * game. When a Player lands on this tile, the Player is sent directly
  * to jail and will not receive Pass Go reward.
  *
  * @version 1.0

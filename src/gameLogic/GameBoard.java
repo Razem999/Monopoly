@@ -1,15 +1,17 @@
 package gameLogic;
 
 import gameInterface.GameInterfaceI;
+import gameInterface.GameTileDrawable;
 import tiles.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
- * The gameLogic.GameBoard class represents the entirety of the monopoly gameboard where all types of tiles are put together
+ * The GameBoard class represents the entirety of the monopoly gameboard where all types of tiles are put together
  */
 public class GameBoard {
 
@@ -18,17 +20,16 @@ public class GameBoard {
     private final int jailIndex;
     private final JailTile jailTile;
 
-    /**This is the constructor of gameLogic.GameBoard with a parameter
-     * @param gameInterface This provides text for each action the player takes
+    /**This is the constructor of GameBoard.
      */
     public GameBoard(GameInterfaceI gameInterface) {
+        this.gameInterface = gameInterface;
         this.jailIndex = 10;
         this.jailTile = new JailTile();
 
         FreeParking freeParking = new FreeParking(gameInterface);
         IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface, freeParking);
         LuxuryTaxTile luxuryTaxTile = new LuxuryTaxTile(gameInterface, freeParking);
-        this.gameInterface = gameInterface;
         this.tiles = new ArrayList<>();
         List<PropertyTile> propertyTiles = new ArrayList<>(PropertyTileBuilder.createTiles(gameInterface));
 
@@ -203,6 +204,11 @@ public class GameBoard {
     public void handleSuccessfulJailedPlayerRoll(Player player) {
         gameInterface.notifyPlayerLeftJail(player);
         jailTile.unjailPlayer(player);
+    }
+
+    public List<GameTileDrawable> getTileDrawables() {
+        return IntStream.range(0, this.tiles.size())
+                .mapToObj(i -> new GameTileDrawable(this.tiles.get(i), i)).collect(Collectors.toList());
     }
 
 }
