@@ -16,10 +16,19 @@ public class GameButtonPanel extends JPanel {
         JButton rollButton = new JButton("Roll");
         rollButton.addActionListener(e -> gameActions.currentPlayerRoll());
 
+        JButton passButton = new JButton("Pass");
+        passButton.addActionListener(e -> gameActions.currentPlayerPass());
+
+        JButton buyButton = new JButton("Buy");
+        buyButton.addActionListener(e -> gameActions.currentPlayerBuy());
+
+        JButton auctionButton = new JButton("Auction");
+        auctionButton.addActionListener(e -> gameActions.currentPlayerStartAuction());
+
         this.add(rollButton);
-        this.add(new JButton("Pass"));
-        this.add(new JButton("Buy"));
-        this.add(new JButton("Auction"));
+        this.add(passButton);
+        this.add(buyButton);
+        this.add(auctionButton);
 
         this.setBorder(new EmptyBorder(70, 50, 70, 50));
     }
