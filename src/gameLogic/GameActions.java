@@ -39,6 +39,10 @@ public class GameActions {
         }
     }
 
+    public void currentPlayerPass() {
+        this.players.nextTurn();
+    }
+
     public void currentPlayerStartAuction() {
         GameTileI tile = this.gameBoard.getTile(this.players.getCurrentPlayer().getTilePosition()).orElseThrow();
 
@@ -105,7 +109,6 @@ public class GameActions {
 
             this.gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
             this.gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this.players);
-            this.players.handleCurrentPlayerFinishedRolling();
         }
     }
 
