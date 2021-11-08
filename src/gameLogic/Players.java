@@ -109,6 +109,10 @@ public class Players {
         this.currentPlayerHasActed = true;
     }
 
+    public boolean hasCurrentPlayerActed() {
+        return this.currentPlayerHasActed;
+    }
+
     public void handleCurrentPlayerFinishedRolling() {
         this.currentPlayerHasRolled = true;
     }
