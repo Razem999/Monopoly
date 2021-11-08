@@ -297,6 +297,11 @@ public class TextGameInterface implements GameInterfaceI {
     }
 
     @Override
+    public void notifyAuctionBetLow(Player player, int amount) {
+        System.out.println("You must bet higher than $" + amount + ".");
+    }
+
+    @Override
     public void notifyPlayerTaxPayment(Player player, int amount) {
         System.out.println("Player " + player.getPlayerID() + " must pay a tax of $" + amount + ".");
     }

@@ -159,6 +159,11 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
     }
 
     @Override
+    public void notifyAuctionBetLow(Player player, int amount) {
+
+    }
+
+    @Override
     public void notifyPlayerTaxPayment(Player player, int amount) {
 
     }

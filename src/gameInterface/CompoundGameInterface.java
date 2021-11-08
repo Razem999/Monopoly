@@ -129,6 +129,11 @@ public class CompoundGameInterface implements GameInterfaceI {
     }
 
     @Override
+    public void notifyAuctionBetLow(Player player, int amount) {
+        this.backingInterfaces.forEach(i -> i.notifyAuctionBetLow(player, amount));
+    }
+
+    @Override
     public void notifyPlayerTaxPayment(Player player, int amount) {
         this.backingInterfaces.forEach(i -> i.notifyPlayerTaxPayment(player, amount));
     }
