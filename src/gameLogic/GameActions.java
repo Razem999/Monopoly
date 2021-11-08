@@ -39,6 +39,19 @@ public class GameActions {
         }
     }
 
+    public void currentPlayerPassTurn() {
+        Player currentPlayer = this.players.getCurrentPlayer();
+        if(this.players.hasCurrentPlayerFinishedRolling()) {
+            this.gameInterface.notifyPlayerEndedTurn(currentPlayer);
+            this.players.nextTurn();
+
+            Player nextPlayer = this.players.getCurrentPlayer();
+            this.gameInterface.notifyPlayerTurn(nextPlayer);
+        } else {
+            this.gameInterface.notifyPlayerMustRoll(currentPlayer);
+        }
+    }
+
     public void currentPlayerStartAuction() {
         GameTileI tile = this.gameBoard.getTile(this.players.getCurrentPlayer().getTilePosition()).orElseThrow();
 

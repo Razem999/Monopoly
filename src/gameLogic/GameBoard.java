@@ -33,49 +33,49 @@ public class GameBoard {
         this.tiles = new ArrayList<>();
         List<PropertyTile> propertyTiles = new ArrayList<>(PropertyTileBuilder.createTiles(gameInterface));
 
-        this.tiles.add(new GoTile(gameInterface));
-        this.tiles.add(propertyTiles.get(0));
-        this.tiles.add(new EmptyTile());
-        this.tiles.add(propertyTiles.get(1));
-        this.tiles.add(incomeTaxTile);
+        this.tiles.add(new GoTile(gameInterface));  //0
+        this.tiles.add(propertyTiles.get(0));       //1
+        this.tiles.add(new EmptyTile());            //2
+        this.tiles.add(propertyTiles.get(1));       //3
+        this.tiles.add(incomeTaxTile);              //4
 
-        this.tiles.add(new RailroadTile("Reading Railroad", gameInterface, 200));
-        this.tiles.add(propertyTiles.get(2));
-        this.tiles.add(new EmptyTile());
-        this.tiles.add(propertyTiles.get(3));
-        this.tiles.add(propertyTiles.get(4));
+        this.tiles.add(new RailroadTile("Reading Railroad", gameInterface, 200));   //5
+        this.tiles.add(propertyTiles.get(2));       //6
+        this.tiles.add(new EmptyTile());            //7
+        this.tiles.add(propertyTiles.get(3));       //8
+        this.tiles.add(propertyTiles.get(4));       //9
 
-        this.tiles.add(this.jailTile);
-        this.tiles.add(propertyTiles.get(5));
-        this.tiles.add(new UtilityTile("Electric Company", 150, gameInterface));
-        this.tiles.add(propertyTiles.get(6));
-        this.tiles.add(propertyTiles.get(7));
+        this.tiles.add(this.jailTile);              //10
+        this.tiles.add(propertyTiles.get(5));       //11
+        this.tiles.add(new UtilityTile("Electric Company", 150, gameInterface));    //12
+        this.tiles.add(propertyTiles.get(6));       //13
+        this.tiles.add(propertyTiles.get(7));       //14
 
-        this.tiles.add(new RailroadTile("Pennsylvania Railroad", gameInterface, 200));
-        this.tiles.add(propertyTiles.get(8));
-        this.tiles.add(new EmptyTile());
-        this.tiles.add(propertyTiles.get(9));
-        this.tiles.add(propertyTiles.get(10));
-        this.tiles.add(freeParking);
-        this.tiles.add(propertyTiles.get(11));
-        this.tiles.add(new EmptyTile());
-        this.tiles.add(propertyTiles.get(12));
-        this.tiles.add(propertyTiles.get(13));
-        this.tiles.add(new RailroadTile("B. & O. Railroad", gameInterface, 200));
-        this.tiles.add(propertyTiles.get(14));
-        this.tiles.add(propertyTiles.get(15));
-        this.tiles.add(new UtilityTile("Water Works", 150, gameInterface));
-        this.tiles.add(propertyTiles.get(16));
-        this.tiles.add(new GoJail());
-        this.tiles.add(propertyTiles.get(17));
-        this.tiles.add(propertyTiles.get(18));
-        this.tiles.add(new EmptyTile());
-        this.tiles.add(propertyTiles.get(19));
-        this.tiles.add(new RailroadTile("Short Line Railroad", gameInterface, 200));
-        this.tiles.add(new EmptyTile());
-        this.tiles.add(propertyTiles.get(20));
-        this.tiles.add(luxuryTaxTile);
-        this.tiles.add(propertyTiles.get(21));
+        this.tiles.add(new RailroadTile("Pennsylvania Railroad", gameInterface, 200));  //15
+        this.tiles.add(propertyTiles.get(8));       //16
+        this.tiles.add(new EmptyTile());            //17
+        this.tiles.add(propertyTiles.get(9));       //18
+        this.tiles.add(propertyTiles.get(10));      //19
+        this.tiles.add(freeParking);                //20
+        this.tiles.add(propertyTiles.get(11));      //21
+        this.tiles.add(new EmptyTile());            //22
+        this.tiles.add(propertyTiles.get(12));      //23
+        this.tiles.add(propertyTiles.get(13));      //24
+        this.tiles.add(new RailroadTile("B. & O. Railroad", gameInterface, 200));   //25
+        this.tiles.add(propertyTiles.get(14));      //26
+        this.tiles.add(propertyTiles.get(15));      //27
+        this.tiles.add(new UtilityTile("Water Works", 150, gameInterface)); //28
+        this.tiles.add(propertyTiles.get(16));      //29
+        this.tiles.add(new GoJail());               //30
+        this.tiles.add(propertyTiles.get(17));      //31
+        this.tiles.add(propertyTiles.get(18));      //32
+        this.tiles.add(new EmptyTile());            //33
+        this.tiles.add(propertyTiles.get(19));      //34
+        this.tiles.add(new RailroadTile("Short Line Railroad", gameInterface, 200));    //35
+        this.tiles.add(new EmptyTile());            //36
+        this.tiles.add(propertyTiles.get(20));      //37
+        this.tiles.add(luxuryTaxTile);              //38
+        this.tiles.add(propertyTiles.get(21));      //39
     }
 
     /**This method gets all tiles owned by a specific player

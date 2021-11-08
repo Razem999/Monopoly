@@ -40,7 +40,7 @@ public class PropertyTile implements BuyableI {
      * @param rent4h This is the rent of the property tile with 4 houses
      * @param rentHotel This is the rent of the property tile with a hotel
      */
-    PropertyTile(String name, PropertySet propertySet, GameInterfaceI gameInterface, int cost, int pricePerHouse, int baseRent, int rent1h, int rent2h, int rent3h, int rent4h, int rentHotel) {
+    public PropertyTile(String name, PropertySet propertySet, GameInterfaceI gameInterface, int cost, int pricePerHouse, int baseRent, int rent1h, int rent2h, int rent3h, int rent4h, int rentHotel) {
         this.name = name;
         this.propertySet = propertySet;
         this.gameInterface = gameInterface;
