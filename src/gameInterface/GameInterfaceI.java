@@ -28,4 +28,7 @@ public interface GameInterfaceI {
     void notifyFreeParkingDeposit(Player player, int amount);
     void notifyAuctionCannotStart(GameTileI tile);
     void notifyPlayerTaxPayment(Player player, int amount);
+    void notifyPlayerEndedTurn(Player player);
+    void notifyPlayerTurn(Player player);
+    void notifyPlayerMustRoll(Player player);
 }

@@ -162,4 +162,19 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
     public void notifyPlayerTaxPayment(Player player, int amount) {
 
     }
+
+    @Override
+    public void notifyPlayerEndedTurn(Player player) {
+
+    }
+
+    @Override
+    public void notifyPlayerTurn(Player player) {
+
+    }
+
+    @Override
+    public void notifyPlayerMustRoll(Player player) {
+
+    }
 }

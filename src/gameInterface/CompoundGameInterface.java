@@ -132,4 +132,19 @@ public class CompoundGameInterface implements GameInterfaceI {
     public void notifyPlayerTaxPayment(Player player, int amount) {
         this.backingInterfaces.forEach(i -> i.notifyPlayerTaxPayment(player, amount));
     }
+
+    @Override
+    public void notifyPlayerEndedTurn(Player player) {
+        this.backingInterfaces.forEach(i -> i.notifyPlayerEndedTurn(player));
+    }
+
+    @Override
+    public void notifyPlayerTurn(Player player) {
+        this.backingInterfaces.forEach(i -> i.notifyPlayerTurn(player));
+    }
+
+    @Override
+    public void notifyPlayerMustRoll(Player player) {
+        this.backingInterfaces.forEach(i -> i.notifyPlayerMustRoll(player));
+    }
 }

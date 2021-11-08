@@ -300,4 +300,19 @@ public class TextGameInterface implements GameInterfaceI {
     public void notifyPlayerTaxPayment(Player player, int amount) {
         System.out.println("Player " + player.getPlayerID() + " must pay a tax of $" + amount + ".");
     }
+
+    @Override
+    public void notifyPlayerEndedTurn(Player player) {
+        System.out.println("Player " + player.getPlayerID() + " has ended their turn.");
+    }
+
+    @Override
+    public void notifyPlayerTurn(Player player) {
+        System.out.println("It is now Player " + player.getPlayerID() + "'s turn.");
+    }
+
+    @Override
+    public void notifyPlayerMustRoll(Player player) {
+        System.out.println("You must roll before you end your turn!");
+    }
 }
