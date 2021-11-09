@@ -23,10 +23,13 @@ Known Issues:
   - None
 
 Changes From Milestone 1 to Milestone 2:
-  - First major difference is that we moved all the files into 3 seperate packages to help organize the code base
-  - The next major change is the addition of the games user interface allowing them to see the board and click buttons for more interactive gameplay. This UI consists of 4           buttons being roll, pass, auction, and buy. It has a text box that explains to the user the events that have occured. It has a section dedicated to the status of the player     who's turn it currently is. Finally our UI has a map with the monopoly game tiles and player icons that move around the map when rolling the dice.
-  - We adjusted our UML diagram to match the new set up and we also simplified the UML diagram to make it easier to understand.
-  - Adding an engineering decisions document.
+The biggest change from the previous iteration of this project is a switch from a command line interface to a graphical interface. This was a smooth change as the project was architected from the start with a very low coupling between the interface and the game logic in anticipation of the milestone.
+
+In the previous iteration, any user input was facilitated by the CommandParser class which would trigger game events using the GameActions class through the command line. Most feedback from such events would be facilitated through an implementation of the GameInterfaceI interface, which is a very generic boundary from game logic to interface. No printing (System.out.println) was allowed outside of the CommandParser and TextGameInterface classes (TextGameInterface is an implementor of GameInterfaceI) to make sure that all interface logic was encapsulated within the methods of the GameInterfaceI interface.
+
+This strict adherence to the separation of concerns made it easy to switch to a GUI, as all the game logic would be completely untouched, and the only requirement was to implement the UI itself and connect it to the existing GameInterfaceI interface in the context of swing components. We created the class GameTextBox (which implements GameInterfaceI) as the default mediator of the game logic and the interface module, it provides text-based feedback using a JTextArea. The mode of interaction has been changed from CommandParser to the GameButtons class, which triggers GameAction methods on button clicks as opposed to command line input.
+
+Anything in the game that is better displayed visually than textually is handled by the GameCanvas class, a JPanel that is used as a graphical canvas to draw players and tiles to the screen. The GameCanvas class is slightly more complicated architecturally as Swing’s default rendering strategy is to only redraw components when an interaction occurs within it. This contrasts with most modern games which redraw constantly for example, at 60 FPS.
 
 Deliverables Milestone 2:
   - UML Diagram: This is a UML class diagram has been simplified and now also shows new components of the UI and their relationships to the other classes.
