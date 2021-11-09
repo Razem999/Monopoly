@@ -44,7 +44,7 @@ public class GameTileDrawable implements GameDrawable {
 
         g.drawRect(drawOrigin, new Dimension(TILE_WIDTH, TILE_HEIGHT));
         g.fillRect(drawOrigin, new Dimension(TILE_WIDTH, TILE_HEIGHT), this.gameTile.getPropertySet().getColor());
-        g.drawText(this.gameTile.getName(), drawOrigin, TILE_WIDTH);
+        g.drawText(this.gameTile.getName(), drawOrigin, (int) Math.round(TILE_WIDTH * 0.9));
     }
 
     @Override
