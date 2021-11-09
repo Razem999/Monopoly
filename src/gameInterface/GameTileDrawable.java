@@ -7,6 +7,7 @@ import java.awt.*;
 public class GameTileDrawable implements GameDrawable {
     private final GameTileI gameTile;
     private final int tilePosition;
+    private final Color tileColor;
     private static final int TILE_WIDTH = 75;
     private static final int TILE_HEIGHT = 75;
     private static final int SCREEN_PADDING = 100;
@@ -14,6 +15,7 @@ public class GameTileDrawable implements GameDrawable {
     public GameTileDrawable(GameTileI gameTile, int tilePosition) {
         this.gameTile = gameTile;
         this.tilePosition = tilePosition;
+        this.tileColor = gameTile.getPropertySet().getColor();
     }
 
     private Point getDrawOrigin() {
@@ -39,6 +41,7 @@ public class GameTileDrawable implements GameDrawable {
         Point drawOrigin = this.getDrawOrigin();
 
         g.drawRect(drawOrigin, new Dimension(TILE_WIDTH, TILE_HEIGHT));
+        g.fillRect(drawOrigin, new Dimension(TILE_WIDTH, TILE_HEIGHT), tileColor);
         g.drawText(this.gameTile.getName(), drawOrigin, TILE_WIDTH);
     }
 

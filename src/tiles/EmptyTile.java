@@ -18,6 +18,11 @@ public class EmptyTile implements GameTileI {
         return "Empty Tile";
     }
 
+    @Override
+    public PropertySet getPropertySet() {
+        return PropertySet.White;
+    }
+
     //Overrides function onLand in GameTile interface and does nothing since the tile does not trigger an event
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players){

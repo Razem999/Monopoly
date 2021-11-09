@@ -40,7 +40,14 @@ public class GameActions {
     }
 
     public void currentPlayerPass() {
-        this.players.nextTurn();
+        if (this.players.hasCurrentPlayerFinishedRolling()) {
+            this.gameInterface.notifyPlayerEndedTurn(this.players.getCurrentPlayer());
+            this.players.nextTurn();
+
+            this.gameInterface.notifyPlayerTurn(this.players.getCurrentPlayer());
+        } else {
+            this.gameInterface.notifyPlayerMustRoll(this.players.getCurrentPlayer());
+        }
     }
 
     public void currentPlayerStartAuction() {

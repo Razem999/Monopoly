@@ -44,6 +44,11 @@ public class GoTile implements GameTileI {
     }
 
     @Override
+    public PropertySet getPropertySet() {
+        return PropertySet.White;
+    }
+
+    @Override
     public Optional<BuyableI> asBuyable() {
         return Optional.empty();
     }

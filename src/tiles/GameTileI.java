@@ -10,5 +10,6 @@ public interface GameTileI {
     void onLand(Player player, GameBoard gameBoard, Players players);
     String tileDescription();
     String getName();
+    PropertySet getPropertySet();
     Optional<BuyableI> asBuyable();
 }

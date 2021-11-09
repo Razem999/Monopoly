@@ -114,6 +114,11 @@ public class PropertyTile implements BuyableI {
     }
 
     @Override
+    public PropertySet getPropertySet() {
+        return propertySet;
+    }
+
+    @Override
     public void buy(Player player) {
         if (this.owner.isPresent()) {
             gameInterface.notifyCannotBuyAlreadyOwned(player, this.owner.get(), this);
