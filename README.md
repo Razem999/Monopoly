@@ -23,7 +23,7 @@ Known Issues:
   - None
 
 Changes From Milestone 1 to Milestone 2:
-The biggest change from the previous iteration of this project is a switch from a command line interface to a graphical interface. This was a smooth change as the project was architected from the start with a very low coupling between the interface and the game logic in anticipation of the milestone.
+  The biggest change from the previous iteration of this project is a switch from a command line interface to a graphical interface. This was a smooth change as the project was architected from the start with a very low coupling between the interface and the game logic in anticipation of the milestone.
 
 In the previous iteration, any user input was facilitated by the CommandParser class which would trigger game events using the GameActions class through the command line. Most feedback from such events would be facilitated through an implementation of the GameInterfaceI interface, which is a very generic boundary from game logic to interface. No printing (System.out.println) was allowed outside of the CommandParser and TextGameInterface classes (TextGameInterface is an implementor of GameInterfaceI) to make sure that all interface logic was encapsulated within the methods of the GameInterfaceI interface.
 
