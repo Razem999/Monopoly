@@ -110,6 +110,11 @@ public class RailroadTile implements BuyableI {
     }
 
     @Override
+    public PropertySet getPropertySet() {
+        return PropertySet.White;
+    }
+
+    @Override
     public void buy(Player player) {
         if (this.owner.isPresent()) {
             gameInterface.notifyCannotBuyAlreadyOwned(player, this.owner.get(), this);

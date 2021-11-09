@@ -96,6 +96,11 @@ public class UtilityTile implements BuyableI {
     }
 
     @Override
+    public PropertySet getPropertySet() {
+        return PropertySet.White;
+    }
+
+    @Override
     public Optional<BuyableI> asBuyable() {
         return Optional.empty();
     }

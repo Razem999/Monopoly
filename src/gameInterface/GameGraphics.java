@@ -49,15 +49,44 @@ public class GameGraphics {
                 (int) Math.round(d.height * this.scaleFactor.getY()));
     }
 
-    public void drawRect(Point origin, Dimension rect) {
+    public void fillRect(Point origin, Dimension rect, Color color) {
+        if (!(this.graphics instanceof Graphics2D graphics2D)) {
+            return;
+        }
+
         Point scaledOrigin = scalePoint(origin);
         Dimension scaledDimension = scaleDimension(rect);
 
-        this.graphics.drawRect(scaledOrigin.x, scaledOrigin.y, scaledDimension.width, scaledDimension.height);
+        if (color == null) {
+            color = Color.WHITE;
+        }
+        graphics2D.setColor(color);
+        graphics2D.setStroke(new BasicStroke(1));
+        graphics2D.fillRect(scaledOrigin.x, scaledOrigin.y, scaledDimension.width, scaledDimension.height);
+    }
+
+    public void drawRect(Point origin, Dimension rect) {
+        if (!(this.graphics instanceof Graphics2D graphics2D)) {
+            return;
+        }
+
+        Point scaledOrigin = scalePoint(origin);
+        Dimension scaledDimension = scaleDimension(rect);
+
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.setStroke(new BasicStroke(4));
+        graphics2D.drawRect(scaledOrigin.x, scaledOrigin.y, scaledDimension.width, scaledDimension.height);
     }
 
     public void drawText(String s, Point origin, int fontWidth) {
         int rawStringWidth = graphics.getFontMetrics().stringWidth(s);
+
+        if (!(this.graphics instanceof Graphics2D graphics2D)) {
+            return;
+        }
+
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.setStroke(new BasicStroke(2));
 
         // Dummy height value
         int unscaledFontWidth = unscaleDimension(new Dimension(rawStringWidth, 1)).width;
@@ -66,9 +95,8 @@ public class GameGraphics {
 
         Font currentFont = graphics.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * fontScaling);
-
-        this.graphics.setFont(newFont);
+        graphics2D.setFont(newFont);
         Point scaledOrigin = scalePoint(origin);
-        this.graphics.drawString(s, scaledOrigin.x, scaledOrigin.y);
+        graphics2D.drawString(s, scaledOrigin.x, scaledOrigin.y);
     }
 }
