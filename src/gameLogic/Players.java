@@ -1,6 +1,7 @@
 package gameLogic;
 
 import gameInterface.GameInterfaceI;
+import gameInterface.PlayersDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +120,10 @@ public class Players {
 
     public boolean hasCurrentPlayerFinishedRolling() {
         return this.currentPlayerHasRolled;
+    }
+
+    public PlayersDrawable getPlayerDrawables() {
+        return new PlayersDrawable(this.players);
     }
 }
 
