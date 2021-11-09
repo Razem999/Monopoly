@@ -38,7 +38,7 @@ Deliverables Milestone 2:
   - Engineering Decisions: Explains why the code was developed the way it was.
  
 Known Issues:
-  - When the game window initially appears it must be moved as the window is too large initially and the buttons are off the screen.
+  - None
 
 Changes From Milestone 2 to Milestone 3:
   - N/A
