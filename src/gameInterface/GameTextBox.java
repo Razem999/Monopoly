@@ -51,7 +51,7 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
 
     @Override
     public void startAuction(int startingBid, BuyableI tile, Players players) {
-
+        history.add("An Auction has started!");
     }
 
     @Override
@@ -66,22 +66,22 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
 
     @Override
     public void notifyPlayerDeclinedPurchase(Player player, String tileName) {
-
+        history.add("Player has declined to purchase this property");
     }
 
     @Override
     public void notifyPlayerPurchaseConfirm(Player player, String tileName, int amount) {
-
+        history.add("Player " + player.getPlayerID() + " has bought " + tileName + " for $" + amount);
     }
 
     @Override
-    public void notifyRentPayment(Player owner, Player payer, int amount) {
-
+    public void notifyRentPayment(Player owner, Player player, int amount) {
+        history.add("Player " + player.getPlayerID() + " has payed Player " + owner.getPlayerID() + " $" + amount);
     }
 
     @Override
     public void notifyBankruptcy(Player player) {
-
+        history.add("Player " + player.getPlayerID() + " has gone bankrupt");
     }
 
     @Override
@@ -100,7 +100,7 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
 
     @Override
     public void notifyPassGo(Player player) {
-
+        history.add("Player " + player.getPlayerID() + " has passed Go");
     }
 
     @Override
@@ -110,71 +110,71 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
 
     @Override
     public void notifyCannotRoll(Player player) {
-
+        history.add("Player " + player.getPlayerID() + " can not roll");
     }
 
     @Override
     public void notifyCannotBuyTileKind(Player player, GameTileI tile) {
-
+        history.add("Player " + player.getPlayerID() + " can not buy " + tile.getName());
     }
 
     @Override
     public void notifyCannotBuyAlreadyOwned(Player player, Player owner, GameTileI tile) {
-
+        history.add("Player " + player.getPlayerID() + " can not buy " + tile.getName() + " because Player " + owner.getPlayerID() + "has already purchased it");
     }
 
     @Override
     public void notifyCannotBuyTileBalanceReasons(Player player, GameTileI tile) {
-
+        history.add("Player " + player.getPlayerID() + " can not buy " + tile.getName() + " because balance is insufficient");
     }
 
     @Override
     public void notifyPlayerOwnsThis(Player owner) {
-
+        history.add("Player " + owner.getPlayerID() + " owns this tile");
     }
 
     @Override
     public void notifyPlayerSentToJail(Player player) {
-
+        history.add("Player " + player.getPlayerID() + " has been sent to jail");
     }
 
     @Override
     public void notifyPlayerLeftJail(Player player) {
-
+        history.add("Player " + player.getPlayerID() + " has left jail");
     }
 
     @Override
     public void notifyPlayerStayJail(Player player) {
-
+        history.add("Player " + player.getPlayerID() + " has stayed in jail");
     }
 
     @Override
     public void notifyFreeParkingDeposit(Player player, int amount) {
-
+        history.add("Player " + player.getPlayerID() + " has deposited $" + amount + " too free parking");
     }
 
     @Override
     public void notifyAuctionCannotStart(GameTileI tile) {
-
+        history.add("The Auction can not start");
     }
 
     @Override
     public void notifyPlayerTaxPayment(Player player, int amount) {
-
+        history.add("Player " + player.getPlayerID() + " has payed $" + amount + " in taxes");
     }
 
     @Override
     public void notifyPlayerEndedTurn(Player player) {
-
+        history.add("Player " + player.getPlayerID() + " has ended their turn");
     }
 
     @Override
     public void notifyPlayerTurn(Player player) {
-
+        history.add("It is Player " + player.getPlayerID() + "'s turn to play");
     }
 
     @Override
     public void notifyPlayerMustRoll(Player player) {
-
+        history.add("Player " + player.getPlayerID() + " has yet to roll");
     }
 }
