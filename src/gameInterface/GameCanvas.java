@@ -10,16 +10,25 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
-public class GameCanvas extends JPanel {
-
+public class GameCanvas extends JPanel implements GameCamera.CameraChangeListener {
+    private final GameCamera camera;
+    private final GameCameraController gameCameraController;
     private final GameBoard gameBoard;
     private final Players players;
 
     public GameCanvas(GameBoard gameBoard, Players players) {
         super();
 
+        this.camera = new GameCamera();
+        this.gameCameraController = new GameCameraController(this.camera);
+        this.camera.addCameraChangeListener(this);
+
         this.gameBoard = gameBoard;
         this.players = players;
+    }
+
+    public GameCameraController getGameCameraController() {
+        return this.gameCameraController;
     }
 
     @Override
@@ -32,13 +41,15 @@ public class GameCanvas extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        GameGraphics gameGraphics = new GameGraphics(g, this.getWidth(), this.getHeight());
+        Dimension preferredSize = this.getPreferredSize();
+        GameGraphics gameGraphics = new GameGraphics(g, preferredSize.width, preferredSize.height, this.camera);
 
         gameGraphics.drawRect(new Point(0, 0), new Dimension(GameGraphics.CANVAS_WIDTH - 1, GameGraphics.CANVAS_HEIGHT - 1), Color.BLACK);
 
         List<GameDrawable> drawables = new ArrayList<>();
         drawables.add(new GameGridDrawable(this.gameBoard));
         drawables.add(players.getPlayerDrawables());
+        drawables.add(new PlayerInfoDisplay(players.getCurrentPlayer(), gameBoard));
 
         PriorityQueue<GameDrawable> gameDrawables = new PriorityQueue<>(Comparator.comparingInt(GameDrawable::drawLayer));
         gameDrawables.addAll(drawables);
@@ -46,5 +57,10 @@ public class GameCanvas extends JPanel {
         while (!gameDrawables.isEmpty()) {
             gameDrawables.poll().draw(gameGraphics);
         }
+    }
+
+    @Override
+    public void handleCameraChange(GameCamera newCamera) {
+        SwingUtilities.invokeLater(this::repaint);
     }
 }

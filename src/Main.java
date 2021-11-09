@@ -5,12 +5,15 @@ import gameLogic.Players;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class Main {
     private static final Dimension windowSize = new Dimension(1500, 1000);
 
     public static void main(String[] args) {
         JFrame mainFrame = new JFrame("Monopoly: The Devil Wants His Money!");
+
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(windowSize);
         Container contentPane = mainFrame.getContentPane();
@@ -23,7 +26,11 @@ public class Main {
 
         GameActions gameActions = new GameActions(gameBoard, players, gameInterface);
 
-        contentPane.add(new GameCanvas(gameBoard, players));
+        GameCanvas gameCanvas = new GameCanvas(gameBoard, players);
+        contentPane.add(gameCanvas);
+
+        contentPane.setFocusable(true);
+        contentPane.addKeyListener(gameCanvas.getGameCameraController());
 
         GameInfoPanel gameInfoPanel = new GameInfoPanel(gameActions);
         gameInterface.connectGameInterface(gameInfoPanel.getGameInterface());

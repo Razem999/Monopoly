@@ -12,6 +12,7 @@ public class GameGraphics {
     }
 
     private final Graphics graphics;
+    private final GameCamera gameCamera;
 
     private final Point2D scaleFactor;
 
@@ -20,8 +21,10 @@ public class GameGraphics {
     public static int CANVAS_HEIGHT = 1000;
     public static int CANVAS_WIDTH = 1500;
 
-    public GameGraphics(Graphics graphics, int realWidth, int realHeight) {
+    public GameGraphics(Graphics graphics, int realWidth, int realHeight, GameCamera gameCamera) {
         this.graphics = graphics;
+
+        this.gameCamera = gameCamera;
 
         double realRatio = realWidth / (double) realHeight;
         double canvasRatio = CANVAS_WIDTH / (double) CANVAS_HEIGHT;
@@ -29,31 +32,32 @@ public class GameGraphics {
         if (realRatio > canvasRatio) { // Height is constrained by width
             this.scaleFactor = new Point2D.Double(realHeight / (double) CANVAS_HEIGHT, realHeight / (double) CANVAS_HEIGHT);
 
-            int widthDifference = realWidth - CANVAS_WIDTH;
+            int widthDifference = realWidth - (int) Math.round(CANVAS_WIDTH * this.scaleFactor.getX());
 
             this.originTranslation = new Point(widthDifference / 2, 0);
         } else { // Width is constrained by height
             this.scaleFactor = new Point2D.Double(realWidth / (double) CANVAS_WIDTH, realWidth / (double) CANVAS_WIDTH);
 
-            int heightDifference = realHeight - CANVAS_HEIGHT;
+            int heightDifference = realHeight - (int) Math.round(CANVAS_HEIGHT * this.scaleFactor.getY());
 
             this.originTranslation = new Point(0, heightDifference / 2);
         }
     }
 
     private Point scalePoint(Point p) {
-        return new Point((int) Math.round(p.x * this.scaleFactor.getX() + this.originTranslation.x),
-                (int) Math.round(p.y * this.scaleFactor.getY() + this.originTranslation.y));
+        int newX = (int) Math.round(p.x * this.scaleFactor.getX() * this.gameCamera.getScale() + this.originTranslation.x + this.gameCamera.getCameraOffset().x);
+        int newY = (int) Math.round(p.y * this.scaleFactor.getY() * this.gameCamera.getScale() + this.originTranslation.y + this.gameCamera.getCameraOffset().y);
+        return new Point(newX, newY);
     }
 
     private Dimension unscaleDimension(Dimension scaledDimension) {
-        return new Dimension((int) Math.round(scaledDimension.width / this.scaleFactor.getX()),
-                (int) Math.round(scaledDimension.height / this.scaleFactor.getY()));
+        return new Dimension((int) Math.round(scaledDimension.width / this.scaleFactor.getX() / this.gameCamera.getScale()),
+                (int) Math.round(scaledDimension.height / this.scaleFactor.getY() / this.gameCamera.getScale()));
     }
 
     private Dimension scaleDimension(Dimension d) {
-        return new Dimension((int) Math.round(d.width * this.scaleFactor.getX()),
-                (int) Math.round(d.height * this.scaleFactor.getY()));
+        return new Dimension((int) Math.round(d.width * this.scaleFactor.getX() * this.gameCamera.getScale()),
+                (int) Math.round(d.height * this.scaleFactor.getY() * this.gameCamera.getScale()));
     }
 
     public void fillRect(Point origin, Dimension rect, Color color) {
@@ -106,6 +110,45 @@ public class GameGraphics {
                 return new Point(0, 0);
             }
         }
+    }
+
+    public void drawTextWithFontSize(String s, Point origin, int fontSize, Color color) {
+        drawTextWithFontSize(s, origin, fontSize, TextDrawLocation.BottomRight, color);
+    }
+
+    public void drawTextWithFontSize(String s, Point origin, int fontSize, TextDrawLocation drawLocation, Color color) {
+        if (!(this.graphics instanceof Graphics2D graphics2D)) {
+            return;
+        }
+
+        Font previousFont = graphics2D.getFont();
+
+        Font currentFont = graphics.getFont();
+        Font newFont = currentFont.deriveFont(fontSize);
+
+        int rawStringWidth = graphics.getFontMetrics().stringWidth(s);
+
+        // We use a dummy width because we need to scale the width before the height adjustments can be calculated
+        int unscaledStringWidth = unscaleDimension(new Dimension(rawStringWidth, 1)).width;
+
+        graphics2D.setFont(newFont);
+
+        Point scaledOrigin = scalePoint(origin);
+        int rawStringHeight = GameGraphics.getStringHeight(s, graphics2D, scaledOrigin.x, scaledOrigin.y);
+
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.setStroke(new BasicStroke(2));
+
+        // We already have the unscaled width, so we can use a dummy width here
+        int unscaledStringHeight = unscaleDimension(new Dimension(1, rawStringHeight)).height;
+        Point textDrawOffset = GameGraphics.getTextDrawOffsetFromDrawLocation(drawLocation, unscaledStringWidth, unscaledStringHeight);
+
+        Color previousColor = graphics2D.getColor();
+
+        graphics2D.setColor(color);
+        graphics2D.drawString(s, scaledOrigin.x + textDrawOffset.x, scaledOrigin.y + textDrawOffset.y);
+        graphics2D.setFont(previousFont);
+        graphics2D.setColor(previousColor);
     }
 
     public void drawText(String s, Point origin, int fontWidth, TextDrawLocation drawLocation, Color color) {
