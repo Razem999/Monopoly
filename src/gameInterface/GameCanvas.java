@@ -16,7 +16,6 @@ import java.util.PriorityQueue;
 public class GameCanvas extends JPanel implements GameCamera.CameraChangeListener {
     private final GameCamera camera;
     private final GameCameraController gameCameraController;
-
     private final GameBoard gameBoard;
     private final Players players;
 
