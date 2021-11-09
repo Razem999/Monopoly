@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuctionTest {
 
     CompoundGameInterface gameInterface = new CompoundGameInterface();
-    GameBoard gb = new GameBoard(gameInterface);
 
     Players players = new Players(gameInterface);
     Player currentPlayer = players.getPlayerByID(1).get();
