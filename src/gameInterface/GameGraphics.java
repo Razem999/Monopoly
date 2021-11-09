@@ -162,6 +162,27 @@ public class GameGraphics {
         graphics2D.setColor(previousColor);
     }
 
+    public void drawTextMultiline(String s, Point origin, int fontSize, Color color) {
+        if (!(graphics instanceof Graphics2D graphics2D)) {
+            return;
+        }
+
+        String[] lines = s.split("\n");
+
+        int accumulatedYOffset = 0;
+
+        for (String line : lines) {
+            this.drawTextWithFontSize(line, new Point(origin.x, origin.y + accumulatedYOffset), fontSize, TextDrawLocation.BottomRight, color);
+
+            Point scaledOrigin = this.scalePoint(origin);
+
+            int unscaledHeight = GameGraphics.getStringHeight(s, graphics2D, (float) scaledOrigin.getX(), (float) scaledOrigin.getY()) + 5;
+
+            // Dummy width dimension
+            accumulatedYOffset += unscaleDimension(new Dimension(1, unscaledHeight)).height;
+        }
+    }
+
     public void drawText(String s, Point origin, int fontWidth, TextDrawLocation drawLocation, Color color) {
         if (!(this.graphics instanceof Graphics2D graphics2D)) {
             return;

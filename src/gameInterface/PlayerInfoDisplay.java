@@ -2,6 +2,7 @@ package gameInterface;
 
 import gameLogic.GameBoard;
 import gameLogic.Player;
+import tiles.GameTileI;
 
 import java.awt.*;
 
@@ -18,7 +19,22 @@ public class PlayerInfoDisplay implements GameDrawable {
 
     @Override
     public void draw(GameGraphics g) {
-        g.drawTextWithFontSize("Player " + this.player.getPlayerID() + "\n", margin, 25, Color.BLACK);
+        StringBuilder infoText = new StringBuilder();
+        infoText.append("Player ");
+        infoText.append(this.player.getPlayerID());
+        infoText.append(":\nBalance: $");
+        infoText.append(this.player.getBalance());
+        infoText.append("\nTile: ");
+
+        infoText.append(this.gameBoard.getTileDescriptionByIndex(this.player.getTilePosition()).orElse(""));
+
+        infoText.append("\nOwns:");
+        for (GameTileI tile : this.gameBoard.getTilesOwnedByPlayer(this.player)) {
+            infoText.append(tile.getName());
+            infoText.append("\n");
+        }
+
+        g.drawTextMultiline(infoText.toString(), margin, 25, Color.BLACK);
     }
 
     @Override
