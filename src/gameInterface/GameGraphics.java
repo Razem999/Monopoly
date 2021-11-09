@@ -55,22 +55,36 @@ public class GameGraphics {
         }
     }
 
+    /**This function assists with making the game scalable and reactive
+     * @param p the point in the game canvas points
+     */
     private Point scalePoint(Point p) {
         int newX = (int) Math.round(p.x * this.scaleFactor.getX() * this.gameCamera.getScale() + this.originTranslation.x + this.gameCamera.getCameraOffset().x);
         int newY = (int) Math.round(p.y * this.scaleFactor.getY() * this.gameCamera.getScale() + this.originTranslation.y + this.gameCamera.getCameraOffset().y);
         return new Point(newX, newY);
     }
 
+    /**This function assists with rendering text fonts in the right size
+     * @param scaledDimension the dimension to scale the text too
+     */
     private Dimension unscaleDimension(Dimension scaledDimension) {
         return new Dimension((int) Math.round(scaledDimension.width / this.scaleFactor.getX() / this.gameCamera.getScale()),
                 (int) Math.round(scaledDimension.height / this.scaleFactor.getY() / this.gameCamera.getScale()));
     }
 
+    /**This function assists with rendering text fonts in the right size
+     * @param d the dimension to scale the text too
+     */
     private Dimension scaleDimension(Dimension d) {
         return new Dimension((int) Math.round(d.width * this.scaleFactor.getX() * this.gameCamera.getScale()),
                 (int) Math.round(d.height * this.scaleFactor.getY() * this.gameCamera.getScale()));
     }
 
+    /**This function draws a rectangle filled by a defined color
+     * @param origin the coordinates for game canvas
+     * @param rect the dimensions of the rectangle
+     * @param color the color to fill the rectangle with
+     */
     public void fillRect(Point origin, Dimension rect, Color color) {
         if (!(this.graphics instanceof Graphics2D graphics2D)) {
             return;
@@ -87,6 +101,11 @@ public class GameGraphics {
         graphics2D.setColor(previousColor);
     }
 
+    /**This function draws the outline of a rectangle
+     * @param origin the coordinates for game canvas
+     * @param rect the dimensions of the rectangle
+     * @param color the color to fill the rectangle with
+     */
     public void drawRect(Point origin, Dimension rect, Color color) {
         if (!(this.graphics instanceof Graphics2D graphics2D)) {
             return;
@@ -123,10 +142,22 @@ public class GameGraphics {
         }
     }
 
+    /**This function draws text with a specific font size
+     * @param origin the coordinates for game canvas
+     * @param s the string the text will be showing
+     * @param color the color of the text
+     * @param fontSize the fontSize of the text
+     */
     public void drawTextWithFontSize(String s, Point origin, int fontSize, Color color) {
         drawTextWithFontSize(s, origin, fontSize, TextDrawLocation.BottomRight, color);
     }
 
+    /**This function draws text with a specific font size
+     * @param origin the coordinates for game canvas
+     * @param s the string the text will be showing
+     * @param color the color of the text
+     * @param fontSize the fontSize of the text
+     */
     public void drawTextWithFontSize(String s, Point origin, int fontSize, TextDrawLocation drawLocation, Color color) {
         if (!(this.graphics instanceof Graphics2D graphics2D)) {
             return;
@@ -222,6 +253,11 @@ public class GameGraphics {
         drawText(s, origin, fontWidth, TextDrawLocation.BottomRight, color);
     }
 
+    /**This function draws an oval filled by a defined color
+     * @param origin the coordinates for game canvas
+     * @param widthAndHeight the dimensions of the oval
+     * @param color the color to fill the rectangle with
+     */
     public void drawOvalFill(Point origin, Dimension widthAndHeight, Color color) {
         Point scaledOrigin = scalePoint(origin);
         Dimension scaledWidthAndHeight = scaleDimension(widthAndHeight);
@@ -234,6 +270,11 @@ public class GameGraphics {
         this.graphics.setColor(previousColor);
     }
 
+    /**This function draws the outline of an oval
+     * @param origin the coordinates for game canvas
+     * @param widthAndHeight the dimensions of the oval
+     * @param color the color to fill the rectangle with
+     */
     public void drawOval(Point origin, Dimension widthAndHeight, Color color) {
         Point scaledOrigin = scalePoint(origin);
         Dimension scaledWidthAndHeight = scaleDimension(widthAndHeight);
