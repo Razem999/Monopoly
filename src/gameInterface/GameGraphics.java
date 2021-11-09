@@ -3,7 +3,13 @@ package gameInterface;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * The gameInterface.GameGraphics is where the drawable elements such as tiles and scales are determined
+ */
 public class GameGraphics {
+    /**
+     * TextDrawLocation determines the location something will be drawn
+     */
     public enum TextDrawLocation {
         TopLeft,
         TopRight,
@@ -21,6 +27,11 @@ public class GameGraphics {
     public static int CANVAS_HEIGHT = 1000;
     public static int CANVAS_WIDTH = 1500;
 
+    /**This is the constructor of GameGraphics with parameters
+     * @param graphics Provides the drawing features
+     * @param realWidth the width of the game window
+     * @param realHeight the height of the game window
+     */
     public GameGraphics(Graphics graphics, int realWidth, int realHeight, GameCamera gameCamera) {
         this.graphics = graphics;
 
