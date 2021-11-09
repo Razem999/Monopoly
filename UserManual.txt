@@ -1,0 +1,36 @@
+Monopoly Game User Manual
+
+Screen Layout:
+  Bottom Left: Text channel that explains what has happened that turn
+
+  Bottom Right: The buttons that allow the players to preform actions on their turn
+  
+  Top Left: Current Player's information (Name, Balance, etc...)
+
+  Top Center to Right: The map with the tiles + their names and player icons
+
+Starting Off:
+  At the begining of the game there are 4 Player controlled icons. Each Player starts off with $1500 and starts on the go tiles. They will then take turns rolling and moving around
+  the map as they collect properties and other tiles.
+
+Map Controls:
+  PageUp Key: Zooms into the map.
+
+  PageDown Key: Zooms out from the map.
+
+  Arrow Keys: Pressing the arrow keys moves the map in their respective directions.
+
+Player Turn Controls:
+  Roll: Pressing the roll button will randomize two 6-sided dice and then move you the sum of those dice. 
+
+  Pass: A Player may click the pass button when they wish to end their turn. The player must have already rolled as you are required to roll before ending your turn
+
+  Buy: If a Player is on a puchasable tile then the user can select to buy it by pressing the buy button. If the player cannot purchase the property the game will let them 
+  know upon clicking the button and will tell them why they can not purchase the tile.
+
+  Auction: If a Player is on a puchasable tile then the user can select to auction that tile by pressing the auction button. The game will then let the players take turns bidding 
+  until one player is left in the auction or no one else can afford the property. If the player cannot auction the property the game will let them 
+  know upon clicking the button and will tell them why they can not purchase the tile.
+
+Win Conditions:
+  To win the game one player must remain while all the others have been force to declare bankruptcy.
