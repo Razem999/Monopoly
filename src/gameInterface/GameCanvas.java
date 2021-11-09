@@ -10,12 +10,20 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
+/**
+ * The gameInterface.GameCanvas is where the drawable elements such as tiles and players are controlled
+ */
 public class GameCanvas extends JPanel implements GameCamera.CameraChangeListener {
     private final GameCamera camera;
     private final GameCameraController gameCameraController;
+
     private final GameBoard gameBoard;
     private final Players players;
 
+    /**This is the constructor of GameCanvas with parameters
+     * @param gameBoard Contains all tiles and their order. (Everything that makes up the game board)
+     * @param players Contains a list of all the players currently playing the game
+     */
     public GameCanvas(GameBoard gameBoard, Players players) {
         super();
 
