@@ -4,6 +4,13 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class GameGraphics {
+    public enum TextDrawLocation {
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight,
+    }
+
     private final Graphics graphics;
 
     private final Point2D scaleFactor;
@@ -78,26 +85,59 @@ public class GameGraphics {
         graphics2D.drawRect(scaledOrigin.x, scaledOrigin.y, scaledDimension.width, scaledDimension.height);
     }
 
-    public void drawText(String s, Point origin, int fontWidth) {
-        int rawStringWidth = graphics.getFontMetrics().stringWidth(s);
+    private static Point getTextDrawOffsetFromDrawLocation(TextDrawLocation drawLocation, int unscaledFontWidth, int unscaledFontHeight) {
+        switch (drawLocation) {
+            case TopRight -> {
+                return new Point(0, 0);
+            }
+            case BottomRight -> {
+                return new Point(0, unscaledFontHeight);
+            }
+            case TopLeft -> {
+                return new Point(-unscaledFontWidth, 0);
+            }
+            case BottomLeft -> {
+                return new Point(-unscaledFontWidth, unscaledFontHeight);
+            }
+            default -> {
+                return new Point(0, 0);
+            }
+        }
+    }
 
+    public void drawText(String s, Point origin, int fontWidth, TextDrawLocation drawLocation) {
         if (!(this.graphics instanceof Graphics2D graphics2D)) {
             return;
         }
 
+        Font previousFont = graphics2D.getFont();
+
+        int rawStringWidth = graphics.getFontMetrics().stringWidth(s);
+
+        // We use a dummy width because we need to scale the width before the height adjustments can be calculated
+        int unscaledStringWidth = unscaleDimension(new Dimension(rawStringWidth, 1)).width;
+        float fontScaling = fontWidth / (float) unscaledStringWidth;
+        Font currentFont = graphics.getFont();
+        Font newFont = currentFont.deriveFont(currentFont.getSize() * fontScaling);
+
+        graphics2D.setFont(newFont);
+
+        Point scaledOrigin = scalePoint(origin);
+        int rawStringHeight = GameGraphics.getStringHeight(s, graphics2D, scaledOrigin.x, scaledOrigin.y);
+
         graphics2D.setColor(Color.BLACK);
         graphics2D.setStroke(new BasicStroke(2));
 
-        // Dummy height value
-        int unscaledFontWidth = unscaleDimension(new Dimension(rawStringWidth, 1)).width;
+        // We already have the unscaled width, so we can use a dummy width here
+        int unscaledStringHeight = unscaleDimension(new Dimension(1, rawStringHeight)).height;
+        Point textDrawOffset = GameGraphics.getTextDrawOffsetFromDrawLocation(drawLocation, unscaledStringWidth, unscaledStringHeight);
 
-        float fontScaling = fontWidth / (float) unscaledFontWidth;
+        graphics2D.drawString(s, scaledOrigin.x + textDrawOffset.x, scaledOrigin.y + textDrawOffset.y);
+        graphics2D.setFont(previousFont);
+    }
 
-        Font currentFont = graphics.getFont();
-        Font newFont = currentFont.deriveFont(currentFont.getSize() * fontScaling);
-        graphics2D.setFont(newFont);
-        Point scaledOrigin = scalePoint(origin);
-        graphics2D.drawString(s, scaledOrigin.x, scaledOrigin.y);
+    public void drawText(String s, Point origin, int fontWidth) {
+        drawText(s, origin, fontWidth, TextDrawLocation.BottomRight);
     }
 
     public void drawOvalFill(Point origin, Dimension widthAndHeight) {
@@ -105,5 +145,9 @@ public class GameGraphics {
         Dimension scaledWidthAndHeight = scaleDimension(widthAndHeight);
 
         this.graphics.fillOval(scaledOrigin.x, scaledOrigin.y, scaledWidthAndHeight.width, scaledWidthAndHeight.height);
+    }
+
+    private static int getStringHeight(String s, Graphics2D g, float x, float y) {
+        return g.getFont().createGlyphVector(g.getFontRenderContext(), s).getPixelBounds(null, x, y).height;
     }
 }
