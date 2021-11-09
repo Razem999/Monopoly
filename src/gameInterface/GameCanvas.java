@@ -1,6 +1,7 @@
 package gameInterface;
 
 import gameLogic.GameBoard;
+import gameLogic.Player;
 import gameLogic.Players;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.util.PriorityQueue;
 /**
  * The gameInterface.GameCanvas is where the drawable elements such as tiles and players are controlled
  */
-public class GameCanvas extends JPanel implements GameCamera.CameraChangeListener {
+public class GameCanvas extends JPanel implements GameCamera.CameraChangeListener, Player.PlayerChangeListener {
     private final GameCamera camera;
     private final GameCameraController gameCameraController;
     private final GameBoard gameBoard;
@@ -32,6 +33,8 @@ public class GameCanvas extends JPanel implements GameCamera.CameraChangeListene
 
         this.gameBoard = gameBoard;
         this.players = players;
+
+        this.players.addPlayerChangeListener(this);
     }
 
     public GameCameraController getGameCameraController() {
@@ -66,8 +69,17 @@ public class GameCanvas extends JPanel implements GameCamera.CameraChangeListene
         }
     }
 
+    public void requestRedraw() {
+        SwingUtilities.invokeLater(this::repaint);
+    }
+
     @Override
     public void handleCameraChange(GameCamera newCamera) {
-        SwingUtilities.invokeLater(this::repaint);
+        this.requestRedraw();
+    }
+
+    @Override
+    public void handlePlayerChange(Player player) {
+        this.requestRedraw();
     }
 }

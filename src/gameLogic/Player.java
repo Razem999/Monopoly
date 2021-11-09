@@ -16,7 +16,11 @@ public class Player {
     private int balance;
     private int tilePosition;
 
-    private final List<PlayerBalanceChangeListener> playerBalanceChangeListeners;
+    public interface PlayerChangeListener {
+        void handlePlayerChange(Player player);
+    }
+
+    private final List<PlayerChangeListener> playerChangeListeners;
 
     /**This is the constructor of Player with parameters
      * @param id This is the Player ID
@@ -27,7 +31,7 @@ public class Player {
         this.balance = startingBalance;
         this.tilePosition = 0;
 
-        this.playerBalanceChangeListeners = new ArrayList<>();
+        this.playerChangeListeners = new ArrayList<>();
     }
 
     /**This is another constructor of  Player, which is used if we decide
@@ -50,6 +54,7 @@ public class Player {
      */
     public void setTilePosition(int tilePosition) {
         this.tilePosition = tilePosition;
+        this.updatePlayerChangeListeners();
     }
 
     /**This method is used to get the Player's current balance
@@ -87,12 +92,10 @@ public class Player {
         return false;
     }
 
-    /**This method is used to add Objects that will rely on the Player's balance change
-     * and take actions
-     * @param listener This is the object that will be notified of any changes in the Player's balance
-     */
-    public void registerPlayerBalanceChangeListener(PlayerBalanceChangeListener listener) {
-        this.playerBalanceChangeListeners.add(listener);
+    private void updatePlayerChangeListeners() {
+        for (PlayerChangeListener listener : playerChangeListeners) {
+            listener.handlePlayerChange(this);
+        }
     }
 
     /**This method is used to change the Player's balance once a transaction takes place
@@ -100,11 +103,11 @@ public class Player {
      * @param diff This is the amount the Player either pays or receives
      */
     public void changeBalance(int diff) {
-        int oldBalance = this.balance;
         this.balance += diff;
+        this.updatePlayerChangeListeners();
+    }
 
-        for (PlayerBalanceChangeListener listener : playerBalanceChangeListeners) {
-            listener.onBalanceChange(this, oldBalance, this.balance);
-        }
+    public void addPlayerChangeListener(PlayerChangeListener listener) {
+        this.playerChangeListeners.add(listener);
     }
 }

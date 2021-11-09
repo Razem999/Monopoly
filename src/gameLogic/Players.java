@@ -125,6 +125,12 @@ public class Players {
     public PlayersDrawable getPlayerDrawables() {
         return new PlayersDrawable(this.players);
     }
+
+    public void addPlayerChangeListener(Player.PlayerChangeListener playerChangeListener) {
+        for (Player player : this.players) {
+            player.addPlayerChangeListener(playerChangeListener);
+        }
+    }
 }
 
 /**
