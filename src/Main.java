@@ -29,8 +29,6 @@ public class Main {
         gameInterface.connectGameInterface(gameInfoPanel.getGameInterface());
         contentPane.add(gameInfoPanel);
 
-        gameInterface.connectGameInterface(new TextGameInterface());
-
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
     }

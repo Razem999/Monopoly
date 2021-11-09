@@ -1,6 +1,7 @@
 package gameLogic;
 
 import gameInterface.GameInterfaceI;
+import gameInterface.GameTextBox;
 import tiles.BuyableI;
 import tiles.GameTileI;
 
@@ -59,7 +60,9 @@ public class GameActions {
             this.players.handleCurrentPlayerActed();
         } else {
             this.gameInterface.notifyAuctionCannotStart(tile);
+            return;
         }
+
     }
 
     /**This function handles the rolls of players currently inside jail
