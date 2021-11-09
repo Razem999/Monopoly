@@ -1,3 +1,5 @@
+package gameLogic.tests;
+
 import gameLogic.Player;
 import org.junit.jupiter.api.Test;
 

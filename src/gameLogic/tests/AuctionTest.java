@@ -1,6 +1,10 @@
+package gameLogic.tests;
+
 import gameInterface.CompoundGameInterface;
 import gameInterface.PlayerSelection;
 import gameLogic.*;
+
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

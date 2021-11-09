@@ -18,6 +18,7 @@ public class GameTextBox extends JPanel implements GameInterface {
     private final static String newline = "\n";
     private final AuctionBidExecutor.Factory auctionBetExecutorFactory;
 
+
     public GameTextBox(AuctionBidExecutor.Factory auctionBetExecutorFactory) {
         super();
 
@@ -41,6 +42,7 @@ public class GameTextBox extends JPanel implements GameInterface {
     }
 
     private void update() {
+        String newline = "\n";
         StringBuilder labelTextStringBuilder = new StringBuilder();
 
         for (String text : history) {

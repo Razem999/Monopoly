@@ -1,7 +1,11 @@
+package gameLogic.tests;
+
 import gameInterface.CompoundGameInterface;
 import gameLogic.AIStrategy;
 import gameLogic.GameBoard;
 import gameLogic.Players;
+
+
 import org.junit.jupiter.api.Test;
 import tiles.*;
 
@@ -37,7 +41,6 @@ class GameBoardTest {
         assertEquals(gb.getTile(5).get().getName(), "Reading Railroad");
         assertEquals(gb.getTile(10).get().getName(), "Jail");
         assertEquals(gb.getTile(12).get().getName(), "Electric Company");
-        assertEquals(gb.getTile(12).get().getName(), "Go To Jail");
     }
 
     @Test
