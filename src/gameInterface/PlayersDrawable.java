@@ -1,7 +1,6 @@
 package gameInterface;
 
 import gameLogic.Player;
-import gameLogic.Players;
 
 import java.awt.*;
 
@@ -18,6 +17,18 @@ public class PlayersDrawable implements GameDrawable {
         this.players = players;
     }
 
+    private static Color getPlayerColor(Player player) {
+        int playerID = player.getPlayerID();
+
+        return switch (playerID) {
+            case 1 -> Color.RED;
+            case 2 -> Color.BLUE;
+            case 3 -> Color.GREEN;
+            case 4 -> Color.YELLOW;
+            default -> Color.WHITE;
+        };
+    }
+
     private void drawPlayersOnTile(int tilePosition, List<Player> players, GameGraphics g) {
         Point tileOrigin = GameTileDrawable.getTileDrawOrigin(tilePosition);
 
@@ -31,8 +42,11 @@ public class PlayersDrawable implements GameDrawable {
             int xOffset = (int) Math.round(rowPosition * (GameTileDrawable.TILE_WIDTH / (double) MAX_PLAYERS_IN_ROW_ON_TILE));
             int yOffset = (int) Math.round(row * (GameTileDrawable.TILE_HEIGHT / (double) MAX_PLAYERS_IN_ROW_ON_TILE));
 
+            Color playerColor = PlayersDrawable.getPlayerColor(players.get(i));
+
             Point drawOrigin = new Point(xOffset + tileOrigin.x, yOffset + tileOrigin.y);
-            g.drawOvalFill(drawOrigin, new Dimension(PLAYER_WIDTH / playersInRow, PLAYER_HEIGHT / playersInRow));
+            g.drawOvalFill(drawOrigin, new Dimension(PLAYER_WIDTH / playersInRow, PLAYER_HEIGHT / playersInRow), playerColor);
+            g.drawOval(drawOrigin, new Dimension(PLAYER_WIDTH / playersInRow, PLAYER_HEIGHT / playersInRow), Color.BLACK);
         }
     }
 

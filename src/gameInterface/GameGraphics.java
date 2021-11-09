@@ -31,13 +31,13 @@ public class GameGraphics {
 
             int widthDifference = realWidth - CANVAS_WIDTH;
 
-            this.originTranslation = new Point(0, widthDifference / 2);
+            this.originTranslation = new Point(widthDifference / 2, 0);
         } else { // Width is constrained by height
             this.scaleFactor = new Point2D.Double(realWidth / (double) CANVAS_WIDTH, realWidth / (double) CANVAS_WIDTH);
 
             int heightDifference = realHeight - CANVAS_HEIGHT;
 
-            this.originTranslation = new Point(heightDifference / 2, 0);
+            this.originTranslation = new Point(0, heightDifference / 2);
         }
     }
 
@@ -64,15 +64,15 @@ public class GameGraphics {
         Point scaledOrigin = scalePoint(origin);
         Dimension scaledDimension = scaleDimension(rect);
 
-        if (color == null) {
-            color = Color.WHITE;
-        }
+        Color previousColor = graphics2D.getColor();
+
         graphics2D.setColor(color);
         graphics2D.setStroke(new BasicStroke(1));
         graphics2D.fillRect(scaledOrigin.x, scaledOrigin.y, scaledDimension.width, scaledDimension.height);
+        graphics2D.setColor(previousColor);
     }
 
-    public void drawRect(Point origin, Dimension rect) {
+    public void drawRect(Point origin, Dimension rect, Color color) {
         if (!(this.graphics instanceof Graphics2D graphics2D)) {
             return;
         }
@@ -80,9 +80,12 @@ public class GameGraphics {
         Point scaledOrigin = scalePoint(origin);
         Dimension scaledDimension = scaleDimension(rect);
 
-        graphics2D.setColor(Color.BLACK);
+        Color previousColor = graphics2D.getColor();
+
+        graphics2D.setColor(color);
         graphics2D.setStroke(new BasicStroke(4));
         graphics2D.drawRect(scaledOrigin.x, scaledOrigin.y, scaledDimension.width, scaledDimension.height);
+        graphics2D.setColor(previousColor);
     }
 
     private static Point getTextDrawOffsetFromDrawLocation(TextDrawLocation drawLocation, int unscaledFontWidth, int unscaledFontHeight) {
@@ -105,7 +108,7 @@ public class GameGraphics {
         }
     }
 
-    public void drawText(String s, Point origin, int fontWidth, TextDrawLocation drawLocation) {
+    public void drawText(String s, Point origin, int fontWidth, TextDrawLocation drawLocation, Color color) {
         if (!(this.graphics instanceof Graphics2D graphics2D)) {
             return;
         }
@@ -132,19 +135,39 @@ public class GameGraphics {
         int unscaledStringHeight = unscaleDimension(new Dimension(1, rawStringHeight)).height;
         Point textDrawOffset = GameGraphics.getTextDrawOffsetFromDrawLocation(drawLocation, unscaledStringWidth, unscaledStringHeight);
 
+        Color previousColor = graphics2D.getColor();
+
+        graphics2D.setColor(color);
         graphics2D.drawString(s, scaledOrigin.x + textDrawOffset.x, scaledOrigin.y + textDrawOffset.y);
         graphics2D.setFont(previousFont);
+        graphics2D.setColor(previousColor);
     }
 
-    public void drawText(String s, Point origin, int fontWidth) {
-        drawText(s, origin, fontWidth, TextDrawLocation.BottomRight);
+    public void drawText(String s, Point origin, int fontWidth, Color color) {
+        drawText(s, origin, fontWidth, TextDrawLocation.BottomRight, color);
     }
 
-    public void drawOvalFill(Point origin, Dimension widthAndHeight) {
+    public void drawOvalFill(Point origin, Dimension widthAndHeight, Color color) {
         Point scaledOrigin = scalePoint(origin);
         Dimension scaledWidthAndHeight = scaleDimension(widthAndHeight);
 
+        Color previousColor = graphics.getColor();
+
+        this.graphics.setColor(color);
         this.graphics.fillOval(scaledOrigin.x, scaledOrigin.y, scaledWidthAndHeight.width, scaledWidthAndHeight.height);
+
+        this.graphics.setColor(previousColor);
+    }
+
+    public void drawOval(Point origin, Dimension widthAndHeight, Color color) {
+        Point scaledOrigin = scalePoint(origin);
+        Dimension scaledWidthAndHeight = scaleDimension(widthAndHeight);
+
+        Color previousColor = this.graphics.getColor();
+
+        this.graphics.setColor(color);
+        this.graphics.drawOval(scaledOrigin.x, scaledOrigin.y, scaledWidthAndHeight.width, scaledWidthAndHeight.height);
+        this.graphics.setColor(previousColor);
     }
 
     private static int getStringHeight(String s, Graphics2D g, float x, float y) {

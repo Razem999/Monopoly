@@ -34,7 +34,7 @@ public class GameCanvas extends JPanel {
 
         GameGraphics gameGraphics = new GameGraphics(g, this.getWidth(), this.getHeight());
 
-        gameGraphics.drawRect(new Point(0, 0), new Dimension(GameGraphics.CANVAS_WIDTH - 1, GameGraphics.CANVAS_HEIGHT - 1));
+        gameGraphics.drawRect(new Point(0, 0), new Dimension(GameGraphics.CANVAS_WIDTH - 1, GameGraphics.CANVAS_HEIGHT - 1), Color.BLACK);
 
         List<GameDrawable> drawables = new ArrayList<>();
         drawables.add(new GameGridDrawable(this.gameBoard));

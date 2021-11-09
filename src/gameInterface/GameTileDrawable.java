@@ -42,9 +42,9 @@ public class GameTileDrawable implements GameDrawable {
     public void draw(GameGraphics g) {
         Point drawOrigin = this.getDrawOrigin();
 
-        g.drawRect(drawOrigin, new Dimension(TILE_WIDTH, TILE_HEIGHT));
+        g.drawRect(drawOrigin, new Dimension(TILE_WIDTH, TILE_HEIGHT), Color.BLACK);
         g.fillRect(drawOrigin, new Dimension(TILE_WIDTH, TILE_HEIGHT), this.gameTile.getPropertySet().getColor());
-        g.drawText(this.gameTile.getName(), drawOrigin, (int) Math.round(TILE_WIDTH * 0.9));
+        g.drawText(this.gameTile.getName(), drawOrigin, (int) Math.round(TILE_WIDTH * 0.9), Color.BLACK);
     }
 
     @Override
