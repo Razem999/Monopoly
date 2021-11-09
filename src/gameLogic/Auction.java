@@ -1,5 +1,7 @@
 package gameLogic;
 
+import gameInterface.GameInterfaceI;
+
 import java.util.List;
 
 public class Auction {
@@ -7,6 +9,7 @@ public class Auction {
     private final List<Player> players;
     private int price;
     private Player highestBidder;
+    private GameInterfaceI gameInterface;
 
     /**
      * The Auction class represents the ability to auction properties from the original game,
@@ -43,12 +46,16 @@ public class Auction {
     //Takes in a bet amount and sets the new price based on the bet and sets
     //the character currently winning the property
     public void bet(int betAmount) {
-        price = betAmount;
-        this.highestBidder = players.get(currentPlayerIndex);
+        if(betAmount > price) {
+            price = betAmount;
+            this.highestBidder = players.get(currentPlayerIndex);
 
-        //this function is only called after the players bet has been checked so it automatically
-        //switches to the next person betting
-        advanceAuction();
+            //this function is only called after the players bet has been checked so it automatically
+            //switches to the next person betting
+            advanceAuction();
+        } else {
+            System.out.println("You must bet higher than $" + price + ".");
+        }
     }
 
     //When a player types quit, this function is called to remover the player from the players list
