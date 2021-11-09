@@ -1,6 +1,7 @@
 package gameInterface;
 
 import gameLogic.GameBoard;
+import gameLogic.Players;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,11 +13,13 @@ import java.util.PriorityQueue;
 public class GameCanvas extends JPanel {
 
     private final GameBoard gameBoard;
+    private final Players players;
 
-    public GameCanvas(GameBoard gameBoard) {
+    public GameCanvas(GameBoard gameBoard, Players players) {
         super();
 
         this.gameBoard = gameBoard;
+        this.players = players;
     }
 
     @Override
@@ -35,6 +38,7 @@ public class GameCanvas extends JPanel {
 
         List<GameDrawable> drawables = new ArrayList<>();
         drawables.add(new GameGridDrawable(this.gameBoard));
+        drawables.add(players.getPlayerDrawables());
 
         PriorityQueue<GameDrawable> gameDrawables = new PriorityQueue<>(Comparator.comparingInt(GameDrawable::drawLayer));
         gameDrawables.addAll(drawables);

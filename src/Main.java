@@ -23,7 +23,7 @@ public class Main {
 
         GameActions gameActions = new GameActions(gameBoard, players, gameInterface);
 
-        contentPane.add(new GameCanvas(gameBoard));
+        contentPane.add(new GameCanvas(gameBoard, players));
 
         GameInfoPanel gameInfoPanel = new GameInfoPanel(gameActions);
         gameInterface.connectGameInterface(gameInfoPanel.getGameInterface());

@@ -20,13 +20,13 @@ public class GameGraphics {
         double canvasRatio = CANVAS_WIDTH / (double) CANVAS_HEIGHT;
 
         if (realRatio > canvasRatio) { // Height is constrained by width
-            this.scaleFactor = new Point2D.Double(1, realHeight / (double) CANVAS_HEIGHT);
+            this.scaleFactor = new Point2D.Double(realHeight / (double) CANVAS_HEIGHT, realHeight / (double) CANVAS_HEIGHT);
 
             int widthDifference = realWidth - CANVAS_WIDTH;
 
             this.originTranslation = new Point(0, widthDifference / 2);
         } else { // Width is constrained by height
-            this.scaleFactor = new Point2D.Double(realWidth/ (double) CANVAS_WIDTH, 1);
+            this.scaleFactor = new Point2D.Double(realWidth / (double) CANVAS_WIDTH, realWidth / (double) CANVAS_WIDTH);
 
             int heightDifference = realHeight - CANVAS_HEIGHT;
 
@@ -98,5 +98,12 @@ public class GameGraphics {
         graphics2D.setFont(newFont);
         Point scaledOrigin = scalePoint(origin);
         graphics2D.drawString(s, scaledOrigin.x, scaledOrigin.y);
+    }
+
+    public void drawOvalFill(Point origin, Dimension widthAndHeight) {
+        Point scaledOrigin = scalePoint(origin);
+        Dimension scaledWidthAndHeight = scaleDimension(widthAndHeight);
+
+        this.graphics.fillOval(scaledOrigin.x, scaledOrigin.y, scaledWidthAndHeight.width, scaledWidthAndHeight.height);
     }
 }
