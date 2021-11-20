@@ -1,9 +1,8 @@
-package gameLogic;
-
 import gameInterface.CompoundGameInterface;
+import gameLogic.Auction;
+import gameLogic.Player;
+import gameLogic.Players;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

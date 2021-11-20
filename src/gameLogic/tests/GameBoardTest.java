@@ -1,8 +1,6 @@
-package gameLogic;
-
 import gameInterface.CompoundGameInterface;
-import gameInterface.GameInterfaceI;
-import org.junit.Before;
+import gameLogic.GameBoard;
+import gameLogic.Players;
 import org.junit.jupiter.api.Test;
 import tiles.*;
 
@@ -13,28 +11,9 @@ class GameBoardTest {
     CompoundGameInterface gameInterface = new CompoundGameInterface();
     GameBoard gb = new GameBoard(gameInterface);
 
-    GameTileI gameTileI;
-    BuyableI buyableTile;
-
     Players players = new Players(gameInterface);
 
-
-    PropertyTile brownProperty = new PropertyTile("Mediterranean Avenue", PropertySet.Purple, gameInterface, 60, 50, 2, 10, 30, 90, 160, 250);
     GoTile goTile = new GoTile(gameInterface);
-
-//    PropertyTileBuilder propertyTileBuilder = new PropertyTileBuilder("Mediterranean Avenue", PropertySet.Purple, gameInterface).setCost(60).setPricePerHouse(50).setRent(2, 10, 30, 90, 160, 250).getPropertyTile());
-
-
-//    @Before
-//    public void SetUp() {
-//        p1.setTilePosition(1);
-//        brownProperty.buy(p1);
-//    }
-
-//    @Test
-//    void getTilesOwnedByPlayer() {
-//        assertTrue(brownProperty.isOwnedBy(p1));
-//    }
 
     @Test
     void advancePlayer() {
@@ -72,14 +51,6 @@ class GameBoardTest {
         gb.getTilesOwnedByPlayer(players.getPlayerByID(1).get());
     }
 
-//    @Test
-//    void getPropertiesFilter() {
-//    }
-
-//    @Test
-//    void payJailFine() {
-//    }
-
     @Test
     void jailPlayer() {
         gb.jailPlayer(players.getPlayerByID(0).get());
@@ -93,15 +64,4 @@ class GameBoardTest {
         assertFalse(gb.isPlayerInJail(players.getPlayerByID(1).get()));
     }
 
-//    @Test
-//    void handleFailedJailedPlayerRoll() {
-//    }
-//
-//    @Test
-//    void handleSuccessfulJailedPlayerRoll() {
-//    }
-//
-//    @Test
-//    void getTileDrawables() {
-//    }
 }

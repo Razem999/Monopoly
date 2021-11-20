@@ -1,6 +1,4 @@
-package gameLogic;
-
-import gameInterface.GameInterfaceI;
+import gameLogic.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

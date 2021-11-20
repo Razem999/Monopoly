@@ -5,11 +5,9 @@ import gameLogic.Players;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class Main {
-    private static final Dimension windowSize = new Dimension(1500, 1000);
+    private static final Dimension windowSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     public static void main(String[] args) {
         JFrame mainFrame = new JFrame("Monopoly: The Devil Wants His Money!");

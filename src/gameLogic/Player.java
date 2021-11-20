@@ -26,7 +26,7 @@ public class Player {
      * @param id This is the Player ID
      * @param startingBalance This is the Player's starting balance
      */
-    Player(int id, int startingBalance) {
+    public Player(int id, int startingBalance) {
         this.playerID = id;
         this.balance = startingBalance;
         this.tilePosition = 0;
@@ -38,7 +38,7 @@ public class Player {
      * to play the game with fewer Players.
      * @param id This is the Player ID
      */
-    Player(int id) {
+    public Player(int id) {
         this(id, 0);
     }
 
