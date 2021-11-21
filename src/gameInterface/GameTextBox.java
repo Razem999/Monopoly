@@ -8,6 +8,7 @@ import tiles.BuyableI;
 import tiles.GameTileI;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,10 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         this.textArea = new JTextArea(15, 60);
+
+        // Makes sure the text box scrolls down when new text is added
+        DefaultCaret caret = (DefaultCaret) this.textArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         this.add(this.textArea);
 
         JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -55,7 +60,7 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
     @Override
     public void startAuction(int startingBid, BuyableI tile, Players players) {
         history.add("An auction is starting for " + tile.getName() + " for $" + startingBid);
-        Auction auction = new Auction(players.getPlayersList(), players.getCurrentPlayer(), 10);
+        Auction auction = new Auction(players.getPlayersList(), players.getCurrentPlayer());
 
         while (!auction.shouldEnd()) {
             history.add("The current highest bid is $" + auction.getPrice());

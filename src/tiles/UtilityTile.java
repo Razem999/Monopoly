@@ -111,6 +111,11 @@ public class UtilityTile implements BuyableI {
     }
 
     @Override
+    public boolean hasOwner() {
+        return this.playerOwner.isPresent();
+    }
+
+    @Override
     public int getBuyCost() {
         return this.cost;
     }

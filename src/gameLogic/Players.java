@@ -150,16 +150,16 @@ public class Players {
     }
 
     public void createPlayers(PlayerSelection playerSelection) {
-        List<AIStrategy.StrategyType> aiStrategies = new ArrayList<>(EnumSet.allOf(AIStrategy.StrategyType.class));
-        aiStrategies.clear();
+        List<AIStrategy.StrategyType> aiStrategies = new ArrayList<>();
         aiStrategies.add(AIStrategy.StrategyType.AGGRESSIVE);
+        aiStrategies.add(AIStrategy.StrategyType.DEFAULT);
 
         this.players.forEach(Player::removeChangeListener);
         this.players.clear();
         this.players.addAll(createPlayerList(playerSelection.getNumPlayers(), 1500));
         for (int i = 0; i < playerSelection.getNumAIPlayers(); i++) {
             AIStrategy.StrategyType randomStrategy = aiStrategies.get(ThreadLocalRandom.current().nextInt(aiStrategies.size()));
-            this.players.get(i).setAIStrategy(randomStrategy);
+            this.players.get(this.players.size() - i - 1).setAIStrategy(randomStrategy);
         }
 
         addPlayerChangeListener(this.playerChangeListener);

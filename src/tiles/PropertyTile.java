@@ -158,6 +158,11 @@ public class PropertyTile implements BuyableI {
     }
 
     @Override
+    public boolean hasOwner() {
+        return this.owner.isPresent();
+    }
+
+    @Override
     public int getBuyCost() {
         return cost;
     }

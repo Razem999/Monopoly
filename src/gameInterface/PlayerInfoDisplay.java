@@ -28,7 +28,7 @@ public class PlayerInfoDisplay implements GameDrawable {
 
         infoText.append(this.gameBoard.getTileDescriptionByIndex(this.player.getTilePosition()).orElse(""));
 
-        infoText.append("\nOwns:");
+        infoText.append("\nOwns:\n");
         for (GameTileI tile : this.gameBoard.getTilesOwnedByPlayer(this.player)) {
             infoText.append(tile.getName());
             infoText.append("\n");

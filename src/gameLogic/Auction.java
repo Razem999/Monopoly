@@ -9,7 +9,8 @@ public class Auction {
     private final List<Player> players;
     private int price;
     private Player highestBidder;
-    private GameInterfaceI gameInterface;
+
+    public static int AUCTION_START_PRICE = 10;
 
     /**
      * The Auction class represents the ability to auction properties from the original game,
@@ -17,9 +18,8 @@ public class Auction {
      *
      * @param players This is the list of players entering the auction
      * @param player This is the player that initiated the auction
-     * @param price This is the minimum price the property must sell for in the auction
      **/
-    public Auction(List<Player> players, Player player, int price) {
+    public Auction(List<Player> players, Player player) {
         currentPlayerIndex = -1;
 
         //finds where the player is in the players ArrayList.
@@ -35,7 +35,7 @@ public class Auction {
         }
 
         this.players = players;
-        this.price = price;
+        this.price = AUCTION_START_PRICE;
     }
 
     //When called it changes the current player to the next player in the ArrayList

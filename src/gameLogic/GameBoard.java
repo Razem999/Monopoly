@@ -211,4 +211,26 @@ public class GameBoard {
                 .mapToObj(i -> new GameTileDrawable(this.tiles.get(i), i)).collect(Collectors.toList());
     }
 
+    public List<GameTileI> getTileNeighbourhood(int tilePosition, int neighbourhoodRadius) {
+        List<GameTileI> neighbourhood = new ArrayList<>();
+        for (int delta = -neighbourhoodRadius / 2; delta < neighbourhoodRadius / 2; delta++) {
+            if (tilePosition + delta < 0) {
+                int tileIndex = Math.max(0, this.tiles.size() + delta);
+                neighbourhood.add(this.tiles.get(tileIndex));
+            } else if (tilePosition + delta <= this.tiles.size()) {
+                neighbourhood.add(this.tiles.get(tilePosition % this.tiles.size()));
+            } else {
+                neighbourhood.add(this.tiles.get(tilePosition));
+            }
+        }
+
+        return neighbourhood;
+    }
+
+    public int getPlayerNetWorth(Player player) {
+        List<BuyableI> properties = this.getTilesOwnedByPlayer(player);
+
+        return properties.stream().mapToInt(BuyableI::getBuyCost).reduce(0, Integer::sum);
+    }
+
 }
