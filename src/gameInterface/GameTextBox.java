@@ -1,9 +1,6 @@
 package gameInterface;
 
-import gameLogic.Auction;
-import gameLogic.GameBoard;
-import gameLogic.Player;
-import gameLogic.Players;
+import gameLogic.*;
 import tiles.Buyable;
 import tiles.GameTile;
 
@@ -12,16 +9,20 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GameTextBox extends JPanel implements GameInterface {
     private final JTextArea textArea;
 
     private final List<String> history;
     private final static String newline = "\n";
+    private final AuctionBetExecutor.Factory auctionBetExecutorFactory;
 
-    public GameTextBox() {
+    public GameTextBox(AuctionBetExecutor.Factory auctionBetExecutorFactory) {
         super();
 
+        this.auctionBetExecutorFactory = auctionBetExecutorFactory;
+        this.auctionBetExecutorFactory.setGameInterface(this);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         this.textArea = new JTextArea(15, 60);
@@ -43,7 +44,7 @@ public class GameTextBox extends JPanel implements GameInterface {
         StringBuilder labelTextStringBuilder = new StringBuilder();
 
         for (String text : history) {
-            labelTextStringBuilder.append(text + newline);
+            labelTextStringBuilder.append(text).append(newline);
             labelTextStringBuilder.append("-----------------" + newline);
         }
 
@@ -58,54 +59,21 @@ public class GameTextBox extends JPanel implements GameInterface {
     }
 
     @Override
-    public void startAuction(int startingBid, Buyable tile, Players players) {
-        history.add("An auction is starting for " + tile.getName() + " for $" + startingBid);
+    public void startAuction(int startingBid, Buyable tile, Players players, int tilePosition) {
+        JOptionPane.showMessageDialog(null, "An auction is starting for " + tile.getName() + " for $" + startingBid);
         Auction auction = new Auction(players.getPlayersList(), players.getCurrentPlayer());
 
         while (!auction.shouldEnd()) {
-            history.add("The current highest bid is $" + auction.getPrice());
-            doPlayerBid(auction);
+            Optional<AuctionBetExecutor> auctionBetExecutor = this.auctionBetExecutorFactory.getAuctionBetExecutor(auction.getCurrentBidder());
+            auctionBetExecutor.ifPresent(ex -> ex.doPlayerBid(auction, players, tilePosition));
         }
 
         if (auction.getHighestBidder() != null) {
             tile.closeAuctionFor(auction.getPrice(), auction.getHighestBidder());
         } else {
-            history.add("No one has purchased this property");
+            JOptionPane.showMessageDialog(null, "The auction closed without a buyer.");
         }
 
-        update();
-    }
-
-    /**This method is used to take the amount the Player bid and display it to other Players. If the Player
-     * enters quit as their bid, the Player withdraws from the auction.
-     * @param auction This is the auction the Players are partaking in
-     */
-    private void doPlayerBid(Auction auction) {
-        Player currentBidder = auction.getCurrentBidder();
-        int currentBidderBalance = auction.getCurrentBidderBalance();
-        history.add("Player " + currentBidder.getPlayerID() + " is placing a bet for (Press Cancel to withdraw): ");
-
-        while (true) {
-            update();
-            String betInput = JOptionPane.showInputDialog("Enter bet amount (Current Bid - $" + auction.getPrice() + ") : ");
-            if (betInput == null) {
-                auction.withdrawCurrentPlayerFromAuction();
-                break;
-            }
-            try {
-                if ((Integer.parseInt(betInput) <= currentBidderBalance) && (Integer.parseInt(betInput) > auction.getPrice())) {
-                    auction.bet(Integer.parseInt(betInput));
-                    break;
-                } else if (Integer.parseInt(betInput) <= auction.getPrice()) {
-                    history.add(">> The that bet amount is too low! (Must be more than " + auction.getPrice() + ")");
-                } else {
-                    history.add(">> That bet exceeds your balance!");
-                }
-            } catch (NumberFormatException ex) {
-                history.add(">> That input is not a number!");
-            }
-
-        }
         update();
     }
 
@@ -247,11 +215,6 @@ public class GameTextBox extends JPanel implements GameInterface {
     }
 
     @Override
-    public void notifyAuctionBetLow(Player player, int amount) {
-
-    }
-
-    @Override
     public void notifyPlayerTaxPayment(Player player, int amount) {
         history.add("Player " + player.getPlayerID() + " has payed $" + amount + " in taxes");
 
@@ -289,16 +252,44 @@ public class GameTextBox extends JPanel implements GameInterface {
                 int numAIPlayers = Integer.parseInt(numAIPlayersInput);
 
                 if (numAIPlayers >= numPlayers) {
-                    JOptionPane.showMessageDialog(this, "There must be at least one human player.");
+                    JOptionPane.showMessageDialog(null, "There must be at least one human player.");
                     break;
                 }
 
                 return new PlayerSelection(numPlayers, numAIPlayers);
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "That is not a valid number.");
+                JOptionPane.showMessageDialog(null, "That is not a valid number.");
             }
         }
 
         return new PlayerSelection(4, 0);
+    }
+
+    @Override
+    public void notifyBetError(String msg) {
+        JOptionPane.showMessageDialog(null, msg);
+    }
+
+    @Override
+    public Auction.BidAdvanceToken doPlayerBid(Auction auction, Players players, int tilePosition) {
+        while (true) {
+            update();
+            String betInput = JOptionPane.showInputDialog("Enter bet amount (Current Bid - $" + auction.getPrice() + ") : ");
+            if (betInput == null) {
+                return auction.withdrawCurrentPlayerFromAuction();
+            }
+            try {
+                auction.showBetErrorIfBetInvalid(Integer.parseInt(betInput), this);
+                Optional<Auction.BidAdvanceToken> token = auction.bid(Integer.parseInt(betInput));
+
+                if (token.isPresent()) {
+                    return token.get();
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "That bet is not a number!");
+            }
+        }
+
     }
 }

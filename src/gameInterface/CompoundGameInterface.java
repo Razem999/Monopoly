@@ -1,5 +1,6 @@
 package gameInterface;
 
+import gameLogic.Auction;
 import gameLogic.GameBoard;
 import gameLogic.Player;
 import gameLogic.Players;
@@ -25,8 +26,8 @@ public class CompoundGameInterface implements GameInterface {
     }
 
     @Override
-    public void startAuction(int startingBid, Buyable tile, Players players) {
-        this.backingInterfaces.forEach(i -> i.startAuction(startingBid, tile, players));
+    public void startAuction(int startingBid, Buyable tile, Players players, int tilePosition) {
+        this.backingInterfaces.forEach(i -> i.startAuction(startingBid, tile, players, tilePosition));
     }
 
     @Override
@@ -129,11 +130,6 @@ public class CompoundGameInterface implements GameInterface {
     }
 
     @Override
-    public void notifyAuctionBetLow(Player player, int amount) {
-        this.backingInterfaces.forEach(i -> i.notifyAuctionBetLow(player, amount));
-    }
-
-    @Override
     public void notifyPlayerTaxPayment(Player player, int amount) {
         this.backingInterfaces.forEach(i -> i.notifyPlayerTaxPayment(player, amount));
     }
@@ -160,5 +156,19 @@ public class CompoundGameInterface implements GameInterface {
         }
 
         return new PlayerSelection(4, 0);
+    }
+
+    @Override
+    public void notifyBetError(String msg) {
+        this.backingInterfaces.forEach(i -> i.notifyBetError(msg));
+    }
+
+    @Override
+    public Auction.BidAdvanceToken doPlayerBid(Auction auction, Players players, int tilePosition) {
+        if (this.backingInterfaces.size() > 0) {
+            return this.backingInterfaces.get(0).doPlayerBid(auction, players, tilePosition);
+        } else {
+            throw new IllegalStateException("UNINITIALIZED COMPOUND INTERFACE, AUCTION REQUIRES INITIALIZED INTERFACE");
+        }
     }
 }

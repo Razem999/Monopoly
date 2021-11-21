@@ -44,4 +44,14 @@ public class AggressiveAIStrategy implements AIStrategy {
 
         gameActions.currentPlayerPass();
     }
+
+    @Override
+    public Auction.BidAdvanceToken doPlayerBid(Auction auction, Players players, int tilePosition) {
+        if (auction.getPrice() <= auction.getCurrentBidderBalance()) {
+            return auction.bid(auction.getPrice() + Auction.AUCTION_MINIMUM_INCREASE)
+                    .orElse(auction.withdrawCurrentPlayerFromAuction());
+        } else {
+            return auction.withdrawCurrentPlayerFromAuction();
+        }
+    }
 }

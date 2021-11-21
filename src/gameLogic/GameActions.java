@@ -55,7 +55,7 @@ public class GameActions {
 
         Optional<Buyable> buyableTile = tile.asBuyable();
         if (buyableTile.isPresent()){
-            this.gameInterface.startAuction(10, buyableTile.get(), this.players);
+            this.gameInterface.startAuction(10, buyableTile.get(), this.players, this.players.getCurrentPlayer().getTilePosition());
             this.players.handleCurrentPlayerActed();
         } else {
             this.gameInterface.notifyAuctionCannotStart(tile);

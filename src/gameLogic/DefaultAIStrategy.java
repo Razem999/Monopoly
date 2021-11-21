@@ -131,4 +131,37 @@ public class DefaultAIStrategy implements AIStrategy {
 
         gameActions.currentPlayerPass();
     }
+
+    private boolean shouldBet(Auction auction, Players players, int tilePosition) {
+        int score = 0;
+        Player currentBidder = auction.getCurrentBidder();
+        int avgNetWorth = AIStrategy.getAverageNetWorth(players, this.gameBoard);
+        if (this.gameBoard.getPlayerNetWorth(currentBidder) > avgNetWorth) {
+            score += 10;
+        }
+
+        Optional<GameTile> gameTile = this.gameBoard.getTile(tilePosition);
+        if (gameTile.isPresent() && determineTileScore(tilePosition, currentBidder)
+                >= getTileScoreAuctionThreshold(players, currentBidder, gameTile.get())) {
+            score += 10;
+        } else {
+            score -= 10;
+        }
+
+
+        return score >= 0;
+    }
+
+    @Override
+    public Auction.BidAdvanceToken doPlayerBid(Auction auction, Players players, int tilePosition) {
+        Player currentBidder = auction.getCurrentBidder();
+        if (auction.getPrice() > currentBidder.getBalance()) {
+            return auction.withdrawCurrentPlayerFromAuction();
+        } else if (this.shouldBet(auction, players, tilePosition)) {
+            return auction.bid(auction.getPrice() + Auction.AUCTION_MINIMUM_INCREASE)
+                    .orElse(auction.withdrawCurrentPlayerFromAuction());
+        }
+
+        return auction.withdrawCurrentPlayerFromAuction();
+    }
 }

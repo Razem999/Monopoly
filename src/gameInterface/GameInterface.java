@@ -6,8 +6,8 @@ import gameLogic.GameBoard;
 import gameLogic.Players;
 import gameLogic.Player;
 
-public interface GameInterface {
-    void startAuction(int startingBid, Buyable tile, Players players);
+public interface GameInterface extends AuctionBetExecutor {
+    void startAuction(int startingBid, Buyable tile, Players players, int tilePosition);
     boolean processSale(String tileName, int amount, Player buyer);
     void displayPlayerProperties(Player player, GameBoard gameBoard);
     void notifyPlayerDeclinedPurchase(Player player, String tileName);
@@ -27,10 +27,10 @@ public interface GameInterface {
     void notifyPlayerStayJail(Player player);
     void notifyFreeParkingDeposit(Player player, int amount);
     void notifyAuctionCannotStart(GameTile tile);
-    void notifyAuctionBetLow(Player player, int amount);
     void notifyPlayerTaxPayment(Player player, int amount);
     void notifyPlayerEndedTurn(Player player);
     void notifyPlayerTurn(Player player);
     void notifyPlayerMustRoll(Player player);
     PlayerSelection askHowManyPlayers();
+    void notifyBetError(String msg);
 }

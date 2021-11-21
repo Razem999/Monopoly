@@ -8,11 +8,11 @@ public class GameInfoPanel extends JComponent {
 
     private GameTextBox gameTextBox;
 
-    public GameInfoPanel(GameActions gameActions) {
+    public GameInfoPanel(GameActions gameActions, AuctionBetExecutor.Factory auctionBetExecutorFactory) {
         super();
 
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        this.gameTextBox = new GameTextBox();
+        this.gameTextBox = new GameTextBox(auctionBetExecutorFactory);
         this.add(this.gameTextBox);
 
         this.add(new GameButtonPanel(gameActions));

@@ -34,7 +34,9 @@ public class Main {
         contentPane.setFocusable(true);
         contentPane.addKeyListener(gameCanvas.getGameCameraController());
 
-        GameInfoPanel gameInfoPanel = new GameInfoPanel(gameActions);
+        AuctionBetExecutor.Factory auctionBetExecutorFactory = new AuctionBetExecutor.Factory();
+        auctionBetExecutorFactory.setAiFactory(aiFactory);
+        GameInfoPanel gameInfoPanel = new GameInfoPanel(gameActions, auctionBetExecutorFactory);
         gameInterface.connectGameInterface(gameInfoPanel.getGameInterface());
         contentPane.add(gameInfoPanel);
 

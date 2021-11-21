@@ -9,4 +9,9 @@ public class PassAIStrategy implements AIStrategy {
 
         gameActions.currentPlayerPass();
     }
+
+    @Override
+    public Auction.BidAdvanceToken doPlayerBid(Auction auction, Players players, int tilePosition) {
+        return auction.withdrawCurrentPlayerFromAuction();
+    }
 }

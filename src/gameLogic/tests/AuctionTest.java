@@ -15,8 +15,8 @@ class AuctionTest {
     void bet() {
         players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer);
-        auction.bet(110);
-        auction.bet(120);
+        auction.bid(110);
+        auction.bid(120);
         auction.withdrawCurrentPlayerFromAuction();
         auction.withdrawCurrentPlayerFromAuction();
         auction.withdrawCurrentPlayerFromAuction();
@@ -27,7 +27,7 @@ class AuctionTest {
     void withdrawCurrentPlayerFromAuction() {
         players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer);
-        auction.bet(120);
+        auction.bid(120);
         auction.withdrawCurrentPlayerFromAuction();
         auction.withdrawCurrentPlayerFromAuction();
         auction.withdrawCurrentPlayerFromAuction();
@@ -38,13 +38,13 @@ class AuctionTest {
     void getPrice() {
         players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer);
-        auction.bet(120);
+        auction.bid(120);
         assertEquals(auction.getPrice(), 120);
-        auction.bet(150);
+        auction.bid(150);
         assertEquals(auction.getPrice(), 150);
-        auction.bet(10);
+        auction.bid(10);
         assertEquals(auction.getPrice(), 150);
-        auction.bet(-10);
+        auction.bid(-10);
         assertEquals(auction.getPrice(), 150);
     }
 
@@ -53,14 +53,14 @@ class AuctionTest {
         players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer);
         Player highestBidder = auction.getCurrentBidder();
-        auction.bet(120);
+        auction.bid(120);
         assertEquals(auction.getHighestBidder(), highestBidder);
-        auction.bet(100);
+        auction.bid(100);
         assertEquals(auction.getHighestBidder(), highestBidder);
-        auction.bet(130);
+        auction.bid(130);
         assertNotEquals(auction.getHighestBidder(), highestBidder);
         highestBidder = auction.getCurrentBidder();
-        auction.bet(140);
+        auction.bid(140);
         assertEquals(auction.getHighestBidder(), highestBidder);
     }
 
@@ -69,7 +69,7 @@ class AuctionTest {
         players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer);
         assertEquals(auction.getCurrentBidder(), currentPlayer);
-        auction.bet(120);
+        auction.bid(120);
         assertNotEquals(auction.getCurrentBidder(), currentPlayer);
 
     }
@@ -83,7 +83,7 @@ class AuctionTest {
         players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer);
         assertEquals(auction.getCurrentBidderBalance(), 1500);
-        auction.bet(500);
+        auction.bid(500);
         assertEquals(auction.getCurrentBidderBalance(), 1500);
     }
 
@@ -91,7 +91,7 @@ class AuctionTest {
     void shouldEnd() {
         players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer);
-        auction.bet(130);
+        auction.bid(130);
         assertFalse(auction.shouldEnd());
         auction.withdrawCurrentPlayerFromAuction();
         assertFalse(auction.shouldEnd());

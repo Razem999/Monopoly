@@ -1,6 +1,8 @@
 package gameLogic;
 
-public interface AIStrategy {
+import gameInterface.AuctionBetExecutor;
+
+public interface AIStrategy extends AuctionBetExecutor {
     enum StrategyType {
         AGGRESSIVE,
         DEFAULT,
