@@ -4,8 +4,8 @@ import gameLogic.Auction;
 import gameLogic.GameBoard;
 import gameLogic.Player;
 import gameLogic.Players;
-import tiles.BuyableI;
-import tiles.GameTileI;
+import tiles.Buyable;
+import tiles.GameTile;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameTextBox extends JPanel implements GameInterfaceI {
+public class GameTextBox extends JPanel implements GameInterface {
     private final JTextArea textArea;
 
     private final List<String> history;
@@ -58,7 +58,7 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
     }
 
     @Override
-    public void startAuction(int startingBid, BuyableI tile, Players players) {
+    public void startAuction(int startingBid, Buyable tile, Players players) {
         history.add("An auction is starting for " + tile.getName() + " for $" + startingBid);
         Auction auction = new Auction(players.getPlayersList(), players.getCurrentPlayer());
 
@@ -184,21 +184,21 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
     }
 
     @Override
-    public void notifyCannotBuyTileKind(Player player, GameTileI tile) {
+    public void notifyCannotBuyTileKind(Player player, GameTile tile) {
         history.add("Player " + player.getPlayerID() + " can not buy " + tile.getName());
 
         update();
     }
 
     @Override
-    public void notifyCannotBuyAlreadyOwned(Player player, Player owner, GameTileI tile) {
+    public void notifyCannotBuyAlreadyOwned(Player player, Player owner, GameTile tile) {
         history.add("Player " + player.getPlayerID() + " can not buy " + tile.getName() + " because Player " + owner.getPlayerID() + "has already purchased it");
 
         update();
     }
 
     @Override
-    public void notifyCannotBuyTileBalanceReasons(Player player, GameTileI tile) {
+    public void notifyCannotBuyTileBalanceReasons(Player player, GameTile tile) {
         history.add("Player " + player.getPlayerID() + " can not buy " + tile.getName() + " because balance is insufficient");
 
         update();
@@ -240,7 +240,7 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
     }
 
     @Override
-    public void notifyAuctionCannotStart(GameTileI tile) {
+    public void notifyAuctionCannotStart(GameTile tile) {
         history.add("The Auction can not start");
 
         update();

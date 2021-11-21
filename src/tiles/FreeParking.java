@@ -1,6 +1,6 @@
 package tiles;
 
-import gameInterface.GameInterfaceI;
+import gameInterface.GameInterface;
 import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
@@ -16,15 +16,15 @@ import java.util.Optional;
  * @version 1.0
  * @since 2021-10-25
  */
-public class FreeParking implements GameTileI {
+public class FreeParking implements GameTile {
     public static int totalDeposited;
 
-    private final GameInterfaceI gameInterface;
+    private final GameInterface gameInterface;
 
     /**This is the constructor of tiles.FreeParking with a parameter
      * @param gameInterface This provides text for each action the player takes
      */
-    public FreeParking(GameInterfaceI gameInterface) {
+    public FreeParking(GameInterface gameInterface) {
         this.gameInterface = gameInterface;
     }
 
@@ -58,7 +58,7 @@ public class FreeParking implements GameTileI {
     }
 
     @Override
-    public Optional<BuyableI> asBuyable() {
+    public Optional<Buyable> asBuyable() {
         return Optional.empty();
     }
 }

@@ -1,6 +1,6 @@
 package gameLogic;
 
-import tiles.GameTileI;
+import tiles.GameTile;
 
 import java.util.Optional;
 
@@ -12,9 +12,9 @@ public class AggressiveAIStrategy implements AIStrategy {
     }
 
     private void doTileActions(Player player, Players players, GameActions gameActions) {
-        Optional<GameTileI> tileOpt = gameBoard.getTile(player.getTilePosition());
+        Optional<GameTile> tileOpt = gameBoard.getTile(player.getTilePosition());
         if (tileOpt.isPresent()) {
-            GameTileI currentTile = tileOpt.get();
+            GameTile currentTile = tileOpt.get();
 
             if (currentTile.asBuyable().isPresent() && currentTile.asBuyable().get().getBuyCost() <= player.getBalance()) {
                 gameActions.currentPlayerBuy();

@@ -3,7 +3,7 @@ package tiles;
 import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
-import gameInterface.GameInterfaceI;
+import gameInterface.GameInterface;
 
 import java.util.Optional;
 
@@ -12,17 +12,17 @@ import java.util.Optional;
  * $100 is deducted from the gameLogic.Player that lands on this tile. The amount deducted is added
  * to the total deposit in tiles.FreeParking.
  */
-public class LuxuryTaxTile implements GameTileI {
+public class LuxuryTaxTile implements GameTile {
     public static int baseCost = -100;
 
     private final FreeParking freeParking;
-    private final GameInterfaceI gameInterface;
+    private final GameInterface gameInterface;
 
     /**This is the constructor for tiles.LuxuryTaxTile with parameters
      * @param gameInterface This provides text for each action the player takes
      * @param freeParking This is the Free Parking where the money gets added to
      */
-    public LuxuryTaxTile(GameInterfaceI gameInterface, FreeParking freeParking) {
+    public LuxuryTaxTile(GameInterface gameInterface, FreeParking freeParking) {
         this.freeParking = freeParking;
         this.gameInterface = gameInterface;
     }
@@ -64,7 +64,7 @@ public class LuxuryTaxTile implements GameTileI {
     }
 
     @Override
-    public Optional<BuyableI> asBuyable() {
+    public Optional<Buyable> asBuyable() {
         return Optional.empty();
     }
 }

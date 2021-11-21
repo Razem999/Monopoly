@@ -16,14 +16,14 @@ public class CommandParser {
     private final GameBoard gameBoard;
     private final Players players;
     private final GameActions gameActions;
-    private final GameInterfaceI gameInterface;
+    private final GameInterface gameInterface;
 
     /**This is the constructor of gameInterface.CommandParser with parameters
      * @param gameBoard This is the board in which the Players are playing on
      * @param players These are the list of Players playing the game
      * @param gameInterface This provides text for each action the player takes
      */
-    public CommandParser(GameBoard gameBoard, Players players, GameInterfaceI gameInterface) {
+    public CommandParser(GameBoard gameBoard, Players players, GameInterface gameInterface) {
         this.gameBoard = gameBoard;
         this.players = players;
         this.gameInterface = gameInterface;

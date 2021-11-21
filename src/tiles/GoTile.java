@@ -3,7 +3,7 @@ package tiles;
 import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
-import gameInterface.GameInterfaceI;
+import gameInterface.GameInterface;
 
 import java.util.Optional;
 
@@ -15,15 +15,15 @@ import java.util.Optional;
  * @version 1.0
  * @since 2021-10-25
  */
-public class GoTile implements GameTileI {
+public class GoTile implements GameTile {
     public static int passReward = 200;
 
-    private final GameInterfaceI gameInterface;
+    private final GameInterface gameInterface;
 
     /**This is the constructor of tiles.GoTile with a parameter
      * @param gameInterface This provides text for each action the player takes
      */
-    public GoTile(GameInterfaceI gameInterface) {
+    public GoTile(GameInterface gameInterface) {
         this.gameInterface = gameInterface;
     }
 
@@ -49,7 +49,7 @@ public class GoTile implements GameTileI {
     }
 
     @Override
-    public Optional<BuyableI> asBuyable() {
+    public Optional<Buyable> asBuyable() {
         return Optional.empty();
     }
 }

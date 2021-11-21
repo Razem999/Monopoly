@@ -1,6 +1,6 @@
 package tiles;
 
-import gameInterface.GameInterfaceI;
+import gameInterface.GameInterface;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public class PropertyTileBuilder {
     private final PropertySet propertySet;
     private final String name;
-    private final GameInterfaceI gameInterface;
+    private final GameInterface gameInterface;
     private int cost;
     private int pricePerHouse;
     private int baseRent;
@@ -29,7 +29,7 @@ public class PropertyTileBuilder {
      * @param propertySet This provides colour set that the property is a part of
      * @param textGameInterface This provides text for each action the player takes
      */
-    PropertyTileBuilder(String name, PropertySet propertySet, GameInterfaceI textGameInterface) {
+    PropertyTileBuilder(String name, PropertySet propertySet, GameInterface textGameInterface) {
         this.propertySet = propertySet;
         this.name = name;
         this.gameInterface = textGameInterface;
@@ -81,7 +81,7 @@ public class PropertyTileBuilder {
     /**This function creates and returns all the tiles from the monopoly game
      * @param gameInterface This provides text for each action the player takes
      */
-    public static List<PropertyTile> createTiles(GameInterfaceI gameInterface) {
+    public static List<PropertyTile> createTiles(GameInterface gameInterface) {
         List<PropertyTile> properties = new LinkedList<>();
 
         //Mediterranean Avenue

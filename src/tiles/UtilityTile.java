@@ -3,7 +3,7 @@ package tiles;
 import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
-import gameInterface.GameInterfaceI;
+import gameInterface.GameInterface;
 
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,11 +15,11 @@ import java.util.concurrent.ThreadLocalRandom;
  * @version 1.0
  * @since 2021-10-25
  */
-public class UtilityTile implements BuyableI {
+public class UtilityTile implements Buyable {
 
     private final String name;
     private final int cost;
-    private final GameInterfaceI gameInterface;
+    private final GameInterface gameInterface;
     private Optional<Player> playerOwner;
 
 
@@ -28,7 +28,7 @@ public class UtilityTile implements BuyableI {
      * @param cost This provides the base cost of the utility tile
      * @param gameInterface This provides text for each action the player takes
      */
-    public UtilityTile(String name, int cost, GameInterfaceI gameInterface) {
+    public UtilityTile(String name, int cost, GameInterface gameInterface) {
         this.name = name;
         this.cost = cost;
         this.gameInterface = gameInterface;
@@ -101,7 +101,7 @@ public class UtilityTile implements BuyableI {
     }
 
     @Override
-    public Optional<BuyableI> asBuyable() {
+    public Optional<Buyable> asBuyable() {
         return Optional.empty();
     }
 

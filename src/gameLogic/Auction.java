@@ -1,7 +1,5 @@
 package gameLogic;
 
-import gameInterface.GameInterfaceI;
-
 import java.util.List;
 
 public class Auction {

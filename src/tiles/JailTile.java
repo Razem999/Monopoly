@@ -53,7 +53,7 @@ class JailedPlayerInfo {
  * @version 1.0
  * @since 2021-10-25
  */
-public class JailTile implements GameTileI {
+public class JailTile implements GameTile {
 
     public static int jailFine = 50;
 
@@ -167,7 +167,7 @@ public class JailTile implements GameTileI {
     }
 
     @Override
-    public Optional<BuyableI> asBuyable() {
+    public Optional<Buyable> asBuyable() {
         return Optional.empty();
     }
 }

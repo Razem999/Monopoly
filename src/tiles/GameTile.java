@@ -6,10 +6,10 @@ import gameLogic.GameBoard;
 
 import java.util.Optional;
 
-public interface GameTileI {
+public interface GameTile {
     void onLand(Player player, GameBoard gameBoard, Players players);
     String tileDescription();
     String getName();
     PropertySet getPropertySet();
-    Optional<BuyableI> asBuyable();
+    Optional<Buyable> asBuyable();
 }

@@ -2,7 +2,7 @@ package tiles;
 
 import gameLogic.Player;
 
-public interface BuyableI extends GameTileI {
+public interface Buyable extends GameTile {
     void buy(Player player);
     void transferOwnership(Player newOwner);
     void closeAuctionFor(int price, Player player);

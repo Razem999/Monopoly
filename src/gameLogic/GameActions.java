@@ -1,9 +1,8 @@
 package gameLogic;
 
-import gameInterface.GameInterfaceI;
-import gameInterface.GameTextBox;
-import tiles.BuyableI;
-import tiles.GameTileI;
+import gameInterface.GameInterface;
+import tiles.Buyable;
+import tiles.GameTile;
 
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -11,11 +10,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameActions {
     private final GameBoard gameBoard;
     private final Players players;
-    private final GameInterfaceI gameInterface;
+    private final GameInterface gameInterface;
 
     private int rollStreak;
 
-    public GameActions(GameBoard gameBoard, Players players, GameInterfaceI gameInterface) {
+    public GameActions(GameBoard gameBoard, Players players, GameInterface gameInterface) {
         this.gameBoard = gameBoard;
         this.players = players;
         this.gameInterface = gameInterface;
@@ -26,11 +25,11 @@ public class GameActions {
     public void currentPlayerBuy() {
         Player currentPlayer = this.players.getCurrentPlayer();
 
-        Optional<GameTileI> tileOpt = this.gameBoard.getTile(currentPlayer.getTilePosition());
+        Optional<GameTile> tileOpt = this.gameBoard.getTile(currentPlayer.getTilePosition());
         if (tileOpt.isPresent()) {
-            GameTileI tile = tileOpt.get();
+            GameTile tile = tileOpt.get();
 
-            Optional<BuyableI> buyableTile = tile.asBuyable();
+            Optional<Buyable> buyableTile = tile.asBuyable();
             if (buyableTile.isPresent()) {
                 buyableTile.get().buy(currentPlayer);
                 this.players.handleCurrentPlayerActed();
@@ -52,9 +51,9 @@ public class GameActions {
     }
 
     public void currentPlayerStartAuction() {
-        GameTileI tile = this.gameBoard.getTile(this.players.getCurrentPlayer().getTilePosition()).orElseThrow();
+        GameTile tile = this.gameBoard.getTile(this.players.getCurrentPlayer().getTilePosition()).orElseThrow();
 
-        Optional<BuyableI> buyableTile = tile.asBuyable();
+        Optional<Buyable> buyableTile = tile.asBuyable();
         if (buyableTile.isPresent()){
             this.gameInterface.startAuction(10, buyableTile.get(), this.players);
             this.players.handleCurrentPlayerActed();

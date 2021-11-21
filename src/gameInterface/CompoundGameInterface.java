@@ -3,8 +3,8 @@ package gameInterface;
 import gameLogic.GameBoard;
 import gameLogic.Player;
 import gameLogic.Players;
-import tiles.BuyableI;
-import tiles.GameTileI;
+import tiles.Buyable;
+import tiles.GameTile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +12,20 @@ import java.util.List;
 /**
  * Any output only operations are forwarded to all backing interfaces while only one interface will try to get input.
  */
-public class CompoundGameInterface implements GameInterfaceI {
+public class CompoundGameInterface implements GameInterface {
 
-    private final List<GameInterfaceI> backingInterfaces;
+    private final List<GameInterface> backingInterfaces;
 
     public CompoundGameInterface() {
         this.backingInterfaces = new ArrayList<>();
     }
 
-    public void connectGameInterface(GameInterfaceI gameInterface) {
+    public void connectGameInterface(GameInterface gameInterface) {
         this.backingInterfaces.add(gameInterface);
     }
 
     @Override
-    public void startAuction(int startingBid, BuyableI tile, Players players) {
+    public void startAuction(int startingBid, Buyable tile, Players players) {
         this.backingInterfaces.forEach(i -> i.startAuction(startingBid, tile, players));
     }
 
@@ -84,17 +84,17 @@ public class CompoundGameInterface implements GameInterfaceI {
     }
 
     @Override
-    public void notifyCannotBuyTileKind(Player player, GameTileI tile) {
+    public void notifyCannotBuyTileKind(Player player, GameTile tile) {
         this.backingInterfaces.forEach(i -> i.notifyCannotBuyTileKind(player, tile));
     }
 
     @Override
-    public void notifyCannotBuyAlreadyOwned(Player player, Player owner, GameTileI tile) {
+    public void notifyCannotBuyAlreadyOwned(Player player, Player owner, GameTile tile) {
         this.backingInterfaces.forEach(i -> i.notifyCannotBuyAlreadyOwned(player, owner, tile));
     }
 
     @Override
-    public void notifyCannotBuyTileBalanceReasons(Player player, GameTileI tile) {
+    public void notifyCannotBuyTileBalanceReasons(Player player, GameTile tile) {
         this.backingInterfaces.forEach(i -> i.notifyCannotBuyTileBalanceReasons(player, tile));
     }
 
@@ -124,7 +124,7 @@ public class CompoundGameInterface implements GameInterfaceI {
     }
 
     @Override
-    public void notifyAuctionCannotStart(GameTileI tile) {
+    public void notifyAuctionCannotStart(GameTile tile) {
         this.backingInterfaces.forEach(i -> i.notifyAuctionCannotStart(tile));
     }
 

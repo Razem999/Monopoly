@@ -3,7 +3,7 @@ package tiles;
 import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
-import gameInterface.GameInterfaceI;
+import gameInterface.GameInterface;
 
 import java.util.Optional;
 
@@ -15,11 +15,11 @@ import java.util.Optional;
  * @version 1.0
  * @since 2021-10-25
  */
-public class RailroadTile implements BuyableI {
+public class RailroadTile implements Buyable {
     private final String name;
     private final int cost;
     private int totalOwned;
-    private final GameInterfaceI gameInterface;
+    private final GameInterface gameInterface;
     private Optional<Player> owner;
 
     /**
@@ -29,7 +29,7 @@ public class RailroadTile implements BuyableI {
      * @param gameInterface This provides text for each action the player takes
      * @param cost This is the cost of the railroad
      */
-    public RailroadTile(String name, GameInterfaceI gameInterface, int cost) {
+    public RailroadTile(String name, GameInterface gameInterface, int cost) {
         this.name = name;
         this.gameInterface = gameInterface;
         this.owner = Optional.empty();
@@ -163,7 +163,7 @@ public class RailroadTile implements BuyableI {
     }
 
     @Override
-    public Optional<BuyableI> asBuyable() {
+    public Optional<Buyable> asBuyable() {
         return Optional.of(this);
     }
 }

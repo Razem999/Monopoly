@@ -7,5 +7,5 @@ public interface TileFilter {
     static TileFilter railroadFilter() {
         return tile -> tile instanceof RailroadTile;
     }
-    boolean filter(GameTileI tile);
+    boolean filter(GameTile tile);
 }

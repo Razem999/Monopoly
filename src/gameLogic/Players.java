@@ -1,9 +1,7 @@
 package gameLogic;
 
-import gameInterface.GameInterfaceI;
 import gameInterface.PlayerSelection;
 import gameInterface.PlayersDrawable;
-import tiles.GameTileI;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;

@@ -1,17 +1,17 @@
 package gameInterface;
 
-import tiles.GameTileI;
+import tiles.GameTile;
 
 import java.awt.*;
 
 public class GameTileDrawable implements GameDrawable {
-    private final GameTileI gameTile;
+    private final GameTile gameTile;
     private final int tilePosition;
     public static final int TILE_WIDTH = 75;
     public static final int TILE_HEIGHT = 75;
     private static final int SCREEN_PADDING = 100;
 
-    public GameTileDrawable(GameTileI gameTile, int tilePosition) {
+    public GameTileDrawable(GameTile gameTile, int tilePosition) {
         this.gameTile = gameTile;
         this.tilePosition = tilePosition;
     }

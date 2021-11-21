@@ -1,13 +1,13 @@
 package gameInterface;
 
-import tiles.BuyableI;
-import tiles.GameTileI;
+import tiles.Buyable;
+import tiles.GameTile;
 import gameLogic.GameBoard;
 import gameLogic.Players;
 import gameLogic.Player;
 
-public interface GameInterfaceI {
-    void startAuction(int startingBid, BuyableI tile, Players players);
+public interface GameInterface {
+    void startAuction(int startingBid, Buyable tile, Players players);
     boolean processSale(String tileName, int amount, Player buyer);
     void displayPlayerProperties(Player player, GameBoard gameBoard);
     void notifyPlayerDeclinedPurchase(Player player, String tileName);
@@ -18,15 +18,15 @@ public interface GameInterfaceI {
     void notifyPassGo(Player player);
     void notifyPlayerMovement(Player player, int tilesMoved, int newPosition, String destinationDescription);
     void notifyCannotRoll(Player player);
-    void notifyCannotBuyTileKind(Player player, GameTileI tile);
-    void notifyCannotBuyAlreadyOwned(Player player, Player owner, GameTileI tile);
-    void notifyCannotBuyTileBalanceReasons(Player player, GameTileI tile);
+    void notifyCannotBuyTileKind(Player player, GameTile tile);
+    void notifyCannotBuyAlreadyOwned(Player player, Player owner, GameTile tile);
+    void notifyCannotBuyTileBalanceReasons(Player player, GameTile tile);
     void notifyPlayerOwnsThis(Player owner);
     void notifyPlayerSentToJail(Player player);
     void notifyPlayerLeftJail(Player player);
     void notifyPlayerStayJail(Player player);
     void notifyFreeParkingDeposit(Player player, int amount);
-    void notifyAuctionCannotStart(GameTileI tile);
+    void notifyAuctionCannotStart(GameTile tile);
     void notifyAuctionBetLow(Player player, int amount);
     void notifyPlayerTaxPayment(Player player, int amount);
     void notifyPlayerEndedTurn(Player player);

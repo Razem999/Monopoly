@@ -1,6 +1,6 @@
 package gameLogic;
 
-import gameInterface.GameInterfaceI;
+import gameInterface.GameInterface;
 import gameInterface.GameTileDrawable;
 import tiles.*;
 
@@ -15,14 +15,14 @@ import java.util.stream.IntStream;
  */
 public class GameBoard {
 
-    private final List<GameTileI> tiles;
-    private final GameInterfaceI gameInterface;
+    private final List<GameTile> tiles;
+    private final GameInterface gameInterface;
     private final int jailIndex;
     private final JailTile jailTile;
 
     /**This is the constructor of GameBoard.
      */
-    public GameBoard(GameInterfaceI gameInterface) {
+    public GameBoard(GameInterface gameInterface) {
         this.gameInterface = gameInterface;
         this.jailIndex = 10;
         this.jailTile = new JailTile();
@@ -81,11 +81,11 @@ public class GameBoard {
     /**This method gets all tiles owned by a specific player
      * @param player This provides the player who's owned properties will be displayed
      */
-    public List<BuyableI> getTilesOwnedByPlayer(Player player) {
-        return this.tiles.stream().filter((GameTileI tile) -> {
-            Optional<BuyableI> buyableTile = tile.asBuyable();
+    public List<Buyable> getTilesOwnedByPlayer(Player player) {
+        return this.tiles.stream().filter((GameTile tile) -> {
+            Optional<Buyable> buyableTile = tile.asBuyable();
             return buyableTile.map(buyable -> buyable.isOwnedBy(player)).orElse(false);
-        }).map((GameTileI tile) -> tile.asBuyable().orElseThrow()).collect(Collectors.toList());
+        }).map((GameTile tile) -> tile.asBuyable().orElseThrow()).collect(Collectors.toList());
     }
 
     /**This method moves a player around the board
@@ -105,7 +105,7 @@ public class GameBoard {
         }
 
         if (adjustedPosition < this.tiles.size()) {
-            GameTileI tile = this.tiles.get(adjustedPosition);
+            GameTile tile = this.tiles.get(adjustedPosition);
 
             gameInterface.notifyPlayerMovement(player, tiles, adjustedPosition, tile.tileDescription());
             tile.onLand(player, this, players);
@@ -117,7 +117,7 @@ public class GameBoard {
     /**This method gets a tile using its index in the tiles array
      * @param index This provides the index of the desired tile
      */
-    public Optional<GameTileI> getTile(int index) {
+    public Optional<GameTile> getTile(int index) {
         if (index < this.tiles.size()) {
             return Optional.of(this.tiles.get(index));
         }
@@ -143,7 +143,7 @@ public class GameBoard {
      * @param destination This provides the player who the properties are being transferred to
      */
     public void transferPlayerProperties(Player source, Player destination) {
-        for (BuyableI buyableTile : this.getTilesOwnedByPlayer(source)) {
+        for (Buyable buyableTile : this.getTilesOwnedByPlayer(source)) {
             buyableTile.transferOwnership(destination);
         }
     }
@@ -151,9 +151,9 @@ public class GameBoard {
     /**This method filters through all tiles selecting a certain type of tile
      * @param tileFilter This provides the type of filter that determine which type of tile the function looks for
      */
-    public List<GameTileI> getPropertiesFilter(TileFilter tileFilter) {
-        List<GameTileI> result = new ArrayList<>();
-        for (GameTileI tile : this.tiles) {
+    public List<GameTile> getPropertiesFilter(TileFilter tileFilter) {
+        List<GameTile> result = new ArrayList<>();
+        for (GameTile tile : this.tiles) {
             if (tileFilter.filter(tile)) {
                 result.add(tile);
             }
@@ -211,8 +211,8 @@ public class GameBoard {
                 .mapToObj(i -> new GameTileDrawable(this.tiles.get(i), i)).collect(Collectors.toList());
     }
 
-    public List<GameTileI> getTileNeighbourhood(int tilePosition, int neighbourhoodRadius) {
-        List<GameTileI> neighbourhood = new ArrayList<>();
+    public List<GameTile> getTileNeighbourhood(int tilePosition, int neighbourhoodRadius) {
+        List<GameTile> neighbourhood = new ArrayList<>();
         for (int delta = -neighbourhoodRadius / 2; delta < neighbourhoodRadius / 2; delta++) {
             if (tilePosition + delta < 0) {
                 int tileIndex = Math.max(0, this.tiles.size() + delta);
@@ -228,9 +228,9 @@ public class GameBoard {
     }
 
     public int getPlayerNetWorth(Player player) {
-        List<BuyableI> properties = this.getTilesOwnedByPlayer(player);
+        List<Buyable> properties = this.getTilesOwnedByPlayer(player);
 
-        return properties.stream().mapToInt(BuyableI::getBuyCost).reduce(0, Integer::sum);
+        return properties.stream().mapToInt(Buyable::getBuyCost).reduce(0, Integer::sum);
     }
 
 }

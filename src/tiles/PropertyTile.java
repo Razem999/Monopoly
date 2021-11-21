@@ -3,7 +3,7 @@ package tiles;
 import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
-import gameInterface.GameInterfaceI;
+import gameInterface.GameInterface;
 
 import java.util.Optional;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 2021-10-25
  */
-public class PropertyTile implements BuyableI {
+public class PropertyTile implements Buyable {
     private final PropertySet propertySet;
     private final String name;
     private final int cost;
@@ -24,7 +24,7 @@ public class PropertyTile implements BuyableI {
     private final int rent3h;
     private final int rent4h;
     private final int rentHotel;
-    private final GameInterfaceI gameInterface;
+    private final GameInterface gameInterface;
     private Optional<Player> owner;
 
     /**This is the constructor of tiles.PropertyTile with parameters
@@ -40,7 +40,7 @@ public class PropertyTile implements BuyableI {
      * @param rent4h This is the rent of the property tile with 4 houses
      * @param rentHotel This is the rent of the property tile with a hotel
      */
-    public PropertyTile(String name, PropertySet propertySet, GameInterfaceI gameInterface, int cost, int pricePerHouse, int baseRent, int rent1h, int rent2h, int rent3h, int rent4h, int rentHotel) {
+    public PropertyTile(String name, PropertySet propertySet, GameInterface gameInterface, int cost, int pricePerHouse, int baseRent, int rent1h, int rent2h, int rent3h, int rent4h, int rentHotel) {
         this.name = name;
         this.propertySet = propertySet;
         this.gameInterface = gameInterface;
@@ -168,7 +168,7 @@ public class PropertyTile implements BuyableI {
     }
 
     @Override
-    public Optional<BuyableI> asBuyable() {
+    public Optional<Buyable> asBuyable() {
         return Optional.of(this);
     }
 

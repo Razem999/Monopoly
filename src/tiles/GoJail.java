@@ -14,7 +14,7 @@ import gameLogic.GameBoard;
  * @version 1.0
  * @since 2021-10-25
  */
-public class GoJail implements GameTileI {
+public class GoJail implements GameTile {
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
@@ -37,7 +37,7 @@ public class GoJail implements GameTileI {
     }
 
     @Override
-    public Optional<BuyableI> asBuyable() {
+    public Optional<Buyable> asBuyable() {
         return Optional.empty();
     }
 }

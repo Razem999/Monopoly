@@ -18,7 +18,7 @@ public class GameInfoPanel extends JComponent {
         this.add(new GameButtonPanel(gameActions));
     }
 
-    public GameInterfaceI getGameInterface() {
+    public GameInterface getGameInterface() {
         return this.gameTextBox;
     }
 

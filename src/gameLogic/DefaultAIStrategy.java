@@ -1,6 +1,6 @@
 package gameLogic;
 
-import tiles.GameTileI;
+import tiles.GameTile;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ public class DefaultAIStrategy implements AIStrategy {
 
     private int determineTileScore(int tilePosition, Player player) {
         int score = 40;
-        List<GameTileI> neighbourhood = gameBoard.getTileNeighbourhood(tilePosition, 3);
+        List<GameTile> neighbourhood = gameBoard.getTileNeighbourhood(tilePosition, 3);
 
         int ownedByPlayer = neighbourhood.stream().mapToInt(tile -> {
             if (tile.asBuyable().isPresent()) {
@@ -49,7 +49,7 @@ public class DefaultAIStrategy implements AIStrategy {
         return score;
     }
 
-    private int getTileScoreBuyThreshold(Players players, Player player, GameTileI currentTile) {
+    private int getTileScoreBuyThreshold(Players players, Player player, GameTile currentTile) {
         int score = 50;
 
         int avgNetWorth = AIStrategy.getAverageNetWorth(players, this.gameBoard);
@@ -77,7 +77,7 @@ public class DefaultAIStrategy implements AIStrategy {
         return score;
     }
 
-    private int getTileScoreAuctionThreshold(Players players, Player player, GameTileI currentTile) {
+    private int getTileScoreAuctionThreshold(Players players, Player player, GameTile currentTile) {
         int score = 40;
 
         // Incentivize auctioning when player owns less than average
@@ -95,9 +95,9 @@ public class DefaultAIStrategy implements AIStrategy {
     }
 
     private void doTileActions(Player player, Players players, GameActions gameActions) {
-        Optional<GameTileI> tileOpt = gameBoard.getTile(player.getTilePosition());
+        Optional<GameTile> tileOpt = gameBoard.getTile(player.getTilePosition());
         if (tileOpt.isPresent()) {
-            GameTileI currentTile = tileOpt.get();
+            GameTile currentTile = tileOpt.get();
 
             if (currentTile.asBuyable().isPresent() && currentTile.asBuyable().get().getBuyCost() <= player.getBalance()) {
                 if (this.determineTileScore(player.getTilePosition(), player) >= this.getTileScoreBuyThreshold(players, player, currentTile)) {
