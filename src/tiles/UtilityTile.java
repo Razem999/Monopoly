@@ -63,7 +63,7 @@ public class UtilityTile implements Buyable {
     public String tileDescription() {
         String desc = "Name: " + this.name + "\nA utility tile";
         if (this.playerOwner.isPresent()) {
-            desc += "\nOwned by: gameLogic.Player" + playerOwner.get().getPlayerID();
+            desc += "\nOwned by: Player" + playerOwner.get().getPlayerID();
         } else {
             desc += "\nCan Be Bought";
         }

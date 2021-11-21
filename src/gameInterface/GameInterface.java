@@ -6,7 +6,7 @@ import gameLogic.GameBoard;
 import gameLogic.Players;
 import gameLogic.Player;
 
-public interface GameInterface extends AuctionBetExecutor {
+public interface GameInterface extends AuctionBidExecutor {
     void startAuction(int startingBid, Buyable tile, Players players, int tilePosition);
     boolean processSale(String tileName, int amount, Player buyer);
     void displayPlayerProperties(Player player, GameBoard gameBoard);

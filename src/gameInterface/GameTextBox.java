@@ -16,9 +16,9 @@ public class GameTextBox extends JPanel implements GameInterface {
 
     private final List<String> history;
     private final static String newline = "\n";
-    private final AuctionBetExecutor.Factory auctionBetExecutorFactory;
+    private final AuctionBidExecutor.Factory auctionBetExecutorFactory;
 
-    public GameTextBox(AuctionBetExecutor.Factory auctionBetExecutorFactory) {
+    public GameTextBox(AuctionBidExecutor.Factory auctionBetExecutorFactory) {
         super();
 
         this.auctionBetExecutorFactory = auctionBetExecutorFactory;
@@ -64,7 +64,7 @@ public class GameTextBox extends JPanel implements GameInterface {
         Auction auction = new Auction(players.getPlayersList(), players.getCurrentPlayer());
 
         while (!auction.shouldEnd()) {
-            Optional<AuctionBetExecutor> auctionBetExecutor = this.auctionBetExecutorFactory.getAuctionBetExecutor(auction.getCurrentBidder());
+            Optional<AuctionBidExecutor> auctionBetExecutor = this.auctionBetExecutorFactory.getAuctionBetExecutor(auction.getCurrentBidder());
             auctionBetExecutor.ifPresent(ex -> ex.doPlayerBid(auction, players, tilePosition));
         }
 

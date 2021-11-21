@@ -94,7 +94,7 @@ public class RailroadTile implements Buyable {
                 "\nCost: $" + this.cost +
                 "\nRent: $" + this.calculateRent();
         if (this.owner.isPresent()) {
-            desc += "\nOwned by: gameLogic.Player" + owner.get().getPlayerID() +
+            desc += "\nOwned by: Player" + owner.get().getPlayerID() +
                 "\nRailroads owned: " + this.totalOwned;
 
         } else {

@@ -7,7 +7,7 @@ import gameLogic.Players;
 
 import java.util.Optional;
 
-public interface AuctionBetExecutor {
+public interface AuctionBidExecutor {
     class Factory {
         private Optional<GameInterface> gameInterface;
         private Optional<AIStrategy.Factory> aiFactory;
@@ -25,7 +25,7 @@ public interface AuctionBetExecutor {
             this.aiFactory = Optional.of(aiFactory);
         }
 
-        public Optional<AuctionBetExecutor> getAuctionBetExecutor(Player player) {
+        public Optional<AuctionBidExecutor> getAuctionBetExecutor(Player player) {
             if (player.getAIStrategy().isPresent()) {
                 return this.aiFactory.map(f -> f.getAIStrategy(player.getAIStrategy().get()));
             } else {
