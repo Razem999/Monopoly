@@ -119,6 +119,10 @@ public class GameActions {
 
             this.gameInterface.notifyRoll(currentPlayer, firstDie, secondDie);
             this.gameBoard.advancePlayer(currentPlayer, firstDie + secondDie, this.players);
+
+            if (firstDie != secondDie) {
+                this.players.handleCurrentPlayerFinishedRolling();
+            }
         }
     }
 

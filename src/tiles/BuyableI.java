@@ -7,4 +7,5 @@ public interface BuyableI extends GameTileI {
     void transferOwnership(Player newOwner);
     void closeAuctionFor(int price, Player player);
     boolean isOwnedBy(Player player);
+    int getBuyCost();
 }

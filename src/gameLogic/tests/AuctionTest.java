@@ -1,20 +1,19 @@
 import gameInterface.CompoundGameInterface;
-import gameLogic.Auction;
-import gameLogic.Player;
-import gameLogic.Players;
+import gameInterface.PlayerSelection;
+import gameLogic.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AuctionTest {
 
-    CompoundGameInterface gameInterface = new CompoundGameInterface();
-
-    Players players = new Players(gameInterface);
+    GameBoard gameBoard = new GameBoard(new CompoundGameInterface());
+    Players players = new Players(new AIStrategy.Factory(gameBoard));
     Player currentPlayer = players.getPlayerByID(1).get();
 
     @Test
     void bet() {
+        players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer, 100);
         auction.bet(110);
         auction.bet(120);
@@ -26,6 +25,7 @@ class AuctionTest {
 
     @Test
     void withdrawCurrentPlayerFromAuction() {
+        players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer, 100);
         auction.bet(120);
         auction.withdrawCurrentPlayerFromAuction();
@@ -36,6 +36,7 @@ class AuctionTest {
 
     @Test
     void getPrice() {
+        players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer, 100);
         auction.bet(120);
         assertEquals(auction.getPrice(), 120);
@@ -49,6 +50,7 @@ class AuctionTest {
 
     @Test
     void getHighestBidder() {
+        players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer, 100);
         Player highestBidder = auction.getCurrentBidder();
         auction.bet(120);
@@ -64,6 +66,7 @@ class AuctionTest {
 
     @Test
     void getCurrentBidder() {
+        players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer, 100);
         assertEquals(auction.getCurrentBidder(), currentPlayer);
         auction.bet(120);
@@ -77,6 +80,7 @@ class AuctionTest {
      */
     @Test
     void getCurrentBidderBalance() {
+        players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer, 100);
         assertEquals(auction.getCurrentBidderBalance(), 1500);
         auction.bet(500);
@@ -85,6 +89,7 @@ class AuctionTest {
 
     @Test
     void shouldEnd() {
+        players.createPlayers(new PlayerSelection(4, 0));
         Auction auction = new Auction(players.getPlayersList(), currentPlayer, 100);
         auction.bet(130);
         assertFalse(auction.shouldEnd());

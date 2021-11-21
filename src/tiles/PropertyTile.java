@@ -158,6 +158,11 @@ public class PropertyTile implements BuyableI {
     }
 
     @Override
+    public int getBuyCost() {
+        return cost;
+    }
+
+    @Override
     public Optional<BuyableI> asBuyable() {
         return Optional.of(this);
     }

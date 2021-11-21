@@ -1,4 +1,7 @@
 import gameInterface.CompoundGameInterface;
+import gameInterface.PlayerSelection;
+import gameLogic.AIStrategy;
+import gameLogic.GameBoard;
 import gameLogic.Player;
 import gameLogic.Players;
 import org.junit.jupiter.api.Test;
@@ -6,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayersTest {
-
-    CompoundGameInterface gameInterfaceI = new CompoundGameInterface();
 
     @Test
     void getPlayersList() {
@@ -20,7 +21,9 @@ class PlayersTest {
 
     @Test
     void getPlayerByID() {
-        Players players = new Players(gameInterfaceI);
+        GameBoard gameBoard = new GameBoard(new CompoundGameInterface());
+        Players players = new Players(new AIStrategy.Factory(gameBoard));
+        players.createPlayers(new PlayerSelection(4, 0));
         assertEquals(players.getPlayerByID(0).get().getPlayerID(), 0);
         assertEquals(players.getPlayerByID(1).get().getPlayerID(), 1);
         assertEquals(players.getPlayerByID(2).get().getPlayerID(), 2);
@@ -37,7 +40,9 @@ class PlayersTest {
 
     @Test
     void canEndCurrentTurn() {
-        Players players = new Players(gameInterfaceI);
+        GameBoard gameBoard = new GameBoard(new CompoundGameInterface());
+        Players players = new Players(new AIStrategy.Factory(gameBoard));
+        players.createPlayers(new PlayerSelection(4, 0));
         assertFalse(players.canEndCurrentTurn());
         players.handleCurrentPlayerFinishedRolling();
         assertTrue(players.canEndCurrentTurn());
@@ -46,7 +51,9 @@ class PlayersTest {
 
     @Test
     void nextTurn() {
-        Players players = new Players(gameInterfaceI);
+        GameBoard gameBoard = new GameBoard(new CompoundGameInterface());
+        Players players = new Players(new AIStrategy.Factory(gameBoard));
+        players.createPlayers(new PlayerSelection(4, 0));
         Player prev = players.getCurrentPlayer();
         players.nextTurn();
         assertNotEquals(players.getCurrentPlayer(), prev);
@@ -54,7 +61,9 @@ class PlayersTest {
 
     @Test
     void removePlayer() {
-        Players players = new Players(gameInterfaceI);
+        GameBoard gameBoard = new GameBoard(new CompoundGameInterface());
+        Players players = new Players(new AIStrategy.Factory(gameBoard));
+        players.createPlayers(new PlayerSelection(4, 0));
         assertEquals(players.getPlayersList().size(), 4);
         players.removePlayer(players.getCurrentPlayer());
         assertEquals(players.getPlayersList().size(), 3);
@@ -62,7 +71,8 @@ class PlayersTest {
 
     @Test
     void handleCurrentPlayerActed() {
-        Players players = new Players(gameInterfaceI);
+        GameBoard gameBoard = new GameBoard(new CompoundGameInterface());
+        Players players = new Players(new AIStrategy.Factory(gameBoard));
         assertFalse(players.hasCurrentPlayerActed());
         players.handleCurrentPlayerActed();
         assertTrue(players.hasCurrentPlayerActed());
@@ -77,7 +87,8 @@ class PlayersTest {
 
     @Test
     void handleCurrentPlayerFinishedRolling() {
-        Players players = new Players(gameInterfaceI);
+        GameBoard gameBoard = new GameBoard(new CompoundGameInterface());
+        Players players = new Players(new AIStrategy.Factory(gameBoard));
         assertFalse(players.hasCurrentPlayerFinishedRolling());
         players.handleCurrentPlayerFinishedRolling();
         assertTrue(players.hasCurrentPlayerFinishedRolling());

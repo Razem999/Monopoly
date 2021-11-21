@@ -1,12 +1,11 @@
 package gameLogic;
 
 import gameInterface.GameInterfaceI;
+import gameInterface.PlayerSelection;
 import gameInterface.PlayersDrawable;
+import tiles.GameTileI;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -20,19 +19,19 @@ public class Players {
     private int currentPlayer;
     private boolean currentPlayerHasRolled;
     private boolean currentPlayerHasActed;
+    private Player.PlayerChangeListener playerChangeListener;
+    private Optional<GameActions> aiActionHandler;
+    private final AIStrategy.Factory aiFactory;
 
-    private final GameInterfaceI gameInterface;
-
-    /**This is the constructor of Players with parameters
-     * @param gameInterface This provides text for each action the player takes
-     */
-    public Players(GameInterfaceI gameInterface) {
-        this.gameInterface = gameInterface;
-        this.players = createPlayerList(4, 1500);
+    public Players(AIStrategy.Factory aiFactory) {
+        this.players = new ArrayList<>();
+        this.aiActionHandler = Optional.empty();
 
         this.currentPlayer = 0;
         this.currentPlayerHasRolled = false;
         this.currentPlayerHasActed = false;
+
+        this.aiFactory = aiFactory;
     }
 
     /**This function gets the list of players playing the game
@@ -45,7 +44,7 @@ public class Players {
      * @param numPlayers This provides the number of players wishing to play the game
      * @param defaultMoney This provides the amount of money each person start the game with
      */
-    private List<Player> createPlayerList(int numPlayers, int defaultMoney) {
+    private static List<Player> createPlayerList(int numPlayers, int defaultMoney) {
         PriorityQueue<PlayerWithRoll> playersPriority = new PriorityQueue<>(numPlayers);
         for (int i = 0; i < numPlayers; i++) {
             int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
@@ -87,12 +86,25 @@ public class Players {
         return this.currentPlayerHasRolled;
     }
 
+    private void doAIActions(Player player) {
+        AIStrategy aiStrategy = this.aiFactory.getAIStrategy(player.getAIStrategy().get());
+        this.aiActionHandler.ifPresent(aiActionHandler -> {
+            aiStrategy.doPlayerTurn(player, this, aiActionHandler);
+        });
+    }
+
     /**This function goes to the next turn allowing the next player in the order to roll
      */
     public void nextTurn() {
         this.currentPlayer = (this.currentPlayer + 1) % players.size();
         this.currentPlayerHasRolled = false;
         this.currentPlayerHasActed = false;
+
+
+        Player currentPlayer = this.getCurrentPlayer();
+        if (currentPlayer.getAIStrategy().isPresent()) {
+            this.doAIActions(currentPlayer);
+        }
     }
 
     /**This function removes a player from the game by removing them from the player list thereby
@@ -126,9 +138,34 @@ public class Players {
         return new PlayersDrawable(this.players);
     }
 
+    public void setAIActionHandler(GameActions aiActionHandler) {
+        this.aiActionHandler = Optional.of(aiActionHandler);
+    }
+
     public void addPlayerChangeListener(Player.PlayerChangeListener playerChangeListener) {
+        this.playerChangeListener = playerChangeListener;
         for (Player player : this.players) {
             player.addPlayerChangeListener(playerChangeListener);
+        }
+    }
+
+    public void createPlayers(PlayerSelection playerSelection) {
+        List<AIStrategy.StrategyType> aiStrategies = new ArrayList<>(EnumSet.allOf(AIStrategy.StrategyType.class));
+        aiStrategies.clear();
+        aiStrategies.add(AIStrategy.StrategyType.AGGRESSIVE);
+
+        this.players.forEach(Player::removeChangeListener);
+        this.players.clear();
+        this.players.addAll(createPlayerList(playerSelection.getNumPlayers(), 1500));
+        for (int i = 0; i < playerSelection.getNumAIPlayers(); i++) {
+            AIStrategy.StrategyType randomStrategy = aiStrategies.get(ThreadLocalRandom.current().nextInt(aiStrategies.size()));
+            this.players.get(i).setAIStrategy(randomStrategy);
+        }
+
+        addPlayerChangeListener(this.playerChangeListener);
+
+        if (this.getCurrentPlayer().getAIStrategy().isPresent()) {
+            this.doAIActions(this.getCurrentPlayer());
         }
     }
 }

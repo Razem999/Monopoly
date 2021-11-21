@@ -1,4 +1,5 @@
 import gameInterface.*;
+import gameLogic.AIStrategy;
 import gameLogic.GameActions;
 import gameLogic.GameBoard;
 import gameLogic.Players;
@@ -20,9 +21,12 @@ public class Main {
         CompoundGameInterface gameInterface = new CompoundGameInterface();
 
         GameBoard gameBoard = new GameBoard(gameInterface);
-        Players players = new Players(gameInterface);
+
+        AIStrategy.Factory aiFactory = new AIStrategy.Factory(gameBoard);
+        Players players = new Players(aiFactory);
 
         GameActions gameActions = new GameActions(gameBoard, players, gameInterface);
+        players.setAIActionHandler(gameActions);
 
         GameCanvas gameCanvas = new GameCanvas(gameBoard, players);
         contentPane.add(gameCanvas);
@@ -36,6 +40,11 @@ public class Main {
 
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
+
+        PlayerSelection playerSelection = gameInterface.askHowManyPlayers();
+        players.createPlayers(playerSelection);
+
+        gameCanvas.requestRedraw();
     }
 
 }

@@ -153,6 +153,11 @@ public class RailroadTile implements BuyableI {
     }
 
     @Override
+    public int getBuyCost() {
+        return this.cost;
+    }
+
+    @Override
     public Optional<BuyableI> asBuyable() {
         return Optional.of(this);
     }

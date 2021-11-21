@@ -1,4 +1,5 @@
 import gameInterface.CompoundGameInterface;
+import gameLogic.AIStrategy;
 import gameLogic.GameBoard;
 import gameLogic.Players;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ class GameBoardTest {
     CompoundGameInterface gameInterface = new CompoundGameInterface();
     GameBoard gb = new GameBoard(gameInterface);
 
-    Players players = new Players(gameInterface);
+    Players players = new Players(new AIStrategy.Factory(gb));
 
     GoTile goTile = new GoTile(gameInterface);
 

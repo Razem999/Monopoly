@@ -59,7 +59,10 @@ public class GameCanvas extends JPanel implements GameCamera.CameraChangeListene
         List<GameDrawable> drawables = new ArrayList<>();
         drawables.add(new GameGridDrawable(this.gameBoard));
         drawables.add(players.getPlayerDrawables());
-        drawables.add(new PlayerInfoDisplay(players.getCurrentPlayer(), gameBoard));
+
+        if (players.getPlayersList().size() > 0) {
+            drawables.add(new PlayerInfoDisplay(players.getCurrentPlayer(), gameBoard));
+        }
 
         PriorityQueue<GameDrawable> gameDrawables = new PriorityQueue<>(Comparator.comparingInt(GameDrawable::drawLayer));
         gameDrawables.addAll(drawables);

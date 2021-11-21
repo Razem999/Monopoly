@@ -273,4 +273,27 @@ public class GameTextBox extends JPanel implements GameInterfaceI {
 
         update();
     }
+
+    @Override
+    public PlayerSelection askHowManyPlayers() {
+        while (true) {
+            try {
+                String numPlayersInput = JOptionPane.showInputDialog("Enter the amount of players: ");
+                int numPlayers = Integer.parseInt(numPlayersInput);
+                String numAIPlayersInput = JOptionPane.showInputDialog("Enter the amount of AIs: ");
+                int numAIPlayers = Integer.parseInt(numAIPlayersInput);
+
+                if (numAIPlayers >= numPlayers) {
+                    JOptionPane.showMessageDialog(this, "There must be at least one human player.");
+                    break;
+                }
+
+                return new PlayerSelection(numPlayers, numAIPlayers);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "That is not a valid number.");
+            }
+        }
+
+        return new PlayerSelection(4, 0);
+    }
 }

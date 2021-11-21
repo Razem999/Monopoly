@@ -2,6 +2,7 @@ package gameLogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**The Player class is the Player that plays the game. Each Player has a
  * status, that is a Player ID, a balance, their positioning in the board
@@ -15,6 +16,7 @@ public class Player {
     private final int playerID;
     private int balance;
     private int tilePosition;
+    private Optional<AIStrategy.StrategyType> aiStrategy;
 
     public interface PlayerChangeListener {
         void handlePlayerChange(Player player);
@@ -30,6 +32,7 @@ public class Player {
         this.playerID = id;
         this.balance = startingBalance;
         this.tilePosition = 0;
+        this.aiStrategy = Optional.empty();
 
         this.playerChangeListeners = new ArrayList<>();
     }
@@ -98,6 +101,10 @@ public class Player {
         }
     }
 
+    public void removeChangeListener() {
+        this.playerChangeListeners.clear();
+    }
+
     /**This method is used to change the Player's balance once a transaction takes place
      * between the Player and the other party
      * @param diff This is the amount the Player either pays or receives
@@ -110,4 +117,13 @@ public class Player {
     public void addPlayerChangeListener(PlayerChangeListener listener) {
         this.playerChangeListeners.add(listener);
     }
+
+    public Optional<AIStrategy.StrategyType> getAIStrategy() {
+        return this.aiStrategy;
+    }
+
+    public void setAIStrategy(AIStrategy.StrategyType aiStrategy) {
+        this.aiStrategy = Optional.of(aiStrategy);
+    }
+
 }

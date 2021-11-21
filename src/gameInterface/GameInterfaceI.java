@@ -32,4 +32,5 @@ public interface GameInterfaceI {
     void notifyPlayerEndedTurn(Player player);
     void notifyPlayerTurn(Player player);
     void notifyPlayerMustRoll(Player player);
+    PlayerSelection askHowManyPlayers();
 }

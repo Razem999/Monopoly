@@ -111,6 +111,11 @@ public class UtilityTile implements BuyableI {
     }
 
     @Override
+    public int getBuyCost() {
+        return this.cost;
+    }
+
+    @Override
     public void transferOwnership(Player newOwner) {
         this.playerOwner = Optional.of(newOwner);
     }

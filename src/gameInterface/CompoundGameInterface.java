@@ -152,4 +152,13 @@ public class CompoundGameInterface implements GameInterfaceI {
     public void notifyPlayerMustRoll(Player player) {
         this.backingInterfaces.forEach(i -> i.notifyPlayerMustRoll(player));
     }
+
+    @Override
+    public PlayerSelection askHowManyPlayers() {
+        if (this.backingInterfaces.size() > 0) {
+            return this.backingInterfaces.get(0).askHowManyPlayers();
+        }
+
+        return new PlayerSelection(4, 0);
+    }
 }
