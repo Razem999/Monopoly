@@ -1,8 +1,9 @@
 package gameLogic;
 
 import gameInterface.GameInterface;
-import tiles.Buyable;
+import tiles.BuyableTile;
 import tiles.GameTile;
+import tiles.HousingTile;
 
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -29,7 +30,7 @@ public class GameActions {
         if (tileOpt.isPresent()) {
             GameTile tile = tileOpt.get();
 
-            Optional<Buyable> buyableTile = tile.asBuyable();
+            Optional<BuyableTile> buyableTile = tile.asBuyable();
             if (buyableTile.isPresent()) {
                 buyableTile.get().buy(currentPlayer);
                 this.players.handleCurrentPlayerActed();
@@ -46,9 +47,9 @@ public class GameActions {
         if (tileOpt.isPresent()) {
             GameTile tile = tileOpt.get();
 
-            Optional<Buyable> buyableTile = tile.asBuyable();
-            if (buyableTile.isPresent()) {
-                buyableTile.get().buyHouses(currentPlayer, gameBoard);
+            Optional<HousingTile> housingTile = tile.asHousingTile();
+            if (housingTile.isPresent()) {
+                housingTile.get().upgradeProperty(currentPlayer, gameBoard, housingTile.get().getPropertySet());
                 this.players.handleCurrentPlayerActed();
             } else {
                 this.gameInterface.notifyCannotBuyHouseTileKind(currentPlayer, tile);
@@ -70,7 +71,7 @@ public class GameActions {
     public void currentPlayerStartAuction() {
         GameTile tile = this.gameBoard.getTile(this.players.getCurrentPlayer().getTilePosition()).orElseThrow();
 
-        Optional<Buyable> buyableTile = tile.asBuyable();
+        Optional<BuyableTile> buyableTile = tile.asBuyable();
         if (buyableTile.isPresent()){
             this.gameInterface.startAuction(10, buyableTile.get(), this.players, this.players.getCurrentPlayer().getTilePosition());
             this.players.handleCurrentPlayerActed();
@@ -114,12 +115,6 @@ public class GameActions {
      */
     public void currentPlayerRoll() {
         Player currentPlayer = this.players.getCurrentPlayer();
-
-        if (2 < 3) {
-            this.gameBoard.advancePlayer(currentPlayer, 12, players);
-            this.players.handleCurrentPlayerFinishedRolling();
-            return;
-        }
 
         if (this.players.hasCurrentPlayerFinishedRolling()) {
             this.gameInterface.notifyCannotRoll(currentPlayer);

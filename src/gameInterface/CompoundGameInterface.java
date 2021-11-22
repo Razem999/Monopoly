@@ -4,11 +4,13 @@ import gameLogic.Auction;
 import gameLogic.GameBoard;
 import gameLogic.Player;
 import gameLogic.Players;
-import tiles.Buyable;
+import tiles.BuyableTile;
 import tiles.GameTile;
+import tiles.PropertyTile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Any output only operations are forwarded to all backing interfaces while only one interface will try to get input.
@@ -26,14 +28,41 @@ public class CompoundGameInterface implements GameInterface {
     }
 
     @Override
-    public void startAuction(int startingBid, Buyable tile, Players players, int tilePosition) {
+    public void startAuction(int startingBid, BuyableTile tile, Players players, int tilePosition) {
         this.backingInterfaces.forEach(i -> i.startAuction(startingBid, tile, players, tilePosition));
     }
 
     @Override
-    public boolean processSale(String tileName, int amount, Player buyer) {
+    public boolean processSale(String tileName, int amount, Player player) {
+        if (player.getAIStrategy().isPresent()) {
+            return true;
+        }
         if (this.backingInterfaces.size() > 0) {
-            return this.backingInterfaces.get(0).processSale(tileName, amount, buyer);
+            return this.backingInterfaces.get(0).processSale(tileName, amount, player);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean processHouseSale(String tileName, int amount, int currentNumHouses, Player player) {
+        if (player.getAIStrategy().isPresent()) {
+            return true;
+        }
+        if (this.backingInterfaces.size() > 0) {
+            return this.backingInterfaces.get(0).processHouseSale(tileName, amount, currentNumHouses, player);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean processHotelSale(String tileName, int amount, int currentNumHouses, int currentNumHotels, Player player) {
+        if (player.getAIStrategy().isPresent()) {
+            return true;
+        }
+        if (this.backingInterfaces.size() > 0) {
+            return this.backingInterfaces.get(0).processHotelSale(tileName, amount, currentNumHouses, currentNumHotels, player);
         }
 
         return false;
@@ -105,7 +134,7 @@ public class CompoundGameInterface implements GameInterface {
     }
 
     @Override
-    public void notifyCannotBuyHouseOwnershipReasons(Player player, Player owner, GameTile tile) {
+    public void notifyCannotBuyHouseOwnershipReasons(Player player, Optional<Player> owner, GameTile tile) {
         this.backingInterfaces.forEach(i -> i.notifyCannotBuyHouseOwnershipReasons(player, owner, tile));
     }
 
@@ -122,6 +151,11 @@ public class CompoundGameInterface implements GameInterface {
     @Override
     public void notifyHousesUnavailable(Player player) {
         this.backingInterfaces.forEach(i -> i.notifyHousesUnavailable(player));
+    }
+
+    @Override
+    public void notifyHotelsUnavailable(Player player) {
+        this.backingInterfaces.forEach(i -> notifyHotelsUnavailable(player));
     }
 
     @Override
@@ -196,6 +230,11 @@ public class CompoundGameInterface implements GameInterface {
     @Override
     public void notifyBetError(String msg) {
         this.backingInterfaces.forEach(i -> i.notifyBetError(msg));
+    }
+
+    @Override
+    public void notifyTileCannotUpgradeFurther(Player player, PropertyTile tile) {
+        this.backingInterfaces.forEach(i -> i.notifyTileCannotUpgradeFurther(player, tile));
     }
 
     @Override

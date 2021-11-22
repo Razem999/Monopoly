@@ -1,8 +1,10 @@
 package gameInterface;
 
 import gameLogic.*;
-import tiles.Buyable;
+import tiles.BuyableTile;
+import tiles.BuyableTile;
 import tiles.GameTile;
+import tiles.PropertyTile;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -61,7 +63,7 @@ public class GameTextBox extends JPanel implements GameInterface {
     }
 
     @Override
-    public void startAuction(int startingBid, Buyable tile, Players players, int tilePosition) {
+    public void startAuction(int startingBid, BuyableTile tile, Players players, int tilePosition) {
         JOptionPane.showMessageDialog(null, "An auction is starting for " + tile.getName() + " for $" + startingBid);
         Auction auction = new Auction(players.getPlayersList(), players.getCurrentPlayer());
 
@@ -80,8 +82,32 @@ public class GameTextBox extends JPanel implements GameInterface {
     }
 
     @Override
-    public boolean processSale(String tileName, int amount, Player buyer) {
-        return true;
+    public boolean processSale(String tileName, int amount, Player player) {
+        if (player.getAIStrategy().isPresent()) {
+            return true;
+        }
+        int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want top buy " + tileName + " for $" + amount + "?");
+
+        return choice == JOptionPane.YES_OPTION;
+    }
+
+    @Override
+    public boolean processHouseSale(String tileName, int amount, int currentNumHouses, Player player) {
+        if (player.getAIStrategy().isPresent()) {
+            return true;
+        }
+        int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want top buy a house on " + tileName + " for $" + amount + "? " +
+                "(There are currently " + currentNumHouses + " on this tile)");
+
+        return choice == JOptionPane.YES_OPTION;
+    }
+
+    @Override
+    public boolean processHotelSale(String tileName, int amount, int currentNumHouses, int currentNumHotels, Player player) {
+        int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want top buy a hotel on " + tileName + " for $" + amount + "? " +
+                "(There are currently " + currentNumHouses + " houses and " + currentNumHotels + " on this tile)");
+
+        return choice == JOptionPane.YES_OPTION;
     }
 
     @Override
@@ -182,10 +208,12 @@ public class GameTextBox extends JPanel implements GameInterface {
     }
 
     @Override
-    public void notifyCannotBuyHouseOwnershipReasons(Player player, Player owner, GameTile tile) {
-        history.add("Player " + player.getPlayerID() + " can not buy house in " + tile.getName() + " because Player " + owner.getPlayerID() + " owns this property");
-
-        update();
+    public void notifyCannotBuyHouseOwnershipReasons(Player player, Optional<Player> owner, GameTile tile) {
+        if (owner.isPresent()) {
+            JOptionPane.showMessageDialog(null, "Player " + player.getPlayerID() + " can not buy house for " + tile.getName() + " because Player " + owner.get().getPlayerID() + "owns this property");
+        } else {
+            JOptionPane.showMessageDialog(null, "You must own this property to upgrade it");
+        }
     }
 
     @Override
@@ -197,9 +225,7 @@ public class GameTextBox extends JPanel implements GameInterface {
 
     @Override
     public void notifyCannotBuyHouseSetReasons(Player player, GameTile tile) {
-        history.add("You must own this property and all the properties under this set to build a house");
-
-        update();
+        JOptionPane.showMessageDialog(null, "You must own all properties under this set to upgrade");
     }
 
     @Override
@@ -207,6 +233,11 @@ public class GameTextBox extends JPanel implements GameInterface {
         history.add("There are no houses available to buy");
 
         update();
+    }
+
+    @Override
+    public void notifyHotelsUnavailable(Player player) {
+        JOptionPane.showMessageDialog(null, "There are no hotels available");
     }
 
     @Override
@@ -320,6 +351,11 @@ public class GameTextBox extends JPanel implements GameInterface {
     @Override
     public void notifyBetError(String msg) {
         JOptionPane.showMessageDialog(null, msg);
+    }
+
+    @Override
+    public void notifyTileCannotUpgradeFurther(Player player, PropertyTile tile) {
+        JOptionPane.showMessageDialog(null, "This property has reached the maximum upgrade");
     }
 
     @Override

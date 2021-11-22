@@ -15,7 +15,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 2021-10-25
  */
-public class RailroadTile implements Buyable {
+public class RailroadTile implements BuyableTile {
     private final String name;
     private final int cost;
     private int totalOwned;
@@ -141,11 +141,6 @@ public class RailroadTile implements Buyable {
     }
 
     @Override
-    public void buyHouses(Player owner, GameBoard gameBoard) {
-        return;
-    }
-
-    @Override
     public void transferOwnership(Player newOwner) {
         this.owner = Optional.of(newOwner);
     }
@@ -173,7 +168,12 @@ public class RailroadTile implements Buyable {
     }
 
     @Override
-    public Optional<Buyable> asBuyable() {
+    public Optional<HousingTile> asHousingTile() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<BuyableTile> asBuyable() {
         return Optional.of(this);
     }
 }

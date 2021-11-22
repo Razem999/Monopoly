@@ -54,7 +54,12 @@ public class GoTile implements GameTile {
     }
 
     @Override
-    public Optional<Buyable> asBuyable() {
+    public Optional<BuyableTile> asBuyable() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<HousingTile> asHousingTile() {
         return Optional.empty();
     }
 }
