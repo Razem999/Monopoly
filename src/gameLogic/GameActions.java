@@ -49,6 +49,18 @@ public class GameActions {
         List<GameBoard.TileAndIndex> ownedTiles = this.gameBoard
                 .filterTilesWithIndex(t -> t.asBuyable().isPresent() && t.asBuyable().get().isOwnedBy(currentPlayer));
 
+        Optional<GameTile> gameTile = this.gameBoard.getTile(currentPlayer.getTilePosition());
+        if (gameTile.isEmpty() || gameTile.get().asHousingTile().isEmpty()) {
+            return;
+        }
+        List<GameTile> propertySet = this.gameBoard
+                .getPropertiesUnderSet(gameTile.get().asHousingTile().get().getPropertySet());
+
+        if (!ownedTiles.stream().map(GameBoard.TileAndIndex::tile).collect(Collectors.toList()).containsAll(propertySet)) {
+            gameInterface.notifyCannotBuyHouseSetReasons(currentPlayer, gameTile.get());
+            return;
+        }
+
         List<GameBoard.TileAndIndex> houseBuildableTiles = ownedTiles.stream()
                 .filter(t -> t.tile().asHousingTile().isPresent() && t.tile().asHousingTile().get().numberOfHouses() < 4).collect(Collectors.toList());
 

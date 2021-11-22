@@ -26,7 +26,6 @@ public class GameBoard {
     private final JailTile jailTile;
     private int placeableHouses;
     private int placeableHotels;
-    private List<PropertyTile> properties;
 
     /**This is the constructor of GameBoard.
      */
@@ -182,18 +181,8 @@ public class GameBoard {
         return result;
     }
 
-    public List<PropertyTile> getPropertiesUnderSet(PropertySet propertySet) {
-        this.properties = new ArrayList<>();
-        for (GameTile tile : this.tiles) {
-            if (tile.getPropertySet() == propertySet) {
-                properties.add(tile.getPropertyTile());
-            }
-        }
-        return properties;
-    }
-
-    public int getPropertiesOwnedUnderSet() {
-        return properties.size();
+    public List<GameTile> getPropertiesUnderSet(PropertySet propertySet) {
+        return this.getPropertiesFilter(TileFilter.setFilter(propertySet));
     }
 
     public void updateHouse(int house) {
