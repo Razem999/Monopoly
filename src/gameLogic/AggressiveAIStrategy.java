@@ -21,7 +21,6 @@ public class AggressiveAIStrategy implements AIStrategy {
             } else if (currentTile.asBuyable().isPresent() && Auction.AUCTION_START_PRICE <= player.getBalance()) {
                 gameActions.currentPlayerStartAuction();
             }
-
         }
     }
 
@@ -39,7 +38,6 @@ public class AggressiveAIStrategy implements AIStrategy {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ignored) {}
-
         }
 
         gameActions.currentPlayerPass();

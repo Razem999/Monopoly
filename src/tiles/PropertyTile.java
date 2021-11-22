@@ -26,6 +26,7 @@ public class PropertyTile implements Buyable {
     private final int rentHotel;
     private final GameInterface gameInterface;
     private Optional<Player> owner;
+    private int housesOwned;
 
     /**This is the constructor of tiles.PropertyTile with parameters
      * @param name This provides the name of the utility tile
@@ -58,7 +59,17 @@ public class PropertyTile implements Buyable {
     /**This function determines the rent of a property tile
      */
     private int calculateRent() {
-        return this.baseRent;
+        if (housesOwned == 4) {
+            return rent4h;
+        } else if(housesOwned == 3) {
+            return rent3h;
+        } else if (housesOwned == 2) {
+            return rent2h;
+        } else if (housesOwned == 1) {
+            return rent1h;
+        } else {
+            return baseRent;
+        }
     }
 
     /**This function determines the rent when a player lands on a property tile owned
@@ -119,6 +130,11 @@ public class PropertyTile implements Buyable {
     }
 
     @Override
+    public PropertyTile getPropertyTile() {
+        return this;
+    }
+
+    @Override
     public void buy(Player player) {
         if (this.owner.isPresent()) {
             gameInterface.notifyCannotBuyAlreadyOwned(player, this.owner.get(), this);
@@ -136,6 +152,28 @@ public class PropertyTile implements Buyable {
             } else {
                 gameInterface.notifyPlayerDeclinedPurchase(player, this.name);
             }
+        }
+    }
+
+    @Override
+    public void buyHouses(Player player, GameBoard gameBoard) {
+        if (player.equals(owner)) {
+            if (player.getBalance() < this.pricePerHouse) {
+                gameInterface.notifyCannotBuyHouseBalanceReasons(player, this);
+            } else if (gameBoard.housesAvailable() == 0) {
+                gameInterface.notifyHousesUnavailable(player);
+            } else {
+                boolean choice = gameInterface.processSale(this.name, this.pricePerHouse, player);
+                if (choice) {
+                    player.changeBalance(-1 * this.pricePerHouse);
+                    gameBoard.updateHouse(-1);
+                    gameInterface.notifyPlayerPurchasedHouse(player, this.name, this.pricePerHouse);
+                } else {
+                    gameInterface.notifyPlayerDeclinedHouse(player);
+                }
+            }
+        } else {
+            gameInterface.notifyCannotBuyHouseOwnershipReasons(player, this.owner.get(), this);
         }
     }
 

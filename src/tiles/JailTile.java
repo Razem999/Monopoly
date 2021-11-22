@@ -99,6 +99,11 @@ public class JailTile implements GameTile {
         return PropertySet.White;
     }
 
+    @Override
+    public PropertyTile getPropertyTile() {
+        return null;
+    }
+
     /** This function jails a player
      *
      * @param player The player being jailed

@@ -91,6 +91,11 @@ public class UtilityTile implements Buyable {
     }
 
     @Override
+    public void buyHouses(Player owner, GameBoard gameBoard) {
+        return;
+    }
+
+    @Override
     public String getName() {
         return this.name;
     }
@@ -98,6 +103,11 @@ public class UtilityTile implements Buyable {
     @Override
     public PropertySet getPropertySet() {
         return PropertySet.White;
+    }
+
+    @Override
+    public PropertyTile getPropertyTile() {
+        return null;
     }
 
     @Override

@@ -1,7 +1,10 @@
+package gameLogic.tests;
+
 import gameInterface.CompoundGameInterface;
 import gameInterface.PlayerSelection;
 import gameLogic.AIStrategy;
 import gameLogic.GameBoard;
+
 import gameLogic.Player;
 import gameLogic.Players;
 import org.junit.jupiter.api.BeforeEach;

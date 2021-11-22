@@ -39,6 +39,23 @@ public class GameActions {
         }
     }
 
+    public void currentPlayerBuyHouse() {
+        Player currentPlayer = this.players.getCurrentPlayer();
+
+        Optional<GameTile> tileOpt = this.gameBoard.getTile(currentPlayer.getTilePosition());
+        if (tileOpt.isPresent()) {
+            GameTile tile = tileOpt.get();
+
+            Optional<Buyable> buyableTile = tile.asBuyable();
+            if (buyableTile.isPresent()) {
+                buyableTile.get().buyHouses(currentPlayer, gameBoard);
+                this.players.handleCurrentPlayerActed();
+            } else {
+                this.gameInterface.notifyCannotBuyHouseTileKind(currentPlayer, tile);
+            }
+        }
+    }
+
     public void currentPlayerPass() {
         if (this.players.hasCurrentPlayerFinishedRolling()) {
             this.gameInterface.notifyPlayerEndedTurn(this.players.getCurrentPlayer());

@@ -34,6 +34,7 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
     private final JButton buyButton;
     private final JButton auctionButton;
     private final JButton payJailFeeButton;
+    private final JButton buyHouses;
 
     /**This is the constructor of GameButtonPanel with parameters
      * @param gameActions These are the players actions they can preform on their turn
@@ -95,6 +96,18 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
             }
         }).start());
 
+        //Creates a button that allows a player to buy houses for property sets they own
+        this.buyHouses = new JButton("Buy House");
+        this.buyHouses.addActionListener(e -> new Thread(() -> {
+            if (actionLock.tryLock()) {
+                try {
+                    gameActions.currentPlayerBuyHouse();
+                } finally {
+                    actionLock.unlock();
+                }
+            }
+        }).start());
+
         //Creates a button that allows a player to pay themselves out of jail
         this.payJailFeeButton = new JButton("Pay Jail Fee ($" + JailTile.JAIL_FINE + ")");
         this.payJailFeeButton.addActionListener(e -> new Thread(() -> {
@@ -120,6 +133,7 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
         this.add(this.passButton);
         this.add(this.buyButton);
         this.add(this.auctionButton);
+        this.add(this.buyHouses);
 
         this.setBorder(new EmptyBorder(70, 50, 70, 50));
 
@@ -138,6 +152,7 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
         this.add(this.passButton);
         this.add(this.buyButton);
         this.add(this.auctionButton);
+        this.add(this.buyHouses);
         this.add(this.payJailFeeButton);
 
         this.setBorder(new EmptyBorder(50, 50, 50, 50));

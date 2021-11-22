@@ -58,6 +58,11 @@ public class FreeParking implements GameTile {
     }
 
     @Override
+    public PropertyTile getPropertyTile() {
+        return null;
+    }
+
+    @Override
     public Optional<Buyable> asBuyable() {
         return Optional.empty();
     }
