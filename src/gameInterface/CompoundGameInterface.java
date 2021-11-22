@@ -45,15 +45,12 @@ public class CompoundGameInterface implements GameInterface {
     }
 
     @Override
-    public boolean processHouseSale(String tileName, int amount, int currentNumHouses, Player player) {
-        if (player.getAIStrategy().isPresent()) {
-            return true;
-        }
+    public Optional<Integer> processHouseSale(List<GameBoard.TileAndIndex> tiles, Player player, GameBoard gameBoard) {
         if (this.backingInterfaces.size() > 0) {
-            return this.backingInterfaces.get(0).processHouseSale(tileName, amount, currentNumHouses, player);
+            return this.backingInterfaces.get(0).processHouseSale(tiles, player, gameBoard);
         }
 
-        return false;
+        return Optional.empty();
     }
 
     @Override

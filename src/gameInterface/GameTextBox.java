@@ -11,10 +11,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GameTextBox extends JPanel implements GameInterface {
     private final JTextArea textArea;
-
     private final List<String> history;
     private final static String newline = "\n";
     private final AuctionBidExecutor.Factory auctionBetExecutorFactory;
@@ -91,14 +92,23 @@ public class GameTextBox extends JPanel implements GameInterface {
     }
 
     @Override
-    public boolean processHouseSale(String tileName, int amount, int currentNumHouses, Player player) {
-        if (player.getAIStrategy().isPresent()) {
-            return true;
-        }
-        int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want top buy a house on " + tileName + " for $" + amount + "? " +
-                "(There are currently " + currentNumHouses + " on this tile)");
+    public Optional<Integer> processHouseSale(List<GameBoard.TileAndIndex> tiles, Player player, GameBoard gameBoard) {
+        AtomicReference<Optional<Integer>> selection = new AtomicReference<>(Optional.empty());
+        AtomicBoolean done = new AtomicBoolean(false);
 
-        return choice == JOptionPane.YES_OPTION;
+        new TileSelectionMenu(tiles, gameBoard, s -> {
+            selection.set(Optional.of(s));
+            done.set(true);
+        },
+        () -> done.set(true));
+
+        while (!done.get()) {
+            try {
+                done.wait(1000);
+            } catch (InterruptedException ignored) {}
+        }
+
+        return selection.get();
     }
 
     @Override

@@ -168,15 +168,10 @@ public class PropertyTile implements HousingTile {
         } else if (gameBoard.housesAvailable() == 0) {
             gameInterface.notifyHousesUnavailable(player);
         } else {
-            boolean choice = gameInterface.processHouseSale(this.name, this.pricePerHouse, this.houses, player);
-            if (choice) {
-                player.changeBalance(-1 * this.pricePerHouse);
-                gameBoard.updateHouse(-1);
-                gameInterface.notifyPlayerPurchasedHouse(player, this.name, this.pricePerHouse);
-                this.houses++;
-            } else {
-                gameInterface.notifyPlayerDeclinedHouse(player);
-            }
+            player.changeBalance(-1 * this.pricePerHouse);
+            gameBoard.updateHouse(-1);
+            gameInterface.notifyPlayerPurchasedHouse(player, this.name, this.pricePerHouse);
+            this.houses++;
         }
     }
 
@@ -186,15 +181,10 @@ public class PropertyTile implements HousingTile {
         } else if (gameBoard.housesAvailable() == 0) {
             gameInterface.notifyHousesUnavailable(player);
         } else {
-            boolean choice = gameInterface.processHouseSale(this.name, this.pricePerHouse, this.hotels, player);
-            if (choice) {
-                player.changeBalance(-1 * this.pricePerHouse);
-                gameBoard.updateHotel(-1);
-                gameInterface.notifyPlayerPurchasedHouse(player, this.name, this.pricePerHouse);
-                this.hotels++;
-            } else {
-                gameInterface.notifyPlayerDeclinedHouse(player);
-            }
+            player.changeBalance(-1 * this.pricePerHouse);
+            gameBoard.updateHotel(-1);
+            gameInterface.notifyPlayerPurchasedHouse(player, this.name, this.pricePerHouse);
+            this.hotels++;
         }
     }
 
@@ -214,8 +204,8 @@ public class PropertyTile implements HousingTile {
     }
 
     @Override
-    public int numberOfHouses(GameBoard gameBoard) {
-        return 0;
+    public int numberOfHouses() {
+        return this.houses;
     }
 
     @Override

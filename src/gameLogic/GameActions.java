@@ -5,8 +5,11 @@ import tiles.BuyableTile;
 import tiles.GameTile;
 import tiles.HousingTile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class GameActions {
     private final GameBoard gameBoard;
@@ -42,6 +45,22 @@ public class GameActions {
 
     public void currentPlayerBuyHouse() {
         Player currentPlayer = this.players.getCurrentPlayer();
+
+        List<GameBoard.TileAndIndex> ownedTiles = this.gameBoard
+                .filterTilesWithIndex(t -> t.asBuyable().isPresent() && t.asBuyable().get().isOwnedBy(currentPlayer));
+
+        List<GameBoard.TileAndIndex> houseBuildableTiles = ownedTiles.stream()
+                .filter(t -> t.tile().asHousingTile().isPresent() && t.tile().asHousingTile().get().numberOfHouses() < 4).collect(Collectors.toList());
+
+        Optional<Integer> tileSelection = this.gameInterface.processHouseSale(houseBuildableTiles, currentPlayer, this.gameBoard);
+        if (tileSelection.isPresent() &&
+                houseBuildableTiles.stream()
+                        .mapToInt(GameBoard.TileAndIndex::index).anyMatch(i -> i == tileSelection.get())) {
+
+            Optional<GameTile> tileOpt = this.gameBoard.getTile(tileSelection.get());
+
+            tileOpt.flatMap(GameTile::asHousingTile).ifPresent(h -> h.upgradeProperty(currentPlayer, gameBoard));
+        }
 
         Optional<GameTile> tileOpt = this.gameBoard.getTile(currentPlayer.getTilePosition());
         if (tileOpt.isPresent()) {

@@ -7,12 +7,13 @@ import gameLogic.Players;
 import gameLogic.Player;
 import tiles.PropertyTile;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface GameInterface extends AuctionBidExecutor {
     void startAuction(int startingBid, BuyableTile tile, Players players, int tilePosition);
     boolean processSale(String tileName, int amount, Player player);
-    boolean processHouseSale(String tileName, int amount, int currentNumHouses, Player player);
+    Optional<Integer> processHouseSale(List<GameBoard.TileAndIndex> tiles, Player player, GameBoard gameBoard);
     boolean processHotelSale(String tileName, int amount, int currentNumHouses, int currentNumHotels, Player player);
     void displayPlayerProperties(Player player, GameBoard gameBoard);
     void notifyPlayerDeclinedPurchase(Player player, String tileName);

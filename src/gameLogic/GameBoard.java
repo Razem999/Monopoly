@@ -7,6 +7,7 @@ import tiles.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -14,6 +15,8 @@ import java.util.stream.IntStream;
  * The GameBoard class represents the entirety of the monopoly gameboard where all types of tiles are put together
  */
 public class GameBoard {
+
+    public static record TileAndIndex(GameTile tile, int index) { }
 
     private final  int totalHouses = 32;
     private final  int totalHotels = 12;
@@ -165,6 +168,17 @@ public class GameBoard {
                 result.add(tile);
             }
         }
+        return result;
+    }
+
+    public List<TileAndIndex> filterTilesWithIndex(Function<GameTile, Boolean> p) {
+        List<TileAndIndex> result = new ArrayList<>();
+        for (int i = 0; i < this.tiles.size(); i++) {
+            if (p.apply(this.tiles.get(i))) {
+                result.add(new TileAndIndex(this.tiles.get(i), i));
+            }
+        }
+
         return result;
     }
 
