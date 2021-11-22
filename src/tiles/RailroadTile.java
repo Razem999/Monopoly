@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * The Railroad class represents the railroads tile from the original game,
  * where all the railroads cost the same and the rent to pay is correlated
- * with the number of railroads owned by the gameLogic.Player.
+ * with the number of railroads owned by the Player.
  *
  * @version 1.0
  * @since 2021-10-25
@@ -56,10 +56,10 @@ public class RailroadTile implements Buyable {
     /**
      * This method is used to identify the player that landed on an occupied tile, and pay rent to
      * the player that owns the tile. It checks to see if the player has enough money to be able to
-     * pay the rent. If the player has insufficient funds, the gameLogic.Player paying transfers all his money and
+     * pay the rent. If the player has insufficient funds, the Player paying transfers all his money and
      * properties to the owner of that tile. Otherwise, they transfer the rent amount to the owner.
-     * @param player This is the gameLogic.Player who is paying
-     * @param owner This is the gameLogic.Player who is receiving the payment
+     * @param player This is the Player who is paying
+     * @param owner This is the Player who is receiving the payment
      * @param gameBoard This is the board in which the tile is situated
      * @param players This is a list of players playing the game
      */

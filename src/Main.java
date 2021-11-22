@@ -36,7 +36,7 @@ public class Main {
 
         AuctionBidExecutor.Factory auctionBetExecutorFactory = new AuctionBidExecutor.Factory();
         auctionBetExecutorFactory.setAiFactory(aiFactory);
-        GameInfoPanel gameInfoPanel = new GameInfoPanel(gameActions, auctionBetExecutorFactory);
+        GameInfoPanel gameInfoPanel = new GameInfoPanel(gameActions, auctionBetExecutorFactory, players, gameBoard);
         gameInterface.connectGameInterface(gameInfoPanel.getGameInterface());
         contentPane.add(gameInfoPanel);
 
