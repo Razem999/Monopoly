@@ -46,7 +46,22 @@ Known Issues:
   - None
 
 Changes From Milestone 2 to Milestone 3:
-  - N/A
+
+Deliverables Milestone 3:
+  - UML Diagram: Including changes made so houses, hotels, and additional tiles are accounted for.
+    
+  - JAR File: This contains our projects code and Java documentation.
+    
+  - Documentation: All documentation can be found in the code above their respective functions and classes.
+
+  - Engineering Decisions: Explains why the code was developed the way it was.
+
+  - User Manual: Text file explaining how to play the game.
+
+  - Sequesnce Diagrams: 5 sequence diagrams depicting actions that are preformed during the game.
+ 
+Known Issues:
+  - None
 
 Changes From Milestone 3 to Milestone 4:
   - N/A
