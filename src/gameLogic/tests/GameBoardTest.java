@@ -36,6 +36,9 @@ class GameBoardTest {
 
         gb.advancePlayer(players.getPlayerByID(0).get(), 10, players);
         assertEquals(players.getPlayerByID(0).get().getTilePosition(), 11);
+
+        gb.advancePlayer(players.getPlayerByID(0).get(), 12, players);
+        assertEquals(players.getPlayerByID(0).get().getTilePosition(), 13);
     }
 
     @Test

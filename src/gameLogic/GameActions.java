@@ -116,7 +116,7 @@ public class GameActions {
         Player currentPlayer = this.players.getCurrentPlayer();
 
         if (2 < 3) {
-            this.gameBoard.jailPlayer(currentPlayer);
+            this.gameBoard.advancePlayer(currentPlayer, 12, players);
             this.players.handleCurrentPlayerFinishedRolling();
             return;
         }

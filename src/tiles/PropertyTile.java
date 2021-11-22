@@ -5,6 +5,7 @@ import gameLogic.Players;
 import gameLogic.GameBoard;
 import gameInterface.GameInterface;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -27,6 +28,7 @@ public class PropertyTile implements Buyable {
     private final GameInterface gameInterface;
     private Optional<Player> owner;
     private int housesOwned;
+    private final int maxHouses;
 
     /**This is the constructor of tiles.PropertyTile with parameters
      * @param name This provides the name of the utility tile
@@ -54,6 +56,7 @@ public class PropertyTile implements Buyable {
         this.rent3h = rent3h;
         this.rent4h = rent4h;
         this.rentHotel = rentHotel;
+        this.maxHouses = 4;
     }
 
     /**This function determines the rent of a property tile
@@ -157,7 +160,7 @@ public class PropertyTile implements Buyable {
 
     @Override
     public void buyHouses(Player player, GameBoard gameBoard) {
-        if (player.equals(owner)) {
+        if (this.isOwnedBy(player)) {
             if (player.getBalance() < this.pricePerHouse) {
                 gameInterface.notifyCannotBuyHouseBalanceReasons(player, this);
             } else if (gameBoard.housesAvailable() == 0) {

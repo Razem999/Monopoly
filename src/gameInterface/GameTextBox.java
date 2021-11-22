@@ -183,7 +183,7 @@ public class GameTextBox extends JPanel implements GameInterface {
 
     @Override
     public void notifyCannotBuyHouseOwnershipReasons(Player player, Player owner, GameTile tile) {
-        history.add("Player " + player.getPlayerID() + " can not buy house for " + tile.getName() + " because Player " + owner.getPlayerID() + "owns this property");
+        history.add("Player " + player.getPlayerID() + " can not buy house in " + tile.getName() + " because Player " + owner.getPlayerID() + " owns this property");
 
         update();
     }
@@ -191,6 +191,13 @@ public class GameTextBox extends JPanel implements GameInterface {
     @Override
     public void notifyCannotBuyHouseTileKind(Player player, GameTile tile) {
         history.add("Player " + player.getPlayerID() + " can not buy house in " + tile.getName());
+
+        update();
+    }
+
+    @Override
+    public void notifyCannotBuyHouseSetReasons(Player player, GameTile tile) {
+        history.add("You must own this property and all the properties under this set to build a house");
 
         update();
     }
