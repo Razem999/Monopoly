@@ -2,6 +2,7 @@ package gameInterface;
 
 import gameLogic.*;
 import tiles.BuyableTile;
+import tiles.BuyableTile;
 import tiles.GameTile;
 import tiles.PropertyTile;
 
@@ -49,7 +50,7 @@ public class GameTextBox extends JPanel implements GameInterface {
 
         for (String text : history) {
             labelTextStringBuilder.append(text).append(newline);
-            labelTextStringBuilder.append("-----------------").append(newline);
+            labelTextStringBuilder.append("-----------------" + newline);
         }
 
 
@@ -219,27 +220,34 @@ public class GameTextBox extends JPanel implements GameInterface {
     @Override
     public void notifyCannotBuyHouseOwnershipReasons(Player player, Optional<Player> owner, GameTile tile) {
         if (owner.isPresent()) {
-            history.add("Player " + player.getPlayerID() + " can not buy house for " + tile.getName() + " because Player " + owner.get().getPlayerID() + "owns this property");
+            JOptionPane.showMessageDialog(null, "Player " + player.getPlayerID() + " can not buy house for " + tile.getName() + " because Player " + owner.get().getPlayerID() + "owns this property");
         } else {
-            history.add("Player " + player.getPlayerID() + " can not buy house for " + tile.getName() + " because no one owns this property.");
+            JOptionPane.showMessageDialog(null, "You must own this property to upgrade it");
         }
+    }
+
+    @Override
+    public void notifyCannotBuyHouseTileKind(Player player, GameTile tile) {
+        history.add("Player " + player.getPlayerID() + " can not buy house in " + tile.getName());
 
         update();
     }
 
     @Override
-    public void notifyCannotBuyHouseTileKind(Player player, GameTile tile) {
-        JOptionPane.showMessageDialog(null, "Player " + player.getPlayerID() + " cannot buy house in " + tile.getName());
+    public void notifyCannotBuyHouseSetReasons(Player player, GameTile tile) {
+        JOptionPane.showMessageDialog(null, "You must own all properties under this set to upgrade");
     }
 
     @Override
     public void notifyHousesUnavailable(Player player) {
-        JOptionPane.showMessageDialog(null, "There are no houses available.");
+        history.add("There are no houses available to buy");
+
+        update();
     }
 
     @Override
     public void notifyHotelsUnavailable(Player player) {
-        JOptionPane.showMessageDialog(null, "There are no hotels available.");
+        JOptionPane.showMessageDialog(null, "There are no hotels available");
     }
 
     @Override
@@ -251,7 +259,7 @@ public class GameTextBox extends JPanel implements GameInterface {
 
     @Override
     public void notifyPlayerDeclinedHouse(Player player) {
-        history.add("Player " + player.getPlayerID() + " has declined to purchase a house for this property.");
+        history.add("Player " + player.getPlayerID() + " has declined to purchase a house for this property");
 
         update();
     }
@@ -331,14 +339,14 @@ public class GameTextBox extends JPanel implements GameInterface {
     public PlayerSelection askHowManyPlayers() {
         while (true) {
             try {
-                String numPlayersInput = JOptionPane.showInputDialog("Enter the amount of players (Including AI): ");
+                String numPlayersInput = JOptionPane.showInputDialog("Enter the amount of players: ");
                 int numPlayers = Integer.parseInt(numPlayersInput);
                 String numAIPlayersInput = JOptionPane.showInputDialog("Enter the amount of AIs: ");
                 int numAIPlayers = Integer.parseInt(numAIPlayersInput);
 
                 if (numAIPlayers >= numPlayers) {
                     JOptionPane.showMessageDialog(null, "There must be at least one human player.");
-                    continue;
+                    break;
                 }
 
                 return new PlayerSelection(numPlayers, numAIPlayers);
@@ -346,6 +354,8 @@ public class GameTextBox extends JPanel implements GameInterface {
                 JOptionPane.showMessageDialog(null, "That is not a valid number.");
             }
         }
+
+        return new PlayerSelection(4, 0);
     }
 
     @Override
@@ -355,7 +365,7 @@ public class GameTextBox extends JPanel implements GameInterface {
 
     @Override
     public void notifyTileCannotUpgradeFurther(Player player, PropertyTile tile) {
-        JOptionPane.showMessageDialog(null, "This tile cannot be upgraded further");
+        JOptionPane.showMessageDialog(null, "This property has reached the maximum upgrade");
     }
 
     @Override

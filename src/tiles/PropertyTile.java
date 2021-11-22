@@ -5,6 +5,7 @@ import gameLogic.Players;
 import gameLogic.GameBoard;
 import gameInterface.GameInterface;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -180,6 +181,8 @@ public class PropertyTile implements HousingTile {
             gameInterface.notifyCannotBuyHouseBalanceReasons(player, this);
         } else if (gameBoard.housesAvailable() == 0) {
             gameInterface.notifyHousesUnavailable(player);
+        } else if (this.numberOfHouses() < 4) {
+
         } else {
             player.changeBalance(-1 * this.pricePerHouse);
             gameBoard.updateHotel(-1);

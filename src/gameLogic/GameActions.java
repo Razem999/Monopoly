@@ -61,19 +61,6 @@ public class GameActions {
 
             tileOpt.flatMap(GameTile::asHousingTile).ifPresent(h -> h.upgradeProperty(currentPlayer, gameBoard));
         }
-
-        Optional<GameTile> tileOpt = this.gameBoard.getTile(currentPlayer.getTilePosition());
-        if (tileOpt.isPresent()) {
-            GameTile tile = tileOpt.get();
-
-            Optional<HousingTile> housingTile = tile.asHousingTile();
-            if (housingTile.isPresent()) {
-                housingTile.get().upgradeProperty(currentPlayer, gameBoard);
-                this.players.handleCurrentPlayerActed();
-            } else {
-                this.gameInterface.notifyCannotBuyHouseTileKind(currentPlayer, tile);
-            }
-        }
     }
 
     public void currentPlayerPass() {
@@ -96,6 +83,7 @@ public class GameActions {
             this.players.handleCurrentPlayerActed();
         } else {
             this.gameInterface.notifyAuctionCannotStart(tile);
+            return;
         }
 
     }
