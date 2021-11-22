@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @version 1.0
  * @since 2021-10-25
  */
-public class UtilityTile implements Buyable {
+public class UtilityTile implements BuyableTile {
 
     private final String name;
     private final int cost;
@@ -91,11 +91,6 @@ public class UtilityTile implements Buyable {
     }
 
     @Override
-    public void buyHouses(Player owner, GameBoard gameBoard) {
-        return;
-    }
-
-    @Override
     public String getName() {
         return this.name;
     }
@@ -111,7 +106,7 @@ public class UtilityTile implements Buyable {
     }
 
     @Override
-    public Optional<Buyable> asBuyable() {
+    public Optional<BuyableTile> asBuyable() {
         return Optional.empty();
     }
 
@@ -128,6 +123,11 @@ public class UtilityTile implements Buyable {
     @Override
     public int getBuyCost() {
         return this.cost;
+    }
+
+    @Override
+    public Optional<HousingTile> asHousingTile() {
+        return Optional.empty();
     }
 
     @Override

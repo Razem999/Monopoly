@@ -16,17 +16,20 @@ import java.util.stream.IntStream;
 public class GameBoard {
 
     private final  int totalHouses = 32;
+    private final  int totalHotels = 12;
     private final List<GameTile> tiles;
     private final GameInterface gameInterface;
     private final int jailIndex;
     private final JailTile jailTile;
     private int placeableHouses;
+    private int placeableHotels;
     private List<PropertyTile> properties;
 
     /**This is the constructor of GameBoard.
      */
     public GameBoard(GameInterface gameInterface) {
         this.placeableHouses = 32;
+        this.placeableHotels = 12;
         this.gameInterface = gameInterface;
         this.jailIndex = 10;
         this.jailTile = new JailTile();
@@ -85,9 +88,9 @@ public class GameBoard {
     /**This method gets all tiles owned by a specific player
      * @param player This provides the player who's owned properties will be displayed
      */
-    public List<Buyable> getTilesOwnedByPlayer(Player player) {
+    public List<BuyableTile> getTilesOwnedByPlayer(Player player) {
         return this.tiles.stream().filter((GameTile tile) -> {
-            Optional<Buyable> buyableTile = tile.asBuyable();
+            Optional<BuyableTile> buyableTile = tile.asBuyable();
             return buyableTile.map(buyable -> buyable.isOwnedBy(player)).orElse(false);
         }).map((GameTile tile) -> tile.asBuyable().orElseThrow()).collect(Collectors.toList());
     }
@@ -147,7 +150,7 @@ public class GameBoard {
      * @param destination This provides the player who the properties are being transferred to
      */
     public void transferPlayerProperties(Player source, Player destination) {
-        for (Buyable buyableTile : this.getTilesOwnedByPlayer(source)) {
+        for (BuyableTile buyableTile : this.getTilesOwnedByPlayer(source)) {
             buyableTile.transferOwnership(destination);
         }
     }
@@ -185,10 +188,19 @@ public class GameBoard {
         }
     }
 
+    public void updateHotel(int hotel) {
+        if (placeableHotels < totalHotels && placeableHotels >= 0) {
+            placeableHotels += hotel;
+        }
+    }
+
     public int housesAvailable() {
         return placeableHouses;
     }
 
+    public int hotelsAvailable() {
+        return placeableHotels;
+    }
     /**This method gets the player in jail to pay the jail release fee
      * @param player This provides the player currently paying to get out of jail
      */
@@ -264,9 +276,9 @@ public class GameBoard {
     }
 
     public int getPlayerNetWorth(Player player) {
-        List<Buyable> properties = this.getTilesOwnedByPlayer(player);
+        List<BuyableTile> properties = this.getTilesOwnedByPlayer(player);
 
-        return properties.stream().mapToInt(Buyable::getBuyCost).reduce(0, Integer::sum);
+        return properties.stream().mapToInt(BuyableTile::getBuyCost).reduce(0, Integer::sum);
     }
 
 }

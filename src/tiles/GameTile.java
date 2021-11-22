@@ -12,5 +12,6 @@ public interface GameTile {
     String getName();
     PropertySet getPropertySet();
     PropertyTile getPropertyTile();
-    Optional<Buyable> asBuyable();
+    Optional<BuyableTile> asBuyable();
+    Optional<HousingTile> asHousingTile();
 }
