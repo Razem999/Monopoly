@@ -1,15 +1,23 @@
 import gameLogic.Player;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 
-    Player p1 = new Player(0, 1500);
-    Player p2 = new Player(1, 750);
-    Player p3 = new Player(2, 500);
-    Player p4 = new Player(3);
-    int p5 = 4;
+    private Player p1;
+    private Player p2;
+    private Player p3;
+    private Player p4;
+
+    @BeforeEach
+    void setup() {
+        p1 = new Player(0, 1500);
+        p2 = new Player(1, 750);
+        p3 = new Player(2, 500);
+        p4 = new Player(3);
+    }
 
     @Test
     void getTilePosition() {
@@ -63,12 +71,12 @@ class PlayerTest {
 
     @Test
     void testEquals() {
-        assertTrue(p1.equals(p1));
-        assertTrue(p2.equals(p2));
-        assertTrue(p3.equals(p3));
-        assertTrue(p4.equals(p4));
+        assertEquals(p1, p1);
+        assertEquals(p2, p2);
+        assertEquals(p3, p3);
+        assertEquals(p4, p4);
 
-        assertFalse(p4.equals(p5));
+        assertNotEquals(4, p4);
     }
 
     @Test

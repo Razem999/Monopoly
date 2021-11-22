@@ -1,15 +1,21 @@
 import gameInterface.CompoundGameInterface;
 import gameInterface.PlayerSelection;
 import gameLogic.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AuctionTest {
+    private Players players;
+    private Player currentPlayer;
 
-    GameBoard gameBoard = new GameBoard(new CompoundGameInterface());
-    Players players = new Players(new AIStrategy.Factory(gameBoard));
-    Player currentPlayer = players.getPlayerByID(1).get();
+    @BeforeEach
+    void setup() {
+        GameBoard gameBoard = new GameBoard(new CompoundGameInterface());
+        players = new Players(new AIStrategy.Factory(gameBoard));
+        currentPlayer = players.getPlayerByID(1).get();
+    }
 
     @Test
     void bet() {
