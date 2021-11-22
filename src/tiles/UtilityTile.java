@@ -23,7 +23,7 @@ public class UtilityTile implements Buyable {
     private Optional<Player> playerOwner;
 
 
-    /**This is the constructor of gameLogic.GameBoard with a parameter
+    /**This is the constructor of GameBoard with a parameter
      * @param name This provides the name of the utility tile
      * @param cost This provides the base cost of the utility tile
      * @param gameInterface This provides text for each action the player takes

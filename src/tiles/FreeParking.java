@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * The tiles.FreeParking class represents the Free Parking tile from the original
  * game, which accumulates taxes collected from players that land on Income
- * Tax Tile or Luxury Tax Tile, and deposits the total amount into a gameLogic.Player's
+ * Tax Tile or Luxury Tax Tile, and deposits the total amount into a Player's
  * balance once they land on this tile.
  *
  * @version 1.0
@@ -29,7 +29,7 @@ public class FreeParking implements GameTile {
     }
 
     /**This method adds the tax into the total tax accumulated.
-     * @param amount This is the amount taxed from a gameLogic.Player
+     * @param amount This is the amount taxed from a Player
      */
     public void addTax(int amount) {
         totalDeposited += amount;

@@ -165,18 +165,22 @@ public class GameBoard {
      * @param player This provides the player currently paying to get out of jail
      */
     public void payJailFine(Player player) {
-        gameInterface.notifyPlayerLeftJail(player);
-        player.changeBalance(-1 * (JailTile.jailFine));
-        this.jailTile.unjailPlayer(player);
+        if (this.isPlayerInJail(player)) {
+            this.jailTile.unjailPlayer(player);
+            player.changeBalance(-1 * (JailTile.JAIL_FINE));
+            gameInterface.notifyPlayerLeftJail(player);
+        }
     }
 
     /**This method jails a player
      * @param player This provides the player currently going to jail
      */
     public void jailPlayer(Player player) {
-        gameInterface.notifyPlayerSentToJail(player);
-        player.setTilePosition(this.jailIndex);
-        this.jailTile.jailPlayer(player);
+        if (!this.isPlayerInJail(player)) {
+            this.jailTile.jailPlayer(player);
+            player.setTilePosition(this.jailIndex);
+            gameInterface.notifyPlayerSentToJail(player);
+        }
     }
 
     /**This method returns whether a player is in jail or not
@@ -190,11 +194,13 @@ public class GameBoard {
      * @param player This provides the player in question
      */
     public void handleFailedJailedPlayerRoll(Player player) {
-        jailTile.incrementPlayerRolls(player);
-        if (jailTile.hasPlayerRolledOutOfJail(player)) {
-            this.payJailFine(player);
-        } else {
-            gameInterface.notifyPlayerStayJail(player);
+        if (this.isPlayerInJail(player)) {
+            jailTile.incrementPlayerRolls(player);
+            if (jailTile.hasPlayerRolledOutOfJail(player)) {
+                this.payJailFine(player);
+            } else {
+                gameInterface.notifyPlayerStayJail(player);
+            }
         }
     }
 
@@ -202,8 +208,10 @@ public class GameBoard {
      * @param player This provides the player in question
      */
     public void handleSuccessfulJailedPlayerRoll(Player player) {
-        gameInterface.notifyPlayerLeftJail(player);
-        jailTile.unjailPlayer(player);
+        if (this.isPlayerInJail(player)) {
+            gameInterface.notifyPlayerLeftJail(player);
+            jailTile.unjailPlayer(player);
+        }
     }
 
     public List<GameTileDrawable> getTileDrawables() {

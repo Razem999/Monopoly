@@ -17,7 +17,7 @@ public class Players {
     private int currentPlayer;
     private boolean currentPlayerHasRolled;
     private boolean currentPlayerHasActed;
-    private Player.PlayerChangeListener playerChangeListener;
+    private List<Player.PlayerChangeListener> playerChangeListeners;
     private Optional<GameActions> aiActionHandler;
     private final AIStrategy.Factory aiFactory;
 
@@ -28,6 +28,7 @@ public class Players {
         this.currentPlayer = 0;
         this.currentPlayerHasRolled = false;
         this.currentPlayerHasActed = false;
+        this.playerChangeListeners = new ArrayList<>();
 
         this.aiFactory = aiFactory;
     }
@@ -141,9 +142,23 @@ public class Players {
     }
 
     public void addPlayerChangeListener(Player.PlayerChangeListener playerChangeListener) {
-        this.playerChangeListener = playerChangeListener;
+        this.playerChangeListeners.add(playerChangeListener);
         for (Player player : this.players) {
             player.addPlayerChangeListener(playerChangeListener);
+        }
+    }
+
+    private void removePlayerChangeListeners() {
+        for (Player player : this.players) {
+            player.removeChangeListeners();
+        }
+    }
+
+    private void updatePlayerChangeListeners() {
+        for (Player.PlayerChangeListener listener : this.playerChangeListeners) {
+            for (Player player : this.players) {
+                player.addPlayerChangeListener(listener);
+            }
         }
     }
 
@@ -152,7 +167,7 @@ public class Players {
         aiStrategies.add(AIStrategy.StrategyType.AGGRESSIVE);
         aiStrategies.add(AIStrategy.StrategyType.DEFAULT);
 
-        this.players.forEach(Player::removeChangeListener);
+        this.removePlayerChangeListeners();
         this.players.clear();
         this.players.addAll(createPlayerList(playerSelection.getNumPlayers(), 1500));
         for (int i = 0; i < playerSelection.getNumAIPlayers(); i++) {
@@ -160,7 +175,7 @@ public class Players {
             this.players.get(this.players.size() - i - 1).setAIStrategy(randomStrategy);
         }
 
-        addPlayerChangeListener(this.playerChangeListener);
+        this.updatePlayerChangeListeners();
 
         if (this.getCurrentPlayer().getAIStrategy().isPresent()) {
             this.doAIActions(this.getCurrentPlayer());

@@ -101,7 +101,7 @@ public class Player {
         }
     }
 
-    public void removeChangeListener() {
+    public void removeChangeListeners() {
         this.playerChangeListeners.clear();
     }
 

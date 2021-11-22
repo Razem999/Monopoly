@@ -9,7 +9,7 @@ import java.util.Optional;
 
 /**
  * The tiles.GoTile class represents the Go tile from the original game.
- * When a gameLogic.Player lands on/passes this tile, the gameLogic.Player receives the
+ * When a Player lands on/passes this tile, the Player receives the
  * Pass Go reward of $200.
  *
  * @version 1.0

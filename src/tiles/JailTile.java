@@ -46,8 +46,8 @@ class JailedPlayerInfo {
 
 /**
  * The Jail class represents the Jail/Just Visiting tile from the original
- * game. When a gameLogic.Player lands on Go To Jail tile, or rolls doubles three times,
- * Then the gameLogic.Player will move their position to this tile and movements will be
+ * game. When a Player lands on Go To Jail tile, or rolls doubles three times,
+ * Then the Player will move their position to this tile and movements will be
  * restricted once they are inside jail (not Just Visiting).
  *
  * @version 1.0
@@ -55,7 +55,7 @@ class JailedPlayerInfo {
  */
 public class JailTile implements GameTile {
 
-    public static int jailFine = 50;
+    public static int JAIL_FINE = 50;
 
     private final List<JailedPlayerInfo> jailedPlayers;
 
@@ -76,7 +76,7 @@ public class JailTile implements GameTile {
         jailStringBuilder.append("Name: Jail\nDescription: In Jail:\n");
 
         for (JailedPlayerInfo player : this.jailedPlayers) {
-            jailStringBuilder.append("gameLogic.Player: ");
+            jailStringBuilder.append("Player: ");
             jailStringBuilder.append(player.getPlayer().getPlayerID());
             jailStringBuilder.append(" (");
             jailStringBuilder.append(player.getRollsInJail());

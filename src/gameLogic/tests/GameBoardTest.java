@@ -7,18 +7,24 @@ import gameLogic.Players;
 
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import tiles.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameBoardTest {
+    private GameBoard gb;
+    private Players players;
+    private GoTile goTile;
 
-    CompoundGameInterface gameInterface = new CompoundGameInterface();
-    GameBoard gb = new GameBoard(gameInterface);
 
-    Players players = new Players(new AIStrategy.Factory(gb));
-
-    GoTile goTile = new GoTile(gameInterface);
+    @BeforeEach
+    void setup() {
+        CompoundGameInterface gameInterface = new CompoundGameInterface();
+        gb = new GameBoard(gameInterface);
+        players = new Players(new AIStrategy.Factory(gb));
+        goTile = new GoTile(gameInterface);
+    }
 
     @Test
     void advancePlayer() {

@@ -64,6 +64,13 @@ public class GameActions {
 
     }
 
+    public void currentPlayerPayJailFee() {
+        Player currentPlayer = this.players.getCurrentPlayer();
+        if (this.gameBoard.isPlayerInJail(currentPlayer)) {
+            this.gameBoard.payJailFine(currentPlayer);
+        }
+    }
+
     /**This function handles the rolls of players currently inside jail
      * @param gameBoard This provides the gameboard with all the tiles
      * @param currentPlayer The player rolling
@@ -90,6 +97,13 @@ public class GameActions {
      */
     public void currentPlayerRoll() {
         Player currentPlayer = this.players.getCurrentPlayer();
+
+        if (2 < 3) {
+            this.gameBoard.jailPlayer(currentPlayer);
+            this.players.handleCurrentPlayerFinishedRolling();
+            return;
+        }
+
         if (this.players.hasCurrentPlayerFinishedRolling()) {
             this.gameInterface.notifyCannotRoll(currentPlayer);
             return;

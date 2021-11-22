@@ -9,7 +9,7 @@ import java.util.Optional;
 
 /**
  * The tiles.LuxuryTaxTile class represents the Luxury Tax Tile in the original game, where
- * $100 is deducted from the gameLogic.Player that lands on this tile. The amount deducted is added
+ * $100 is deducted from the Player that lands on this tile. The amount deducted is added
  * to the total deposit in tiles.FreeParking.
  */
 public class LuxuryTaxTile implements GameTile {
@@ -27,11 +27,11 @@ public class LuxuryTaxTile implements GameTile {
         this.gameInterface = gameInterface;
     }
 
-    /**Overrides function onLand in tiles.GameTileI and deducts any gameLogic.Player's balance,
+    /**Overrides function onLand in tiles.GameTileI and deducts any Player's balance,
      * who lands on Luxury Tax Tile.
-     * @param player This is the gameLogic.Player who lands on the Luxury Tax Tile
+     * @param player This is the Player who lands on the Luxury Tax Tile
      * @param gameBoard This is the board in which the tile is situated
-     * @param players These are the list of gameLogic.Players playing the game
+     * @param players These are the list of Players playing the game
      */
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
