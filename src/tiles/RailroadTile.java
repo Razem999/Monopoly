@@ -42,7 +42,7 @@ public class RailroadTile implements Buyable {
      * @return int This returns the rent the player owes to the owner
      */
     private int calculateRent() {
-        if(totalOwned == 4) {
+        if (totalOwned == 4) {
             return 200;
         } else if (totalOwned == 3) {
             return 100;
@@ -76,7 +76,7 @@ public class RailroadTile implements Buyable {
             gameBoard.transferPlayerProperties(player, owner);
             players.removePlayer(player);
         } else {
-            this.totalOwned = gameBoard.getPropertiesFilter(TileFilter.utilityFilter()).size();
+            this.totalOwned = gameBoard.getPropertiesFilter(TileFilter.railroadFilter()).size();
             owner.changeBalance(this.calculateRent());
             player.changeBalance(-1 * this.calculateRent());
             this.gameInterface.notifyRentPayment(owner, player, this.calculateRent());
@@ -115,6 +115,11 @@ public class RailroadTile implements Buyable {
     }
 
     @Override
+    public PropertyTile getPropertyTile() {
+        return null;
+    }
+
+    @Override
     public void buy(Player player) {
         if (this.owner.isPresent()) {
             gameInterface.notifyCannotBuyAlreadyOwned(player, this.owner.get(), this);
@@ -133,6 +138,11 @@ public class RailroadTile implements Buyable {
                 gameInterface.notifyPlayerDeclinedPurchase(player, this.name);
             }
         }
+    }
+
+    @Override
+    public void buyHouses(Player owner, GameBoard gameBoard) {
+        return;
     }
 
     @Override

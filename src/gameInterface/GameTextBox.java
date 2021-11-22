@@ -175,6 +175,49 @@ public class GameTextBox extends JPanel implements GameInterface {
     }
 
     @Override
+    public void notifyCannotBuyHouseBalanceReasons(Player player, GameTile tile) {
+        history.add("Player " + player.getPlayerID() + " can not buy house because balance is insufficient");
+
+        update();
+    }
+
+    @Override
+    public void notifyCannotBuyHouseOwnershipReasons(Player player, Player owner, GameTile tile) {
+        history.add("Player " + player.getPlayerID() + " can not buy house for " + tile.getName() + " because Player " + owner.getPlayerID() + "owns this property");
+
+        update();
+    }
+
+    @Override
+    public void notifyCannotBuyHouseTileKind(Player player, GameTile tile) {
+        history.add("Player " + player.getPlayerID() + " can not buy house in " + tile.getName());
+
+        update();
+    }
+
+    @Override
+    public void notifyHousesUnavailable(Player player) {
+        history.add("There are no houses available to buy");
+
+        update();
+    }
+
+    @Override
+    public void notifyPlayerPurchasedHouse(Player player, String tileName, int amount) {
+        history.add("Player " + player.getPlayerID() + " has bought a house for " + tileName + " for $" + amount);
+
+        update();
+    }
+
+    @Override
+    public void notifyPlayerDeclinedHouse(Player player) {
+        history.add("Player " + player.getPlayerID() + " has declined to purchase a house for this property");
+
+        update();
+    }
+
+
+    @Override
     public void notifyPlayerOwnsThis(Player owner) {
         history.add("Player " + owner.getPlayerID() + " owns this tile");
 

@@ -15,14 +15,18 @@ import java.util.stream.IntStream;
  */
 public class GameBoard {
 
+    private final  int totalHouses = 32;
     private final List<GameTile> tiles;
     private final GameInterface gameInterface;
     private final int jailIndex;
     private final JailTile jailTile;
+    private int placeableHouses;
+    private List<PropertyTile> properties;
 
     /**This is the constructor of GameBoard.
      */
     public GameBoard(GameInterface gameInterface) {
+        this.placeableHouses = 32;
         this.gameInterface = gameInterface;
         this.jailIndex = 10;
         this.jailTile = new JailTile();
@@ -159,6 +163,30 @@ public class GameBoard {
             }
         }
         return result;
+    }
+
+    public List<PropertyTile> getPropertiesUnderSet(PropertySet propertySet) {
+        this.properties = new ArrayList<>();
+        for (GameTile tile : this.tiles) {
+            if (tile.getPropertySet() == propertySet) {
+                properties.add(tile.getPropertyTile());
+            }
+        }
+        return properties;
+    }
+
+    public int getPropertiesOwnedUnderSet() {
+        return properties.size();
+    }
+
+    public void updateHouse(int house) {
+        if (placeableHouses < totalHouses && placeableHouses >= 0) {
+            placeableHouses += house;
+        }
+    }
+
+    public int housesAvailable() {
+        return placeableHouses;
     }
 
     /**This method gets the player in jail to pay the jail release fee

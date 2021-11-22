@@ -100,6 +100,36 @@ public class CompoundGameInterface implements GameInterface {
     }
 
     @Override
+    public void notifyCannotBuyHouseBalanceReasons(Player player, GameTile tile) {
+        this.backingInterfaces.forEach(i -> i.notifyCannotBuyHouseBalanceReasons(player, tile));
+    }
+
+    @Override
+    public void notifyCannotBuyHouseOwnershipReasons(Player player, Player owner, GameTile tile) {
+        this.backingInterfaces.forEach(i -> i.notifyCannotBuyHouseOwnershipReasons(player, owner, tile));
+    }
+
+    @Override
+    public void notifyCannotBuyHouseTileKind(Player player, GameTile tile) {
+        this.backingInterfaces.forEach(i -> i.notifyCannotBuyHouseTileKind(player, tile));
+    }
+
+    @Override
+    public void notifyHousesUnavailable(Player player) {
+        this.backingInterfaces.forEach(i -> notifyHousesUnavailable(player));
+    }
+
+    @Override
+    public void notifyPlayerPurchasedHouse(Player player, String tileName, int amount) {
+        this.backingInterfaces.forEach(i -> notifyPlayerPurchasedHouse(player, tileName, amount));
+    }
+
+    @Override
+    public void notifyPlayerDeclinedHouse(Player player) {
+        this.backingInterfaces.forEach(i -> notifyPlayerDeclinedHouse(player));
+    }
+
+    @Override
     public void notifyPlayerOwnsThis(Player owner) {
         this.backingInterfaces.forEach(i -> i.notifyPlayerOwnsThis(owner));
     }
