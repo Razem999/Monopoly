@@ -29,6 +29,7 @@ public interface GameInterface extends AuctionBidExecutor {
     void notifyCannotBuyHouseBalanceReasons(Player player, GameTile tile);
     void notifyCannotBuyHouseOwnershipReasons(Player player, Optional<Player> owner, GameTile tile);
     void notifyCannotBuyHouseTileKind(Player player, GameTile tile);
+    void notifyCannotBuyHouseSetReasons(Player player, GameTile tile);
     void notifyHousesUnavailable(Player player);
     void notifyHotelsUnavailable(Player player);
     void notifyPlayerPurchasedHouse(Player player, String tileName, int amount);

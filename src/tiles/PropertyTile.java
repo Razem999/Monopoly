@@ -5,6 +5,7 @@ import gameLogic.Players;
 import gameLogic.GameBoard;
 import gameInterface.GameInterface;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -162,22 +163,28 @@ public class PropertyTile implements HousingTile {
         }
     }
 
-    private void buyHouse(Player player, GameBoard gameBoard) {
-        if (player.getBalance() < this.pricePerHouse) {
-            gameInterface.notifyCannotBuyHouseBalanceReasons(player, this);
-        } else if (gameBoard.housesAvailable() == 0) {
-            gameInterface.notifyHousesUnavailable(player);
-        } else {
-            boolean choice = gameInterface.processHouseSale(this.name, this.pricePerHouse, this.houses, player);
-            if (choice) {
-                player.changeBalance(-1 * this.pricePerHouse);
-                gameBoard.updateHouse(-1);
-                gameInterface.notifyPlayerPurchasedHouse(player, this.name, this.pricePerHouse);
-                this.houses++;
+    private void buyHouse(Player owner, GameBoard gameBoard, PropertySet propertySet) {
+        List<BuyableTile> ownedProperties = gameBoard.getTilesOwnedByPlayer(owner);
+        int ownedSetProperties = (int) ownedProperties.stream()
+                .filter(t -> TileFilter.setFilter(propertySet).filter(t)).count();
+        if (ownedSetProperties == 3 ^ ownedSetProperties == 2) {
+            if (owner.getBalance() < this.pricePerHouse) {
+                gameInterface.notifyCannotBuyHouseBalanceReasons(owner, this);
+            } else if (gameBoard.housesAvailable() == 0) {
+                gameInterface.notifyHousesUnavailable(owner);
             } else {
-                gameInterface.notifyPlayerDeclinedHouse(player);
+                boolean choice = gameInterface.processHouseSale(this.name, this.pricePerHouse, this.houses, owner);
+                if (choice) {
+                    owner.changeBalance(-1 * this.pricePerHouse);
+                    gameBoard.updateHouse(-1);
+                    gameInterface.notifyPlayerPurchasedHouse(owner, this.name, this.pricePerHouse);
+                    this.houses++;
+                } else {
+                    gameInterface.notifyPlayerDeclinedHouse(owner);
+                }
             }
         }
+
     }
 
     private void buyHotel(Player player, GameBoard gameBoard) {
@@ -185,6 +192,8 @@ public class PropertyTile implements HousingTile {
             gameInterface.notifyCannotBuyHouseBalanceReasons(player, this);
         } else if (gameBoard.housesAvailable() == 0) {
             gameInterface.notifyHousesUnavailable(player);
+        } else if (numberOfHouses(gameBoard) < 4) {
+
         } else {
             boolean choice = gameInterface.processHouseSale(this.name, this.pricePerHouse, this.hotels, player);
             if (choice) {
@@ -199,10 +208,10 @@ public class PropertyTile implements HousingTile {
     }
 
     @Override
-    public void upgradeProperty(Player player, GameBoard gameBoard) {
+    public void upgradeProperty(Player player, GameBoard gameBoard, PropertySet propertySet) {
         if (owner.map(o -> o.equals(player)).orElse(false)) {
             if (this.houses < 4) {
-                this.buyHouse(player, gameBoard);
+                this.buyHouse(player, gameBoard, propertySet);
             } else if (this.houses == 4 && !this.hasHotel) {
                 this.buyHotel(player, gameBoard);
             } else {

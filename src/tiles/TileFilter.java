@@ -7,7 +7,7 @@ public interface TileFilter {
     static TileFilter railroadFilter() {
         return tile -> tile instanceof RailroadTile;
     }
-    static TileFilter propertyFilter() {
+    static TileFilter setFilter(PropertySet propertySet) {
         return tile -> tile instanceof PropertyTile;
     }
     boolean filter(GameTile tile);

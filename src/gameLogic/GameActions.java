@@ -49,7 +49,7 @@ public class GameActions {
 
             Optional<HousingTile> housingTile = tile.asHousingTile();
             if (housingTile.isPresent()) {
-                housingTile.get().upgradeProperty(currentPlayer, gameBoard);
+                housingTile.get().upgradeProperty(currentPlayer, gameBoard, housingTile.get().getPropertySet());
                 this.players.handleCurrentPlayerActed();
             } else {
                 this.gameInterface.notifyCannotBuyHouseTileKind(currentPlayer, tile);
@@ -77,6 +77,7 @@ public class GameActions {
             this.players.handleCurrentPlayerActed();
         } else {
             this.gameInterface.notifyAuctionCannotStart(tile);
+            return;
         }
 
     }

@@ -5,6 +5,7 @@ import gameLogic.Players;
 import gameLogic.GameBoard;
 import gameInterface.GameInterface;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -42,21 +43,34 @@ public class UtilityTile implements BuyableTile {
      * @param owner This provides the owner of the utility tile
      * @param gameBoard This provides the gameboard with all the tiles
      */
-    public void onLandOccupied(Player player, Player owner, GameBoard gameBoard) {
+    public void onLandOccupied(Player player, Player owner, GameBoard gameBoard, Players players) {
         int firstDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
         int secondDie = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-        if (gameBoard.getPropertiesFilter(TileFilter.utilityFilter()).size() == 2) {
-            player.changeBalance(10 * (firstDie + secondDie));
+        int rent = 0;
+        List<BuyableTile> ownedProperties = gameBoard.getTilesOwnedByPlayer(owner);
+        if (ownedProperties.stream()
+                .filter(t -> TileFilter.utilityFilter().filter(t)).count() == 2) {
+            rent = 10 * (firstDie + secondDie);
         } else {
-            player.changeBalance(4 * (firstDie + secondDie));
+            rent = 4 * (firstDie + secondDie);
         }
-        this.gameInterface.notifyRentPayment(owner, player, player.getBalance());
-        this.gameInterface.notifyBankruptcy(player);
+        if (player.getBalance() < rent) {
+            player.changeBalance(-1 * player.getBalance());
+            owner.changeBalance(player.getBalance());
+            this.gameInterface.notifyRentPayment(owner, player, player.getBalance());
+            this.gameInterface.notifyBankruptcy(player);
+
+            gameBoard.transferPlayerProperties(player, owner);
+            players.removePlayer(player);
+        } else {
+            player.changeBalance(-1 * rent);
+            this.gameInterface.notifyRentPayment(owner, player, rent);
+        }
     }
 
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
-        this.playerOwner.ifPresent(value -> onLandOccupied(player, value, gameBoard));
+        this.playerOwner.ifPresent(value -> onLandOccupied(player, value, gameBoard, players));
     }
 
     @Override
@@ -107,6 +121,11 @@ public class UtilityTile implements BuyableTile {
 
     @Override
     public Optional<BuyableTile> asBuyable() {
+        return Optional.of(this);
+    }
+
+    @Override
+    public Optional<HousingTile> asHousingTile() {
         return Optional.empty();
     }
 
@@ -123,11 +142,6 @@ public class UtilityTile implements BuyableTile {
     @Override
     public int getBuyCost() {
         return this.cost;
-    }
-
-    @Override
-    public Optional<HousingTile> asHousingTile() {
-        return Optional.empty();
     }
 
     @Override
