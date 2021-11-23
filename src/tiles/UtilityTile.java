@@ -68,11 +68,18 @@ public class UtilityTile implements BuyableTile {
         }
     }
 
+    /**This method is used to determine what is done when a player lands on the utility tile
+     * @param player the player that has landed on the utility tile
+     * @param players the players in the game
+     * @param gameBoard gives information on all tiles
+     */
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
         this.playerOwner.ifPresent(value -> onLandOccupied(player, value, gameBoard, players));
     }
 
+    /**This method is used to print the description of the current utility tile
+     */
     @Override
     public String tileDescription() {
         String desc = "Name: " + this.name + "\nA utility tile";
@@ -84,6 +91,9 @@ public class UtilityTile implements BuyableTile {
         return desc;
     }
 
+    /**This method is used when a player tries to buy the current utility tile
+     * @param player the player that is trying to buy the utility tile
+     */
     @Override
     public void buy(Player player) {
         if (this.playerOwner.isPresent()) {
@@ -104,26 +114,36 @@ public class UtilityTile implements BuyableTile {
         }
     }
 
+    /**This method is used to get the name of the utility tile
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**This method is used to get the property set of the utility tile
+     */
     @Override
     public PropertySet getPropertySet() {
         return PropertySet.White;
     }
 
+    /**This method is used to get the property tile but returns null since this is not a property tile
+     */
     @Override
     public PropertyTile getPropertyTile() {
         return null;
     }
 
+    /**This method is used to get whether this is Utility tile is buyable
+     */
     @Override
     public Optional<BuyableTile> asBuyable() {
         return Optional.of(this);
     }
 
+    /**This method is used to get whether the tile is available to place houses on
+     */
     @Override
     public Optional<HousingTile> asHousingTile() {
         return Optional.empty();
