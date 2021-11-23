@@ -114,6 +114,8 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
         this.setupForNormalPlayers();
     }
 
+    /**This method is used to place and paint the buttons for players not under any special circumstances
+     */
     private void setupForNormalPlayers() {
         this.removeAll();
 
@@ -133,6 +135,8 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
         this.repaint();
     }
 
+    /**This method is used to place and paint the buttons for players in jail
+     */
     private void setupForJailedPlayers() {
         this.removeAll();
 
@@ -153,12 +157,17 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
         this.repaint();
     }
 
+    /**This method tell swing how large the window should be
+     */
     @Override
     public Dimension getPreferredSize() {
         Container parent = this.getParent();
         return new Dimension(parent.getWidth() / 2, parent.getHeight());
     }
 
+    /**This method tells the ui to redraw itself when a player changes states
+     * @param player The player who changed states
+     */
     @Override
     public void handlePlayerChange(Player player) {
         if (player.equals(this.players.getCurrentPlayer())) {
