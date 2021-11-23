@@ -174,6 +174,9 @@ public class GameBoard {
         return result;
     }
 
+    /**This method is used to create a list of game tiles with an index
+     * @param p a function that sorts gameTiles
+     */
     public List<TileAndIndex> filterTilesWithIndex(Function<GameTile, Boolean> p) {
         List<TileAndIndex> result = new ArrayList<>();
         for (int i = 0; i < this.tiles.size(); i++) {
@@ -185,29 +188,43 @@ public class GameBoard {
         return result;
     }
 
+    /**This method is used get the tiles within a property set
+     * @param propertySet the set of tiles
+     */
     public List<GameTile> getPropertiesUnderSet(PropertySet propertySet) {
         return this.getPropertiesFilter(TileFilter.setFilter(propertySet));
     }
 
+    /**This method is used to update the number of houses on the board
+     * @param house the number of houses added to or removed from the board
+     */
     public void updateHouse(int house) {
         if (placeableHouses < totalHouses && placeableHouses >= 0) {
             placeableHouses += house;
         }
     }
 
+    /**This method is used to update the number of hotels on the board
+     * @param hotel the number of hotels added to or removed from the board
+     */
     public void updateHotel(int hotel) {
         if (placeableHotels < totalHotels && placeableHotels >= 0) {
             placeableHotels += hotel;
         }
     }
 
+    /**This method is used to get the number of houses still available for building
+     */
     public int housesAvailable() {
         return placeableHouses;
     }
 
+    /**This method is used to get the number of houses still available for building
+     */
     public int hotelsAvailable() {
         return placeableHotels;
     }
+
     /**This method gets the player in jail to pay the jail release fee
      * @param player This provides the player currently paying to get out of jail
      */
