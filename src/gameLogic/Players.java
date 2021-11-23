@@ -117,22 +117,32 @@ public class Players {
         this.currentPlayer = this.currentPlayer % this.players.size();
     }
 
+    /**This method is used to set that the current player has acted
+     */
     public void handleCurrentPlayerActed() {
         this.currentPlayerHasActed = true;
     }
 
+    /**This method is used to get if the player has acted
+     */
     public boolean hasCurrentPlayerActed() {
         return this.currentPlayerHasActed;
     }
 
+    /**This method is used to set that the current player has rolled
+     */
     public void handleCurrentPlayerFinishedRolling() {
         this.currentPlayerHasRolled = true;
     }
 
+    /**This method is used to get if the current player has rolled
+     */
     public boolean hasCurrentPlayerFinishedRolling() {
         return this.currentPlayerHasRolled;
     }
 
+    /**This method is used to get the drawable components of the player
+     */
     public PlayersDrawable getPlayerDrawables() {
         return new PlayersDrawable(this.players);
     }
@@ -141,6 +151,8 @@ public class Players {
         this.aiActionHandler = Optional.of(aiActionHandler);
     }
 
+    /**This method is used to add a listener to see if the players state changes
+     */
     public void addPlayerChangeListener(Player.PlayerChangeListener playerChangeListener) {
         this.playerChangeListeners.add(playerChangeListener);
         for (Player player : this.players) {
@@ -148,12 +160,16 @@ public class Players {
         }
     }
 
+    /**This method is used to remove a listener from the players
+     */
     private void removePlayerChangeListeners() {
         for (Player player : this.players) {
             player.removeChangeListeners();
         }
     }
 
+    /**This method is used to update a listener to see if the players state changes
+     */
     private void updatePlayerChangeListeners() {
         for (Player.PlayerChangeListener listener : this.playerChangeListeners) {
             for (Player player : this.players) {
@@ -162,6 +178,9 @@ public class Players {
         }
     }
 
+    /**This method is used to create the human and AI players
+     * @param playerSelection the number of players and number of AI players
+     */
     public void createPlayers(PlayerSelection playerSelection) {
         List<AIStrategy.StrategyType> aiStrategies = new ArrayList<>();
         aiStrategies.add(AIStrategy.StrategyType.AGGRESSIVE);

@@ -68,20 +68,19 @@ public class UtilityTile implements BuyableTile {
         }
     }
 
-    /**
-     * This method is used to check whether the tile is owned or not, and performs actions accordingly
-     * @param player This is the player that lands on the tile
-     * @param gameBoard This is the board where the tile is situated
-     * @param players This is the list of players playing the game
+
+    /**This method is used to determine what is done when a player lands on the utility tile
+     * @param player the player that has landed on the utility tile
+     * @param players the players in the game
+     * @param gameBoard gives information on all tiles
      */
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
         this.playerOwner.ifPresent(value -> onLandOccupied(player, value, gameBoard, players));
     }
 
-    /**
-     * This method prints the tile's description
-     * @return This returns the description as a string
+
+    /**This method is used to print the description of the current utility tile
      */
     @Override
     public String tileDescription() {
@@ -94,9 +93,9 @@ public class UtilityTile implements BuyableTile {
         return desc;
     }
 
-    /**
-     * This method is used to purchase a utility
-     * @param player This is the player that buys the property
+
+    /**This method is used when a player tries to buy the current utility tile
+     * @param player the player that is trying to buy the utility tile
      */
     @Override
     public void buy(Player player) {
@@ -118,45 +117,40 @@ public class UtilityTile implements BuyableTile {
         }
     }
 
-    /**
-     * This method is used to get the name of the tile
-     * @return This returns the name as a string
+
+    /**This method is used to get the name of the utility tile
      */
     @Override
     public String getName() {
         return this.name;
     }
 
-    /**
-     * This method is used to get the set color this tile represents
-     * @return This returns the PropertySet
+
+    /**This method is used to get the property set of the utility tile
      */
     @Override
     public PropertySet getPropertySet() {
         return PropertySet.White;
     }
 
-    /**
-     * This method is used to get the property in this tile
-     * @return This returns null since this is not buyable
+
+    /**This method is used to get the property tile but returns null since this is not a property tile
      */
     @Override
     public PropertyTile getPropertyTile() {
         return null;
     }
 
-    /**
-     * This method is used to check whether the utility is buyable or not
-     * @return This returns a tile that can bought
+
+    /**This method is used to get whether this is Utility tile is buyable
      */
     @Override
     public Optional<BuyableTile> asBuyable() {
         return Optional.of(this);
     }
 
-    /**
-     * This method is used to check whether a house can be built on this tile or not
-     * @return This returns an empty Optional
+
+    /**This method is used to get whether the tile is available to place houses on
      */
     @Override
     public Optional<HousingTile> asHousingTile() {

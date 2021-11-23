@@ -12,6 +12,10 @@ public class DefaultAIStrategy implements AIStrategy {
         this.gameBoard = gameBoard;
     }
 
+    /**This method is used to determine the properties score that will be used to determine what the AI does with it
+     * @param player the AI player who is currently on the tile
+     * @param tilePosition the current tiles position on the game board
+     */
     private int determineTileScore(int tilePosition, Player player) {
         int score = 40;
         List<GameTile> neighbourhood = gameBoard.getTileNeighbourhood(tilePosition, 3);
@@ -49,6 +53,11 @@ public class DefaultAIStrategy implements AIStrategy {
         return score;
     }
 
+    /**This method is used to determine if an AI player will buy the property by assigning a score to that property
+     * @param player the AI player who is currently on the tile
+     * @param players the players in the game
+     * @param currentTile the tile the Ai is currently on
+     */
     private int getTileScoreBuyThreshold(Players players, Player player, GameTile currentTile) {
         int score = 50;
 
@@ -77,6 +86,11 @@ public class DefaultAIStrategy implements AIStrategy {
         return score;
     }
 
+    /**This method is used to determine if an AI player will auction the property by assigning a score to that property
+     * @param player the AI player who is currently on the tile
+     * @param players the players in the game
+     * @param currentTile the tile the Ai is currently on
+     */
     private int getTileScoreAuctionThreshold(Players players, Player player, GameTile currentTile) {
         int score = 40;
 
@@ -99,6 +113,11 @@ public class DefaultAIStrategy implements AIStrategy {
         return score;
     }
 
+    /**This method is used to determine if an AI player will buy or auction a property it has landed on
+     * @param player the AI player who is currently on the tile
+     * @param players the players in the game
+     * @param gameActions the actions that can be preformed by the AI
+     */
     private void doTileActions(Player player, Players players, GameActions gameActions) {
         Optional<GameTile> tileOpt = gameBoard.getTile(player.getTilePosition());
         if (tileOpt.isPresent()) {
@@ -117,6 +136,11 @@ public class DefaultAIStrategy implements AIStrategy {
         }
     }
 
+    /**This method is used to get the AI player to roll and pass their turn
+     * @param player the AI player who is currently on the tile
+     * @param players the players in the game
+     * @param gameActions the actions that can be preformed by the AI
+     */
     @Override
     public void doPlayerTurn(Player player, Players players, GameActions gameActions) {
         while (!players.hasCurrentPlayerFinishedRolling()) {
@@ -137,6 +161,11 @@ public class DefaultAIStrategy implements AIStrategy {
         gameActions.currentPlayerPass();
     }
 
+    /**This method is used to determine if the AI should bet by giving the property a score used to determine this
+     * @param auction the current auction being held
+     * @param players the players in the game
+     * @param tilePosition the position on the game board of the tile being auctioned
+     */
     private boolean shouldBet(Auction auction, Players players, int tilePosition) {
         int score = 0;
         Player currentBidder = auction.getCurrentBidder();
@@ -157,6 +186,11 @@ public class DefaultAIStrategy implements AIStrategy {
         return score >= 0;
     }
 
+    /**This method is used to get the AI player to bid in the auction
+     * @param auction the current auction being held
+     * @param players the players in the game
+     * @param tilePosition the position on the game board of the tile being auctioned
+     */
     @Override
     public Auction.BidAdvanceToken doPlayerBid(Auction auction, Players players, int tilePosition) {
         Player currentBidder = auction.getCurrentBidder();

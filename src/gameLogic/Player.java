@@ -114,14 +114,21 @@ public class Player {
         this.updatePlayerChangeListeners();
     }
 
+    /**This method is used to add a listener to the players
+     * @param listener listens for a cha nge to the players state
+     */
     public void addPlayerChangeListener(PlayerChangeListener listener) {
         this.playerChangeListeners.add(listener);
     }
 
+    /**This method is used to get the AI's strategy
+     */
     public Optional<AIStrategy.StrategyType> getAIStrategy() {
         return this.aiStrategy;
     }
 
+    /**This method is used to set the AI's strategy
+     */
     public void setAIStrategy(AIStrategy.StrategyType aiStrategy) {
         this.aiStrategy = Optional.of(aiStrategy);
     }

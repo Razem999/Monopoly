@@ -214,7 +214,7 @@ public class PropertyTile implements HousingTile {
     private void buyHotel(Player player, GameBoard gameBoard) {
         if (player.getBalance() < this.pricePerHouse) {
             gameInterface.notifyCannotBuyHouseBalanceReasons(player, this);
-        } else if (gameBoard.housesAvailable() == 0) {
+        } else if (gameBoard.hotelsAvailable() == 0) {
             gameInterface.notifyHousesUnavailable(player);
         } else {
             player.changeBalance(-1 * this.pricePerHouse);

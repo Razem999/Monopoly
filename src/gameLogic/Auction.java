@@ -49,11 +49,16 @@ public class Auction {
         this.price = AUCTION_START_PRICE;
     }
 
-    //When called it changes the current player to the next player in the ArrayList
+    /**This method is used to advance the auction by moving to the next player
+     */
     private void advanceAuction() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
 
+    /**This method is used if a bet made by a player is invalid
+     * @param betInput the amount the player wants to bet
+     * @param gameInterface the game interface
+     */
     public void showBetErrorIfBetInvalid(int betInput, GameInterface gameInterface) {
         Player currentBidder = this.getCurrentBidder();
 
@@ -65,8 +70,9 @@ public class Auction {
         }
     }
 
-    //Takes in a bet amount and sets the new price based on the bet and sets
-    //the character currently winning the property
+    /**This method is used to advance the auction as soon as a player has bid
+     * @param betAmount the amount the player wants to bet
+     */
     public Optional<BidAdvanceToken> bid(int betAmount) {
         if(betAmount >= price + Auction.AUCTION_MINIMUM_INCREASE) {
             price = betAmount;
@@ -82,7 +88,8 @@ public class Auction {
         return Optional.empty();
     }
 
-    //When a player types quit, this function is called to remover the player from the players list
+    /**This method is used to withdraw a player from the auction
+     */
     public BidAdvanceToken withdrawCurrentPlayerFromAuction() {
         players.remove(currentPlayerIndex);
 
@@ -93,24 +100,32 @@ public class Auction {
         return new BidAdvanceTokenImpl();
     }
 
-    //gets the current price/highest bid in the auction
+    /**This method is used get the current highest bid in the auction
+     */
     public int getPrice() {
         return price;
     }
 
-    //gets the player who has placed the highest bid
+    /**This method is used get the player who has placed the highest bid
+     */
     public Player getHighestBidder() {
         return highestBidder;
     }
 
+    /**This method is used get the player currently bidding
+     */
     public Player getCurrentBidder() {
         return this.players.get(currentPlayerIndex);
     }
 
+    /**This method is used get the balance of the player currently bidding
+     */
     public int getCurrentBidderBalance() {
         return this.getCurrentBidder().getBalance();
     }
 
+    /**This method is used to end the auction when there is only one player left
+     */
     public boolean shouldEnd() {
         return this.players.size() <= 1;
     }

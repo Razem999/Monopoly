@@ -43,6 +43,8 @@ public class GameActions {
         }
     }
 
+    /**This method is used let the current player buy a house
+     */
     public void currentPlayerBuyHouse() {
         Player currentPlayer = this.players.getCurrentPlayer();
 
@@ -84,6 +86,8 @@ public class GameActions {
         });
     }
 
+    /**This method is used to end the turn of the current player
+     */
     public void currentPlayerPass() {
         if (this.players.hasCurrentPlayerFinishedRolling()) {
             this.gameInterface.notifyPlayerEndedTurn(this.players.getCurrentPlayer());
@@ -95,6 +99,8 @@ public class GameActions {
         }
     }
 
+    /**This method is used let the current player start an auction
+     */
     public void currentPlayerStartAuction() {
         GameTile tile = this.gameBoard.getTile(this.players.getCurrentPlayer().getTilePosition()).orElseThrow();
 
@@ -109,6 +115,8 @@ public class GameActions {
 
     }
 
+    /**This method is used to get the current player to pay the jail fee to be released
+     */
     public void currentPlayerPayJailFee() {
         Player currentPlayer = this.players.getCurrentPlayer();
         if (this.gameBoard.isPlayerInJail(currentPlayer)) {
