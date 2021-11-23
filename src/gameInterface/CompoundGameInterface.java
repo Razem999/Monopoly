@@ -11,6 +11,7 @@ import tiles.PropertyTile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Any output only operations are forwarded to all backing interfaces while only one interface will try to get input.
@@ -45,24 +46,10 @@ public class CompoundGameInterface implements GameInterface {
     }
 
     @Override
-    public Optional<Integer> processHouseSale(List<GameBoard.TileAndIndex> tiles, Player player, GameBoard gameBoard) {
+    public void getTileSelection(List<GameBoard.TileAndIndex> tiles, GameBoard gameBoard, Consumer<Optional<Integer>> onSelection) {
         if (this.backingInterfaces.size() > 0) {
-            return this.backingInterfaces.get(0).processHouseSale(tiles, player, gameBoard);
+            this.backingInterfaces.get(0).getTileSelection(tiles, gameBoard, onSelection);
         }
-
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean processHotelSale(String tileName, int amount, int currentNumHouses, int currentNumHotels, Player player) {
-        if (player.getAIStrategy().isPresent()) {
-            return true;
-        }
-        if (this.backingInterfaces.size() > 0) {
-            return this.backingInterfaces.get(0).processHotelSale(tileName, amount, currentNumHouses, currentNumHotels, player);
-        }
-
-        return false;
     }
 
     @Override
@@ -232,6 +219,11 @@ public class CompoundGameInterface implements GameInterface {
     @Override
     public void notifyTileCannotUpgradeFurther(Player player, PropertyTile tile) {
         this.backingInterfaces.forEach(i -> i.notifyTileCannotUpgradeFurther(player, tile));
+    }
+
+    @Override
+    public void notifyNoTilesApplicable() {
+        this.backingInterfaces.forEach(GameInterface::notifyNoTilesApplicable);
     }
 
     @Override

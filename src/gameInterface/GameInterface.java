@@ -9,12 +9,12 @@ import tiles.PropertyTile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public interface GameInterface extends AuctionBidExecutor {
     void startAuction(int startingBid, BuyableTile tile, Players players, int tilePosition);
     boolean processSale(String tileName, int amount, Player player);
-    Optional<Integer> processHouseSale(List<GameBoard.TileAndIndex> tiles, Player player, GameBoard gameBoard);
-    boolean processHotelSale(String tileName, int amount, int currentNumHouses, int currentNumHotels, Player player);
+    void getTileSelection(List<GameBoard.TileAndIndex> tiles, GameBoard gameBoard, Consumer<Optional<Integer>> onSelection);
     void displayPlayerProperties(Player player, GameBoard gameBoard);
     void notifyPlayerDeclinedPurchase(Player player, String tileName);
     void notifyPlayerPurchaseConfirm(Player player, String tileName, int amount);
@@ -48,4 +48,5 @@ public interface GameInterface extends AuctionBidExecutor {
     PlayerSelection askHowManyPlayers();
     void notifyBetError(String msg);
     void notifyTileCannotUpgradeFurther(Player player, PropertyTile tile);
+    void notifyNoTilesApplicable();
 }

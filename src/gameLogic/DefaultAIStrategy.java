@@ -91,6 +91,11 @@ public class DefaultAIStrategy implements AIStrategy {
             score += 20;
         }
 
+        // Do not start an auction if you cannot bid
+        if (player.getBalance() < Auction.AUCTION_START_PRICE) {
+            score = 0;
+        }
+
         return score;
     }
 

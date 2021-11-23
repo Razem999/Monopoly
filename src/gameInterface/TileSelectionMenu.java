@@ -3,28 +3,22 @@ package gameInterface;
 import gameLogic.GameBoard;
 
 import javax.swing.*;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.function.Consumer;
 
 public class TileSelectionMenu extends JDialog {
-    private final TileSelectionListener selectionListener;
-    private final TileSelectionCancelListener cancelListener;
-
-    public interface TileSelectionListener {
-        void handleTileSelection(int tilePosition);
-    }
+    private boolean closing;
 
     public interface TileSelectionCancelListener {
         void handleSelectionCancelation();
     }
 
     private static class TileCellListRenderer extends DefaultListCellRenderer {
-        private final GameBoard gameBoard;
 
-        public TileCellListRenderer(GameBoard gameBoard) {
-            this.gameBoard = gameBoard;
+        public TileCellListRenderer() {
         }
 
         @Override
@@ -38,49 +32,53 @@ public class TileSelectionMenu extends JDialog {
         }
     }
 
-    public TileSelectionMenu(List<GameBoard.TileAndIndex> tilePositions, GameBoard gameBoard, TileSelectionListener selectionListener, TileSelectionCancelListener cancelListener) {
+    public TileSelectionMenu(List<GameBoard.TileAndIndex> tilePositions, Consumer<Integer> selectionListener, TileSelectionCancelListener cancelListener) {
         super();
 
-        this.selectionListener = selectionListener;
-        this.cancelListener = cancelListener;
+        this.closing = false;
         DefaultListModel<GameBoard.TileAndIndex> model = new DefaultListModel<>();
         model.addAll(tilePositions);
 
-        JList<GameBoard.TileAndIndex> list = new JList<>();
-        list.setCellRenderer(new TileCellListRenderer(gameBoard));
+        JList<GameBoard.TileAndIndex> list = new JList<>(model);
+        list.setCellRenderer(new TileCellListRenderer());
 
-        GridBagLayout layout = new GridBagLayout();
-        this.setLayout(layout);
+        this.setLayout(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridwidth = 2;
         c.gridheight = 2;
-        layout.addLayoutComponent(list, c);
+        this.add(list, c);
 
         JButton confirmButton = new JButton("Ok");
         confirmButton.addActionListener(e -> {
-            if (list.getSelectedIndex() != -1) {
-                this.selectionListener.handleTileSelection(list.getSelectedValue().index());
+            if (list.getSelectedIndex() != -1 && !this.closing) {
+                this.closing = true;
+                selectionListener.accept(list.getSelectedValue().index());
                 this.setVisible(false);
-                this.dispose();
+                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
             }
         });
         c.gridheight = 1;
         c.gridwidth = 1;
         c.gridx = 1;
         c.gridy = 2;
-        layout.addLayoutComponent(confirmButton, c);
+        this.add(confirmButton, c);
 
         JButton cancelButton = new JButton("Cancel");
-        confirmButton.addActionListener(e -> {
-            this.cancelListener.handleSelectionCancelation();
-            this.setVisible(false);
-            this.dispose();
+        cancelButton.addActionListener(e -> {
+            if (!this.closing) {
+                this.closing = true;
+                cancelListener.handleSelectionCancelation();
+                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            }
         });
         c.gridheight = 1;
         c.gridwidth = 1;
         c.gridx = 2;
         c.gridy = 2;
-        layout.addLayoutComponent(cancelButton, c);
+        this.add(cancelButton, c);
+
+        this.setSize(new Dimension(500, 700));
+        this.setVisible(true);
     }
 }

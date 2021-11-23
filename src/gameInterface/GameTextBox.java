@@ -14,17 +14,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 
 public class GameTextBox extends JPanel implements GameInterface {
     private final JTextArea textArea;
     private final List<String> history;
-    private final static String newline = "\n";
+    private final ReentrantLock actionLock;
     private final AuctionBidExecutor.Factory auctionBetExecutorFactory;
 
 
-    public GameTextBox(AuctionBidExecutor.Factory auctionBetExecutorFactory) {
+    public GameTextBox(Factory auctionBetExecutorFactory, ReentrantLock actionLock) {
         super();
 
+        this.actionLock = actionLock;
         this.auctionBetExecutorFactory = auctionBetExecutorFactory;
         this.auctionBetExecutorFactory.setGameInterface(this);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -93,31 +97,17 @@ public class GameTextBox extends JPanel implements GameInterface {
     }
 
     @Override
-    public Optional<Integer> processHouseSale(List<GameBoard.TileAndIndex> tiles, Player player, GameBoard gameBoard) {
-        AtomicReference<Optional<Integer>> selection = new AtomicReference<>(Optional.empty());
-        AtomicBoolean done = new AtomicBoolean(false);
-
-        new TileSelectionMenu(tiles, gameBoard, s -> {
-            selection.set(Optional.of(s));
-            done.set(true);
-        },
-        () -> done.set(true));
-
-        while (!done.get()) {
-            try {
-                done.wait(1000);
-            } catch (InterruptedException ignored) {}
-        }
-
-        return selection.get();
-    }
-
-    @Override
-    public boolean processHotelSale(String tileName, int amount, int currentNumHouses, int currentNumHotels, Player player) {
-        int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want top buy a hotel on " + tileName + " for $" + amount + "? " +
-                "(There are currently " + currentNumHouses + " houses and " + currentNumHotels + " on this tile)");
-
-        return choice == JOptionPane.YES_OPTION;
+    public void getTileSelection(List<GameBoard.TileAndIndex> tiles, GameBoard gameBoard, Consumer<Optional<Integer>> onSelection) {
+        SwingUtilities.invokeLater(() -> {
+            this.actionLock.lock();
+            new TileSelectionMenu(tiles, (Integer s) -> {
+                onSelection.accept(Optional.of(s));
+                this.actionLock.unlock();
+            }, () -> {
+                onSelection.accept(Optional.empty());
+                this.actionLock.unlock();
+            });
+        });
     }
 
     @Override
@@ -366,6 +356,11 @@ public class GameTextBox extends JPanel implements GameInterface {
     @Override
     public void notifyTileCannotUpgradeFurther(Player player, PropertyTile tile) {
         JOptionPane.showMessageDialog(null, "This property has reached the maximum upgrade");
+    }
+
+    @Override
+    public void notifyNoTilesApplicable() {
+        JOptionPane.showMessageDialog(null, "No tiles can be used for this.");
     }
 
     @Override

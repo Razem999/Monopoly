@@ -49,30 +49,40 @@ public class GameActions {
         List<GameBoard.TileAndIndex> ownedTiles = this.gameBoard
                 .filterTilesWithIndex(t -> t.asBuyable().isPresent() && t.asBuyable().get().isOwnedBy(currentPlayer));
 
-        Optional<GameTile> gameTile = this.gameBoard.getTile(currentPlayer.getTilePosition());
-        if (gameTile.isEmpty() || gameTile.get().asHousingTile().isEmpty()) {
-            return;
-        }
-        List<GameTile> propertySet = this.gameBoard
-                .getPropertiesUnderSet(gameTile.get().asHousingTile().get().getPropertySet());
-
-        if (!ownedTiles.stream().map(GameBoard.TileAndIndex::tile).collect(Collectors.toList()).containsAll(propertySet)) {
-            gameInterface.notifyCannotBuyHouseSetReasons(currentPlayer, gameTile.get());
-            return;
-        }
 
         List<GameBoard.TileAndIndex> houseBuildableTiles = ownedTiles.stream()
                 .filter(t -> t.tile().asHousingTile().isPresent() && t.tile().asHousingTile().get().numberOfHouses() < 4).collect(Collectors.toList());
 
-        Optional<Integer> tileSelection = this.gameInterface.processHouseSale(houseBuildableTiles, currentPlayer, this.gameBoard);
-        if (tileSelection.isPresent() &&
-                houseBuildableTiles.stream()
-                        .mapToInt(GameBoard.TileAndIndex::index).anyMatch(i -> i == tileSelection.get())) {
-
-            Optional<GameTile> tileOpt = this.gameBoard.getTile(tileSelection.get());
-
-            tileOpt.flatMap(GameTile::asHousingTile).ifPresent(h -> h.upgradeProperty(currentPlayer, gameBoard));
+        if (houseBuildableTiles.isEmpty()) {
+            this.gameInterface.notifyNoTilesApplicable();
+            return;
         }
+
+        this.gameInterface.getTileSelection(houseBuildableTiles, this.gameBoard, tileSelection -> {
+            if (tileSelection.isEmpty()) {
+                return;
+            }
+
+            Optional<GameTile> gameTile = this.gameBoard.getTile(tileSelection.get());
+            if (gameTile.isEmpty() || gameTile.get().asHousingTile().isEmpty()) {
+                return;
+            }
+
+            List<GameTile> propertySet = this.gameBoard
+                    .getPropertiesUnderSet(gameTile.get().asHousingTile().get().getPropertySet());
+
+            if (!ownedTiles.stream().map(GameBoard.TileAndIndex::tile).collect(Collectors.toList()).containsAll(propertySet)) {
+                gameInterface.notifyCannotBuyHouseSetReasons(currentPlayer, gameTile.get());
+                return;
+            }
+
+
+            if (houseBuildableTiles.stream()
+                            .mapToInt(GameBoard.TileAndIndex::index).anyMatch(i -> i == tileSelection.get())) {
+
+                gameTile.flatMap(GameTile::asHousingTile).ifPresent(h -> h.upgradeProperty(currentPlayer, gameBoard));
+            }
+        });
     }
 
     public void currentPlayerPass() {

@@ -24,7 +24,6 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
     }
 
     private UIState uiState;
-    private final Lock actionLock;
 
     private final GameBoard gameBoard;
     private final Players players;
@@ -39,14 +38,13 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
     /**This is the constructor of GameButtonPanel with parameters
      * @param gameActions These are the players actions they can preform on their turn
      */
-    public GameButtonPanel(GameActions gameActions, GameBoard gameBoard, Players players) {
+    public GameButtonPanel(GameActions gameActions, GameBoard gameBoard, Players players, Lock actionLock) {
         super();
 
         this.uiState = UIState.NormalPlayer;
         this.gameBoard = gameBoard;
         this.players = players;
         this.players.addPlayerChangeListener(this);
-        this.actionLock = new ReentrantLock();
 
         //Creates a button that when clicked rolls the dice for the current player
         this.rollButton = new JButton("Roll");
@@ -98,15 +96,7 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
 
         //Creates a button that allows a player to buy houses for property sets they own
         this.buyHouses = new JButton("Buy House");
-        this.buyHouses.addActionListener(e -> new Thread(() -> {
-            if (actionLock.tryLock()) {
-                try {
-                    gameActions.currentPlayerBuyHouse();
-                } finally {
-                    actionLock.unlock();
-                }
-            }
-        }).start());
+        this.buyHouses.addActionListener(e -> new Thread(gameActions::currentPlayerBuyHouse).start());
 
         //Creates a button that allows a player to pay themselves out of jail
         this.payJailFeeButton = new JButton("Pay Jail Fee ($" + JailTile.JAIL_FINE + ")");
