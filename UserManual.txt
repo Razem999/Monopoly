@@ -10,7 +10,7 @@ Screen Layout:
   Top Center to Right: The map with the tiles + their names and player icons
 
 Starting Off:
-  At the begining of the game there are 4 Player controlled icons. Each Player starts off with $1500 and starts on the go tiles. They will then take turns rolling and moving around
+  At the begining of the game there are AI and Player controlled icons. You can select the number of players and AI at the start of the game. Each Player starts off with $1500 and starts on the go tiles. They will then take turns rolling and moving around
   the map as they collect properties and other tiles.
 
 Map Controls:
@@ -27,6 +27,10 @@ Player Turn Controls:
 
   Buy: If a Player is on a puchasable tile then the user can select to buy it by pressing the buy button. If the player cannot purchase the property the game will let them 
   know upon clicking the button and will tell them why they can not purchase the tile.
+  
+  Buy House: If a player owns a complete set of properties then they can hit Buy House and select the property to build the house on.
+  
+  Pay Jail Fine: If the player is in jail they then have the option to pay the jail fine.
 
   Auction: If a Player is on a puchasable tile then the user can select to auction that tile by pressing the auction button. The game will then let the players take turns bidding 
   until one player is left in the auction or no one else can afford the property. If the player cannot auction the property the game will let them 
