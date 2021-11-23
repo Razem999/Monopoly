@@ -99,14 +99,15 @@ public class GameTextBox extends JPanel implements GameInterface {
     @Override
     public void getTileSelection(List<GameBoard.TileAndIndex> tiles, GameBoard gameBoard, Consumer<Optional<Integer>> onSelection) {
         SwingUtilities.invokeLater(() -> {
-            this.actionLock.lock();
-            new TileSelectionMenu(tiles, (Integer s) -> {
-                onSelection.accept(Optional.of(s));
-                this.actionLock.unlock();
-            }, () -> {
-                onSelection.accept(Optional.empty());
-                this.actionLock.unlock();
-            });
+            if (this.actionLock.tryLock()) {
+                new TileSelectionMenu(tiles, (Integer s) -> {
+                    onSelection.accept(Optional.of(s));
+                    this.actionLock.unlock();
+                }, () -> {
+                    onSelection.accept(Optional.empty());
+                    this.actionLock.unlock();
+                });
+            }
         });
     }
 
