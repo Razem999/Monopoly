@@ -19,6 +19,9 @@ public class GameTileDrawable implements GameDrawable {
         this.tilePosition = tilePosition;
     }
 
+    /**This method is used to get the location of a tile
+     * @param tilePosition the drawn tile
+     */
     public static Point getTileDrawOrigin(int tilePosition) {
         int bottom = GameGraphics.CANVAS_HEIGHT - TILE_HEIGHT - SCREEN_PADDING;
         int right = GameGraphics.CANVAS_WIDTH - TILE_WIDTH - SCREEN_PADDING;
@@ -37,6 +40,8 @@ public class GameTileDrawable implements GameDrawable {
         }
     }
 
+    /**This method is used to get the location of a tile
+     */
     private Point getDrawOrigin() {
         return GameTileDrawable.getTileDrawOrigin(this.tilePosition);
     }
@@ -49,6 +54,9 @@ public class GameTileDrawable implements GameDrawable {
         g.drawRect(drawOrigin, houseDimension, Color.BLACK);
     }
 
+    /**This method is used to draw houses and hotels
+     * @param g the graphics component
+     */
     private void drawUgrades(GameGraphics g) {
         if (this.gameTile.asHousingTile().isEmpty()) {
             return;
@@ -73,6 +81,9 @@ public class GameTileDrawable implements GameDrawable {
         }
     }
 
+    /**This method is used to draw tiles
+     * @param g the graphics component
+     */
     @Override
     public void draw(GameGraphics g) {
         Point drawOrigin = this.getDrawOrigin();
@@ -84,6 +95,8 @@ public class GameTileDrawable implements GameDrawable {
         this.drawUgrades(g);
     }
 
+    /**This method is used to draw on the tile layer
+     */
     @Override
     public int drawLayer() {
         return GameDrawable.TILE_DRAW_LAYER;

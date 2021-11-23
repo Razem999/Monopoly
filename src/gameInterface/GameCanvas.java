@@ -37,16 +37,23 @@ public class GameCanvas extends JPanel implements GameCamera.CameraChangeListene
         this.players.addPlayerChangeListener(this);
     }
 
+    /**This method is used to get the camera controller for the game camera
+     */
     public GameCameraController getGameCameraController() {
         return this.gameCameraController;
     }
 
+    /**This method tell swing how large the window should be
+     */
     @Override
     public Dimension getPreferredSize() {
         Container parent = this.getParent();
         return new Dimension(parent.getWidth(), parent.getHeight() * 2 / 3);
     }
 
+    /**This method is used to draw the components onto the canvas
+     * @param g the game graphics
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -72,15 +79,21 @@ public class GameCanvas extends JPanel implements GameCamera.CameraChangeListene
         }
     }
 
+    /**This method is used to redraw the game
+     */
     public void requestRedraw() {
         SwingUtilities.invokeLater(this::repaint);
     }
 
+    /**This method is used to redraw the game if the camera moves
+     */
     @Override
     public void handleCameraChange(GameCamera newCamera) {
         this.requestRedraw();
     }
 
+    /**This method is used to redraw the game if a player changes states
+     */
     @Override
     public void handlePlayerChange(Player player) {
         this.requestRedraw();

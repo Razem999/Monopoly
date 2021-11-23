@@ -17,6 +17,9 @@ public class PlayerInfoDisplay implements GameDrawable {
         this.gameBoard = gameBoard;
     }
 
+    /**This method is used to draw the player information onto the screen
+     * @param g the graphics component
+     */
     @Override
     public void draw(GameGraphics g) {
         StringBuilder infoText = new StringBuilder();
@@ -41,6 +44,8 @@ public class PlayerInfoDisplay implements GameDrawable {
         g.drawTextMultiline(infoText.toString(), textOrigin, 25, Color.BLACK);
     }
 
+    /**This method is used to draw on the UI components layer
+     */
     @Override
     public int drawLayer() {
         return GameDrawable.UI_DRAW_LAYER;

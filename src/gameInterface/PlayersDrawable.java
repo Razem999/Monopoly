@@ -17,6 +17,9 @@ public class PlayersDrawable implements GameDrawable {
         this.players = players;
     }
 
+    /**This method is used to get the players colors for their circles
+     * @param player the player whose color is needed
+     */
     public static Color getPlayerColor(Player player) {
         int playerID = player.getPlayerID();
 
@@ -29,11 +32,22 @@ public class PlayersDrawable implements GameDrawable {
         };
     }
 
+    /**This method is used to draw the players circles
+     * @param g the graphics component
+     * @param drawOrigin the location to draw
+     * @param dimension the size of the circle
+     * @param playerColor the color of the players circle
+     */
     public static void drawPlayerBubble(GameGraphics g, Point drawOrigin, Dimension dimension, Color playerColor) {
         g.drawOvalFill(drawOrigin, dimension, playerColor);
         g.drawOval(drawOrigin, dimension, Color.BLACK);
     }
 
+    /**This method is used to draw players onto the board
+     * @param tilePosition the tile position on the gameBoard
+     * @param players the players in the game
+     * @param g the graphics component
+     */
     private void drawPlayersOnTile(int tilePosition, List<Player> players, GameGraphics g) {
         Point tileOrigin = GameTileDrawable.getTileDrawOrigin(tilePosition);
 
@@ -55,6 +69,9 @@ public class PlayersDrawable implements GameDrawable {
         }
     }
 
+    /**This method is used to draw the players onto the screen
+     * @param g the graphics component
+     */
     @Override
     public void draw(GameGraphics g) {
         Set<Integer> playerPositions = this.players.stream().map(Player::getTilePosition).collect(Collectors.toSet());
@@ -65,6 +82,8 @@ public class PlayersDrawable implements GameDrawable {
         }
     }
 
+    /**This method is used to draw on the player level
+     */
     @Override
     public int drawLayer() {
         return GameDrawable.PLAYER_DRAW_LAYER;

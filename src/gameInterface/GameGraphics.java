@@ -193,6 +193,12 @@ public class GameGraphics {
         graphics2D.setColor(previousColor);
     }
 
+    /**This function draws text that uses multiple lines
+     * @param s the string to draw onto the screen
+     * @param origin the coordinates for the string
+     * @param fontSize the size of the text font
+     * @param color the color of the text
+     */
     public void drawTextMultiline(String s, Point origin, int fontSize, Color color) {
         if (!(graphics instanceof Graphics2D graphics2D)) {
             return;
@@ -214,6 +220,13 @@ public class GameGraphics {
         }
     }
 
+    /**This function draws text
+     * @param s the string to draw onto the screen
+     * @param origin the coordinates for the string
+     * @param fontWidth the width of the area to draw the text
+     * @param drawLocation the location to draw the string
+     * @param color the color of the text
+     */
     public void drawText(String s, Point origin, int fontWidth, TextDrawLocation drawLocation, Color color) {
         if (!(this.graphics instanceof Graphics2D graphics2D)) {
             return;
@@ -249,6 +262,12 @@ public class GameGraphics {
         graphics2D.setColor(previousColor);
     }
 
+    /**This function draws text
+     * @param s the string to draw onto the screen
+     * @param origin the coordinates for the string
+     * @param fontWidth the width of the area to draw the text
+     * @param color the color of the text
+     */
     public void drawText(String s, Point origin, int fontWidth, Color color) {
         drawText(s, origin, fontWidth, TextDrawLocation.BottomRight, color);
     }
@@ -286,6 +305,12 @@ public class GameGraphics {
         this.graphics.setColor(previousColor);
     }
 
+    /**This function gets the height of the string
+     * @param s the string to draw onto the screen
+     * @param g the 2D graphics component
+     * @param x the x coordinate of the string
+     * @param y the y coordinate of the string
+     */
     private static int getStringHeight(String s, Graphics2D g, float x, float y) {
         return g.getFont().createGlyphVector(g.getFontRenderContext(), s).getPixelBounds(null, x, y).height;
     }
