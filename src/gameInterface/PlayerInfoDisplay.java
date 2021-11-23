@@ -7,8 +7,8 @@ import tiles.GameTile;
 import java.awt.*;
 
 public class PlayerInfoDisplay implements GameDrawable {
-    private Player player;
-    private GameBoard gameBoard;
+    private final Player player;
+    private final GameBoard gameBoard;
 
     private final static Point margin = new Point(50, 50);
 
@@ -34,7 +34,11 @@ public class PlayerInfoDisplay implements GameDrawable {
             infoText.append("\n");
         }
 
-        g.drawTextMultiline(infoText.toString(), margin, 25, Color.BLACK);
+        int playerDotSize = 50;
+        PlayersDrawable.drawPlayerBubble(g, margin, new Dimension(playerDotSize, playerDotSize), PlayersDrawable.getPlayerColor(player));
+
+        Point textOrigin = new Point(margin.x, margin.y + playerDotSize);
+        g.drawTextMultiline(infoText.toString(), textOrigin, 25, Color.BLACK);
     }
 
     @Override
