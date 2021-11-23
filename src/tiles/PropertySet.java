@@ -2,6 +2,9 @@ package tiles;
 
 import java.awt.*;
 
+/**
+ * PropertySet is the enum, which stores the set color, and the properties are grouped under PropertySet.
+ */
 public enum PropertySet {
     Red,
     Yellow,

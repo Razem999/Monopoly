@@ -68,11 +68,21 @@ public class UtilityTile implements BuyableTile {
         }
     }
 
+    /**
+     * This method is used to check whether the tile is owned or not, and performs actions accordingly
+     * @param player This is the player that lands on the tile
+     * @param gameBoard This is the board where the tile is situated
+     * @param players This is the list of players playing the game
+     */
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
         this.playerOwner.ifPresent(value -> onLandOccupied(player, value, gameBoard, players));
     }
 
+    /**
+     * This method prints the tile's description
+     * @return This returns the description as a string
+     */
     @Override
     public String tileDescription() {
         String desc = "Name: " + this.name + "\nA utility tile";
@@ -84,6 +94,10 @@ public class UtilityTile implements BuyableTile {
         return desc;
     }
 
+    /**
+     * This method is used to purchase a utility
+     * @param player This is the player that buys the property
+     */
     @Override
     public void buy(Player player) {
         if (this.playerOwner.isPresent()) {
@@ -104,51 +118,93 @@ public class UtilityTile implements BuyableTile {
         }
     }
 
+    /**
+     * This method is used to get the name of the tile
+     * @return This returns the name as a string
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * This method is used to get the set color this tile represents
+     * @return This returns the PropertySet
+     */
     @Override
     public PropertySet getPropertySet() {
         return PropertySet.White;
     }
 
+    /**
+     * This method is used to get the property in this tile
+     * @return This returns null since this is not buyable
+     */
     @Override
     public PropertyTile getPropertyTile() {
         return null;
     }
 
+    /**
+     * This method is used to check whether the utility is buyable or not
+     * @return This returns a tile that can bought
+     */
     @Override
     public Optional<BuyableTile> asBuyable() {
         return Optional.of(this);
     }
 
+    /**
+     * This method is used to check whether a house can be built on this tile or not
+     * @return This returns an empty Optional
+     */
     @Override
     public Optional<HousingTile> asHousingTile() {
         return Optional.empty();
     }
 
+    /**
+     * This method is used to check whether a utility is owned by a specific player or not
+     * @param player This is the player in question
+     * @return
+     */
     @Override
     public boolean isOwnedBy(Player player) {
         return this.playerOwner.map(value -> value.equals(player)).orElse(false);
     }
 
+    /**
+     * This method is used to check the utility has a owner or not
+     * @return This return true or false depending on the vacancy
+     */
     @Override
     public boolean hasOwner() {
         return this.playerOwner.isPresent();
     }
 
+    /**
+     * This method is used to check the price of the utility
+     * @return This returns the cost of the utility
+     */
     @Override
     public int getBuyCost() {
         return this.cost;
     }
 
+    /**
+     * This method is used to transfer ownership of a utility to another player
+     * @param newOwner This is the player receiving the utility
+     */
     @Override
     public void transferOwnership(Player newOwner) {
         this.playerOwner = Optional.of(newOwner);
     }
 
+    /**
+     * This method is used to end an auction and have the winning bidder pay for the utility
+     * @param price This is the amount the winning bidder has bid
+     * @param player This is the player who won the auction
+     */
     @Override
     public void closeAuctionFor(int price, Player player) {
         player.changeBalance(-1 * price);
