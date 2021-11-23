@@ -46,6 +46,7 @@ Known Issues:
   - None
 
 Changes From Milestone 2 to Milestone 3:
+The biggest changes this milestone were the additions of the AI players and the ability to buy houses and hotels. As the other tiles were added in milestone 1 there were no additional special tiles added to the board. There can be any number of AI players and there are 2 different strategies they use which is randomized upon their creating. The AI either uses the default stratagie which applies scores to tiles that determine if they are worth buying or auctioning and an aggressive stratagy that gets the AI to buy anything they can given they have the money for it. The UML diagram was updated to account for the houses, hotels, and AI.
 
 Deliverables Milestone 3:
   - UML Diagram: Including changes made so houses, hotels, and additional tiles are accounted for.
