@@ -30,13 +30,22 @@ public interface AIStrategy extends AuctionBidExecutor {
         }
     }
 
+    /**This method is used to get the average balance of all players in the game
+     */
     static int getAverageBalance(Players players) {
         return players.getPlayersList().stream().mapToInt(Player::getBalance).sum() / players.getPlayersList().size();
     }
 
+    /**This method is used to get the average net worth of all the players in the game
+     */
     static int getAverageNetWorth(Players players, GameBoard gameBoard) {
         return players.getPlayersList().stream().mapToInt(gameBoard::getPlayerNetWorth).sum() / players.getPlayersList().size();
     }
 
+    /**This method is used to roll and pass an AI players turn
+     * @param player the AI player who is currently on the tile
+     * @param players the players in the game
+     * @param gameActions the actions the AI can preform
+     */
     void doPlayerTurn(Player player, Players players, GameActions gameActions);
 }

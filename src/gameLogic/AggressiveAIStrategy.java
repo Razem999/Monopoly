@@ -11,6 +11,11 @@ public class AggressiveAIStrategy implements AIStrategy {
         this.gameBoard = gameBoard;
     }
 
+    /**This method is used to determine if an AI player will buy or auction a property it has landed on
+     * @param player the AI player who is currently on the tile
+     * @param players the players in the game
+     * @param gameActions the actions that can be preformed by the AI
+     */
     private void doTileActions(Player player, Players players, GameActions gameActions) {
         Optional<GameTile> tileOpt = gameBoard.getTile(player.getTilePosition());
         if (tileOpt.isPresent()) {
@@ -24,6 +29,11 @@ public class AggressiveAIStrategy implements AIStrategy {
         }
     }
 
+    /**This method is used to get the AI player to roll and pass their turn
+     * @param player the AI player who is currently on the tile
+     * @param players the players in the game
+     * @param gameActions the actions that can be preformed by the AI
+     */
     @Override
     public void doPlayerTurn(Player player, Players players, GameActions gameActions) {
         while (!players.hasCurrentPlayerFinishedRolling()) {
@@ -43,6 +53,11 @@ public class AggressiveAIStrategy implements AIStrategy {
         gameActions.currentPlayerPass();
     }
 
+    /**This method is used to get the AI player to bid in the auction
+     * @param auction the current auction being held
+     * @param players the players in the game
+     * @param tilePosition the position on the game board of the tile being auctioned
+     */
     @Override
     public Auction.BidAdvanceToken doPlayerBid(Auction auction, Players players, int tilePosition) {
         if (auction.getPrice() <= auction.getCurrentBidderBalance()) {
