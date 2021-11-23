@@ -28,12 +28,22 @@ public class GameCameraController implements KeyListener {
         float SCALE_CHANGE_UNIT = 0.1f;
 
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP -> gameCamera.moveCamera(0, CAMERA_MOVEMENT_UNIT);
-            case KeyEvent.VK_DOWN -> gameCamera.moveCamera(0, -CAMERA_MOVEMENT_UNIT);
+            case KeyEvent.VK_UP -> {
+                if (e.isShiftDown()) {
+                    gameCamera.changeScale(SCALE_CHANGE_UNIT);
+                } else {
+                    gameCamera.moveCamera(0, CAMERA_MOVEMENT_UNIT);
+                }
+            }
+            case KeyEvent.VK_DOWN -> {
+                if (e.isShiftDown()) {
+                    gameCamera.changeScale(-SCALE_CHANGE_UNIT);
+                } else {
+                    gameCamera.moveCamera(0, -CAMERA_MOVEMENT_UNIT);
+                }
+            }
             case KeyEvent.VK_LEFT -> gameCamera.moveCamera(CAMERA_MOVEMENT_UNIT, 0);
             case KeyEvent.VK_RIGHT -> gameCamera.moveCamera(-CAMERA_MOVEMENT_UNIT, 0);
-            case KeyEvent.VK_PAGE_UP -> gameCamera.changeScale(SCALE_CHANGE_UNIT);
-            case KeyEvent.VK_PAGE_DOWN -> gameCamera.changeScale(-SCALE_CHANGE_UNIT);
         }
     }
 

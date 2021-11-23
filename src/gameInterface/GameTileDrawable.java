@@ -90,7 +90,9 @@ public class GameTileDrawable implements GameDrawable {
 
         g.drawRect(drawOrigin, new Dimension(TILE_WIDTH, TILE_HEIGHT), Color.BLACK);
         g.fillRect(drawOrigin, new Dimension(TILE_WIDTH, TILE_HEIGHT), this.gameTile.getPropertySet().getColor());
-        g.drawText(this.gameTile.getName(), drawOrigin, (int) Math.round(TILE_WIDTH * 0.9), Color.BLACK);
+
+        Point textDrawOrigin = new Point(drawOrigin.x, drawOrigin.y + TILE_HEIGHT / 2);
+        g.drawText(this.gameTile.getName(), textDrawOrigin, (int) Math.round(TILE_WIDTH * 0.9), Color.BLACK);
 
         this.drawUgrades(g);
     }

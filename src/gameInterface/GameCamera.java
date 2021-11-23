@@ -41,6 +41,23 @@ public class GameCamera {
      */
     public void moveCamera(int xDelta, int yDelta) {
         this.offset = new Point(offset.x + xDelta, offset.y + yDelta);
+
+        if (this.offset.x < -GameGraphics.CANVAS_WIDTH) {
+            this.offset.x = -GameGraphics.CANVAS_WIDTH;
+        }
+
+        if (this.offset.x > GameGraphics.CANVAS_WIDTH) {
+            this.offset.x = GameGraphics.CANVAS_WIDTH;
+        }
+
+        if (this.offset.y < -GameGraphics.CANVAS_HEIGHT) {
+            this.offset.y = -GameGraphics.CANVAS_HEIGHT;
+        }
+
+        if (this.offset.y > GameGraphics.CANVAS_HEIGHT) {
+            this.offset.y = GameGraphics.CANVAS_HEIGHT;
+        }
+
         this.updateListeners();
     }
 
@@ -49,6 +66,8 @@ public class GameCamera {
      */
     public void changeScale(float change) {
         this.scale += change;
+        this.scale = (float) Math.max(this.scale, 0.1);
+
         this.updateListeners();
     }
 
