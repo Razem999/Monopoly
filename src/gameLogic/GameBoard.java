@@ -27,6 +27,10 @@ public class GameBoard {
     private int placeableHouses;
     private int placeableHotels;
 
+
+    public List<GameTile> getTiles() {
+        return this.tiles;
+    }
     /**This is the constructor of GameBoard.
      */
     public GameBoard(GameInterface gameInterface) {

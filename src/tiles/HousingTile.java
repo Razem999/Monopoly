@@ -10,6 +10,8 @@ public interface HousingTile extends BuyableTile {
     //returns the number of houses on a tile
     int numberOfHouses();
 
+    boolean hasHotel();
+
     //gets the property set of the tile
     PropertySet getPropertySet();
 }

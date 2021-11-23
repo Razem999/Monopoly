@@ -71,11 +71,10 @@ public class GameActions {
             List<GameTile> propertySet = this.gameBoard
                     .getPropertiesUnderSet(gameTile.get().asHousingTile().get().getPropertySet());
 
-            if (!ownedTiles.stream().map(GameBoard.TileAndIndex::tile).collect(Collectors.toList()).containsAll(propertySet)) {
+            if (false && !ownedTiles.stream().map(GameBoard.TileAndIndex::tile).collect(Collectors.toList()).containsAll(propertySet)) {
                 gameInterface.notifyCannotBuyHouseSetReasons(currentPlayer, gameTile.get());
                 return;
             }
-
 
             if (houseBuildableTiles.stream()
                             .mapToInt(GameBoard.TileAndIndex::index).anyMatch(i -> i == tileSelection.get())) {

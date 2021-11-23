@@ -17,7 +17,7 @@ public class PlayersDrawable implements GameDrawable {
         this.players = players;
     }
 
-    private static Color getPlayerColor(Player player) {
+    public static Color getPlayerColor(Player player) {
         int playerID = player.getPlayerID();
 
         return switch (playerID) {
@@ -27,6 +27,11 @@ public class PlayersDrawable implements GameDrawable {
             case 4 -> Color.YELLOW;
             default -> Color.WHITE;
         };
+    }
+
+    public static void drawPlayerBubble(GameGraphics g, Point drawOrigin, Dimension dimension, Color playerColor) {
+        g.drawOvalFill(drawOrigin, dimension, playerColor);
+        g.drawOval(drawOrigin, dimension, Color.BLACK);
     }
 
     private void drawPlayersOnTile(int tilePosition, List<Player> players, GameGraphics g) {
@@ -45,8 +50,8 @@ public class PlayersDrawable implements GameDrawable {
             Color playerColor = PlayersDrawable.getPlayerColor(players.get(i));
 
             Point drawOrigin = new Point(xOffset + tileOrigin.x, yOffset + tileOrigin.y);
-            g.drawOvalFill(drawOrigin, new Dimension(PLAYER_WIDTH / playersInRow, PLAYER_HEIGHT / playersInRow), playerColor);
-            g.drawOval(drawOrigin, new Dimension(PLAYER_WIDTH / playersInRow, PLAYER_HEIGHT / playersInRow), Color.BLACK);
+            Dimension playerDimension = new Dimension(PLAYER_WIDTH / playersInRow, PLAYER_HEIGHT / playersInRow);
+            PlayersDrawable.drawPlayerBubble(g, drawOrigin, playerDimension, playerColor);
         }
     }
 

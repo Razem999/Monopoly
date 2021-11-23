@@ -28,7 +28,6 @@ public class PropertyTile implements HousingTile {
     private final GameInterface gameInterface;
     private Optional<Player> owner;
     private int houses;
-    private int hotels;
     private boolean hasHotel;
 
     /**This is the constructor of tiles.PropertyTile with parameters
@@ -58,7 +57,6 @@ public class PropertyTile implements HousingTile {
         this.rent4h = rent4h;
         this.rentHotel = rentHotel;
         this.houses = 0;
-        this.hotels = 0;
         this.hasHotel = false;
     }
 
@@ -181,13 +179,11 @@ public class PropertyTile implements HousingTile {
             gameInterface.notifyCannotBuyHouseBalanceReasons(player, this);
         } else if (gameBoard.housesAvailable() == 0) {
             gameInterface.notifyHousesUnavailable(player);
-        } else if (this.numberOfHouses() < 4) {
-
         } else {
             player.changeBalance(-1 * this.pricePerHouse);
             gameBoard.updateHotel(-1);
             gameInterface.notifyPlayerPurchasedHouse(player, this.name, this.pricePerHouse);
-            this.hotels++;
+            this.hasHotel = true;
         }
     }
 
@@ -247,6 +243,11 @@ public class PropertyTile implements HousingTile {
     @Override
     public Optional<BuyableTile> asBuyable() {
         return Optional.of(this);
+    }
+
+    @Override
+    public boolean hasHotel() {
+        return this.hasHotel;
     }
 
 }
