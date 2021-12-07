@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
 import java.util.function.Consumer;
 
 public class TileSelectionMenu extends JDialog {

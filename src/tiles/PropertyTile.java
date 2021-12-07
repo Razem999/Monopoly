@@ -5,7 +5,6 @@ import gameLogic.Players;
 import gameLogic.GameBoard;
 import gameInterface.GameInterface;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

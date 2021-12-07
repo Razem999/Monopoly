@@ -4,15 +4,12 @@ import gameLogic.GameActions;
 import gameLogic.GameBoard;
 import gameLogic.Player;
 import gameLogic.Players;
-import tiles.GameTile;
 import tiles.JailTile;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Optional;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * The gameInterface.GameCanvas is where the drawable elements such as tiles and players are controlled

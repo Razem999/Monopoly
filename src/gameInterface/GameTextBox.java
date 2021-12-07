@@ -2,7 +2,6 @@ package gameInterface;
 
 import gameLogic.*;
 import tiles.BuyableTile;
-import tiles.BuyableTile;
 import tiles.GameTile;
 import tiles.PropertyTile;
 
@@ -12,9 +11,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 

@@ -1,8 +1,9 @@
 package tiles;
 
 import gameInterface.GameInterface;
-import gameInterface.LanguageConfiguration;
+import gameInterface.GameVersionConfiguration;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class PropertyTileBuilder {
      */
     public static List<PropertyTile> createTiles(GameInterface gameInterface) {
 
-        Map<String, String> streetNames = LanguageConfiguration.getInstance().getStreetNames();
+        Map<String, String> streetNames = GameVersionConfiguration.getInstance().getStreetNames();
         List<PropertyTile> properties = new LinkedList<>();
 
         //Mediterranean Avenue

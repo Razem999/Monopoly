@@ -2,9 +2,10 @@ package gameLogic;
 
 import gameInterface.GameInterface;
 import gameInterface.GameTileDrawable;
-import gameInterface.LanguageConfiguration;
+import gameInterface.GameVersionConfiguration;
 import tiles.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class GameBoard {
         this.jailIndex = 10;
         this.jailTile = new JailTile();
 
-        Map<String, String> streetNames = LanguageConfiguration.getInstance().getStreetNames();
+        Map<String, String> streetNames = GameVersionConfiguration.getInstance().getStreetNames();
 
         FreeParking freeParking = new FreeParking(gameInterface);
         IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface, freeParking);

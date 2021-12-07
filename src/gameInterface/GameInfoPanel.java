@@ -5,7 +5,6 @@ import gameLogic.GameBoard;
 import gameLogic.Players;
 
 import javax.swing.*;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class GameInfoPanel extends JComponent {

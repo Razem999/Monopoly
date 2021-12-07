@@ -1,3 +1,5 @@
+package gameLogic.tests;
+
 import gameInterface.CompoundGameInterface;
 import gameInterface.PlayerSelection;
 import gameLogic.*;
