@@ -65,4 +65,21 @@ Known Issues:
   - None
 
 Changes From Milestone 3 to Milestone 4:
-  - N/A
+The changes this milestone was adding support for international versions of monopoly by having all tile names and values in json files allowing them to be read from. This means
+that the players can select the version of the monopoly game and that then determines the names of the tiles and their monetary values. Another change is that now the game can be saved and loaded. This means the players can choose to save their game and all the states of the tiles are saved allowing them to be loaded at a later time.
+
+Deliverables Milestone 4:
+  - UML Diagram: Including changes made to the files so the game can be saved and loaded as well as the changes made to select the game version.
+    
+  - JAR File: This contains our projects code and Java documentation.
+    
+  - Documentation: All documentation can be found in the code above their respective functions and classes.
+
+  - Engineering Decisions: Explains why the code was developed the way it was.
+
+  - User Manual: Text file explaining how to play the game.
+
+  - Sequesnce Diagrams: 7 sequence diagrams depicting actions that are preformed during the game.
+ 
+Known Issues:
+  - None
