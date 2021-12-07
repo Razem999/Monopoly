@@ -82,4 +82,5 @@ Deliverables Milestone 4:
   - Sequesnce Diagrams: 7 sequence diagrams depicting actions that are preformed during the game.
  
 Known Issues:
-  - None
+  - Some tiles or missing their tests including Housing
+  - issue of interface not decoupled from model is not fixed as we were uncertain about where this comment was in refference to
