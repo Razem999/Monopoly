@@ -1,5 +1,9 @@
 package gameLogic;
 
+import save.PlayerSave;
+import save.PlayersSave;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +16,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 2021-10-25
  */
-public class Player {
+public class Player implements Serializable {
     private final int playerID;
     private int balance;
     private int tilePosition;
@@ -32,6 +36,15 @@ public class Player {
         this.playerID = id;
         this.balance = startingBalance;
         this.tilePosition = 0;
+        this.aiStrategy = Optional.empty();
+
+        this.playerChangeListeners = new ArrayList<>();
+    }
+
+    public Player(int id, int balance, int tilePosition) {
+        this.playerID = id;
+        this.balance = balance;
+        this.tilePosition = tilePosition;
         this.aiStrategy = Optional.empty();
 
         this.playerChangeListeners = new ArrayList<>();
@@ -131,6 +144,10 @@ public class Player {
      */
     public void setAIStrategy(AIStrategy.StrategyType aiStrategy) {
         this.aiStrategy = Optional.of(aiStrategy);
+    }
+
+    public PlayerSave save() {
+        return new PlayerSave(this.playerID, this.balance, this.tilePosition);
     }
 
 }

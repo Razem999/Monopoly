@@ -206,4 +206,14 @@ public class UtilityTile implements BuyableTile {
         gameInterface.notifyPlayerPurchaseConfirm(player, this.name, price);
     }
 
+    public Optional<Integer> getOwnerID() {
+        return this.playerOwner.map(Player::getPlayerID);
+    }
+
+    public void applySave(int ownerID, Players players) {
+        if (ownerID != -1) {
+            this.playerOwner = players.getPlayerByID(ownerID);
+        }
+    }
+
 }

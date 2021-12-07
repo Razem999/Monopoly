@@ -3,6 +3,10 @@ package gameLogic;
 import gameInterface.GameInterface;
 import gameInterface.GameTileDrawable;
 import gameInterface.LanguageConfiguration;
+import save.GameBoardSave;
+import save.JailSave;
+import save.PropertyTileSave;
+import save.RailroadSave;
 import tiles.*;
 
 import java.util.ArrayList;
@@ -20,11 +24,14 @@ public class GameBoard {
 
     public static record TileAndIndex(GameTile tile, int index) { }
 
-    private final  int totalHouses = 32;
-    private final  int totalHotels = 12;
+    private static final int totalHouses = 32;
+    private static final int totalHotels = 12;
     private final List<GameTile> tiles;
     private final GameInterface gameInterface;
-    private final int jailIndex;
+    private static final int jailIndex = 10;
+    private static final int waterworksIndex = 28;
+    private static final int freeParkingIndex = 20;
+    private static final int electricCompanyIndex = 12;
     private final JailTile jailTile;
     private int placeableHouses;
     private int placeableHotels;
@@ -33,13 +40,73 @@ public class GameBoard {
     public List<GameTile> getTiles() {
         return this.tiles;
     }
+
+    public GameBoard(GameInterface gameInterface, List<PropertyTileSave> propertyTileSaves, int placeableHouses, int placeableHotels, Players players) {
+        this.placeableHouses = placeableHouses;
+        this.placeableHotels = placeableHotels;
+
+        this.gameInterface = gameInterface;
+
+        this.jailTile = new JailTile();
+
+        Map<String, String> streetNames = LanguageConfiguration.getInstance().getStreetNames();
+
+        FreeParking freeParking = new FreeParking(gameInterface);
+        IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface, freeParking);
+        LuxuryTaxTile luxuryTaxTile = new LuxuryTaxTile(gameInterface, freeParking);
+        List<PropertyTile> propertyTiles = new ArrayList<>(PropertyTileBuilder.createTiles(gameInterface));
+        propertyTiles.forEach(p -> propertyTileSaves.forEach(s -> p.applySave(s, players)));
+        this.tiles = new ArrayList<>();
+
+        this.tiles.add(new GoTile(gameInterface));  //0
+        this.tiles.add(propertyTiles.get(0));       //1
+        this.tiles.add(new EmptyTile());            //2
+        this.tiles.add(propertyTiles.get(1));       //3
+        this.tiles.add(incomeTaxTile);              //4
+
+        this.tiles.add(new RailroadTile(0, streetNames.get("readingRailroad"), gameInterface, 200));   //5
+        this.tiles.add(propertyTiles.get(2));       //6
+        this.tiles.add(new EmptyTile());            //7
+        this.tiles.add(propertyTiles.get(3));       //8
+        this.tiles.add(propertyTiles.get(4));       //9
+
+        this.tiles.add(this.jailTile);              //10
+        this.tiles.add(propertyTiles.get(5));       //11
+        this.tiles.add(new UtilityTile(streetNames.get("electricCompany"), 150, gameInterface));    //12
+        this.tiles.add(propertyTiles.get(6));       //13
+        this.tiles.add(propertyTiles.get(7));       //14
+
+        this.tiles.add(new RailroadTile(1, streetNames.get("pennsylvaniaRailroad"), gameInterface, 200));  //15
+        this.tiles.add(propertyTiles.get(8));       //16
+        this.tiles.add(new EmptyTile());            //17
+        this.tiles.add(propertyTiles.get(9));       //18
+        this.tiles.add(propertyTiles.get(10));      //19
+        this.tiles.add(freeParking);                //20
+        this.tiles.add(propertyTiles.get(11));      //21
+        this.tiles.add(new EmptyTile());            //22
+        this.tiles.add(propertyTiles.get(12));      //23
+        this.tiles.add(propertyTiles.get(13));      //24
+        this.tiles.add(new RailroadTile(2, streetNames.get("bORailroad"), gameInterface, 200));   //25
+        this.tiles.add(propertyTiles.get(14));      //26
+        this.tiles.add(propertyTiles.get(15));      //27
+        this.tiles.add(new UtilityTile(streetNames.get("waterWorks"), 150, gameInterface)); //28
+        this.tiles.add(propertyTiles.get(16));      //29
+        this.tiles.add(new GoJail());               //30
+        this.tiles.add(propertyTiles.get(17));      //31
+        this.tiles.add(propertyTiles.get(18));      //32
+        this.tiles.add(new EmptyTile());            //33
+        this.tiles.add(propertyTiles.get(19));      //34
+        this.tiles.add(new RailroadTile(3, streetNames.get("shortLineRailroad"), gameInterface, 200));    //35
+        this.tiles.add(new EmptyTile());            //36
+        this.tiles.add(propertyTiles.get(20));      //37
+        this.tiles.add(luxuryTaxTile);              //38
+        this.tiles.add(propertyTiles.get(21));      //39
+    }
+
     /**This is the constructor of GameBoard.
      */
     public GameBoard(GameInterface gameInterface) {
-        this.placeableHouses = 32;
-        this.placeableHotels = 12;
         this.gameInterface = gameInterface;
-        this.jailIndex = 10;
         this.jailTile = new JailTile();
 
         Map<String, String> streetNames = LanguageConfiguration.getInstance().getStreetNames();
@@ -56,7 +123,7 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(1));       //3
         this.tiles.add(incomeTaxTile);              //4
 
-        this.tiles.add(new RailroadTile(streetNames.get("readingRailroad"), gameInterface, 200));   //5
+        this.tiles.add(new RailroadTile(0, streetNames.get("readingRailroad"), gameInterface, 200));   //5
         this.tiles.add(propertyTiles.get(2));       //6
         this.tiles.add(new EmptyTile());            //7
         this.tiles.add(propertyTiles.get(3));       //8
@@ -68,7 +135,7 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(6));       //13
         this.tiles.add(propertyTiles.get(7));       //14
 
-        this.tiles.add(new RailroadTile(streetNames.get("pennsylvaniaRailroad"), gameInterface, 200));  //15
+        this.tiles.add(new RailroadTile(1, streetNames.get("pennsylvaniaRailroad"), gameInterface, 200));  //15
         this.tiles.add(propertyTiles.get(8));       //16
         this.tiles.add(new EmptyTile());            //17
         this.tiles.add(propertyTiles.get(9));       //18
@@ -78,7 +145,7 @@ public class GameBoard {
         this.tiles.add(new EmptyTile());            //22
         this.tiles.add(propertyTiles.get(12));      //23
         this.tiles.add(propertyTiles.get(13));      //24
-        this.tiles.add(new RailroadTile(streetNames.get("bORailroad"), gameInterface, 200));   //25
+        this.tiles.add(new RailroadTile(2, streetNames.get("bORailroad"), gameInterface, 200));   //25
         this.tiles.add(propertyTiles.get(14));      //26
         this.tiles.add(propertyTiles.get(15));      //27
         this.tiles.add(new UtilityTile(streetNames.get("waterWorks"), 150, gameInterface)); //28
@@ -88,7 +155,7 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(18));      //32
         this.tiles.add(new EmptyTile());            //33
         this.tiles.add(propertyTiles.get(19));      //34
-        this.tiles.add(new RailroadTile(streetNames.get("shortLineRailroad"), gameInterface, 200));    //35
+        this.tiles.add(new RailroadTile(3, streetNames.get("shortLineRailroad"), gameInterface, 200));    //35
         this.tiles.add(new EmptyTile());            //36
         this.tiles.add(propertyTiles.get(20));      //37
         this.tiles.add(luxuryTaxTile);              //38
@@ -307,6 +374,77 @@ public class GameBoard {
         List<BuyableTile> properties = this.getTilesOwnedByPlayer(player);
 
         return properties.stream().mapToInt(BuyableTile::getBuyCost).reduce(0, Integer::sum);
+    }
+
+    public GameBoardSave save() {
+        return new GameBoardSave(this.placeableHouses, this.placeableHotels);
+    }
+
+    public List<PropertyTileSave> savePropertyTiles() {
+        List<PropertyTileSave> result = new ArrayList<>();
+
+        for (GameTile tile : this.tiles) {
+            if (tile instanceof PropertyTile propertyTile) {
+                result.add(propertyTile.getSave());
+            }
+        }
+
+        return result;
+    }
+
+    public JailSave saveJail() {
+        return this.jailTile.getSave();
+    }
+
+    public void applyJailSave(JailSave jailSave, Players players) {
+        this.jailTile.applySave(jailSave, players);
+    }
+
+
+    public int saveWaterworks() {
+        Optional<Integer> ownerID = ((UtilityTile)this.tiles.get(GameBoard.waterworksIndex)).getOwnerID();
+        return ownerID.orElse(-1);
+    }
+
+    public void applyWaterworksSave(int ownerID, Players players) {
+        ((UtilityTile)this.tiles.get(GameBoard.waterworksIndex)).applySave(ownerID, players);
+    }
+
+    public void applyElectricCompanySave(int ownerID, Players players) {
+        ((UtilityTile)this.tiles.get(GameBoard.electricCompanyIndex)).applySave(ownerID, players);
+    }
+
+    public int saveElectricCompany() {
+        Optional<Integer> ownerID = ((UtilityTile)this.tiles.get(GameBoard.electricCompanyIndex)).getOwnerID();
+        return ownerID.orElse(-1);
+    }
+
+    public List<RailroadSave> saveRailroads() {
+        List<RailroadSave> result = new ArrayList<>();
+
+        for (GameTile tile : this.tiles) {
+            if (tile instanceof RailroadTile railroadTile) {
+                result.add(railroadTile.save());
+            }
+        }
+
+        return result;
+    }
+
+    public void applyRailroadSaves(List<RailroadSave> railroadSaves, Players players) {
+        this.tiles.forEach(t -> {
+            if (t instanceof RailroadTile railroadTile) {
+                railroadSaves.forEach(s -> railroadTile.applySave(s, players));
+            }
+        });
+    }
+
+    public int saveFreeParkingDeposits() {
+        return ((FreeParking)this.tiles.get(GameBoard.freeParkingIndex)).getTotalDeposited();
+    }
+
+    public void setFreeParkingDeposits(int freeParkingDeposits) {
+        ((FreeParking)this.tiles.get(GameBoard.freeParkingIndex)).setTotalDeposited(freeParkingDeposits);
     }
 
 }

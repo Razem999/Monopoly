@@ -17,7 +17,7 @@ import java.util.Optional;
  * @since 2021-10-25
  */
 public class FreeParking implements GameTile {
-    public static int totalDeposited;
+    private int totalDeposited;
 
     private final GameInterface gameInterface;
 
@@ -100,5 +100,13 @@ public class FreeParking implements GameTile {
     @Override
     public Optional<HousingTile> asHousingTile() {
         return Optional.empty();
+    }
+
+    public int getTotalDeposited() {
+        return this.totalDeposited;
+    }
+
+    public void setTotalDeposited(int totalDeposited) {
+        this.totalDeposited = totalDeposited;
     }
 }

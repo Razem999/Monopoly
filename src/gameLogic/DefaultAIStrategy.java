@@ -146,14 +146,14 @@ public class DefaultAIStrategy implements AIStrategy {
         while (!players.hasCurrentPlayerFinishedRolling()) {
             doTileActions(player, players, gameActions);
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException ignored) {}
 
             gameActions.currentPlayerRoll();
 
             doTileActions(player, players, gameActions);
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException ignored) {}
 
         }

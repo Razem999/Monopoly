@@ -3,8 +3,10 @@ package tiles;
 import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
+import save.JailSave;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +27,11 @@ class JailedPlayerInfo {
     JailedPlayerInfo(Player player) {
         this.player = player;
         this.rollsInJail = 0;
+    }
+
+    public JailedPlayerInfo(Player player, int rollsInJail) {
+        this.player = player;
+        this.rollsInJail = rollsInJail;
     }
 
     /**
@@ -233,5 +240,18 @@ public class JailTile implements GameTile {
     @Override
     public Optional<HousingTile> asHousingTile() {
         return Optional.empty();
+    }
+
+    public JailSave getSave() {
+        HashMap<Integer, Integer> jailedSave = new HashMap<>();
+        for (JailedPlayerInfo jailedPlayerInfo : this.jailedPlayers) {
+            jailedSave.put(jailedPlayerInfo.getPlayer().getPlayerID(), jailedPlayerInfo.getRollsInJail());
+        }
+
+        return new JailSave(jailedSave);
+    }
+
+    public void applySave(JailSave jailSave, Players players) {
+        jailSave.getJailedPlayers().forEach((id, rolls) -> this.jailedPlayers.add(new JailedPlayerInfo(players.getPlayerByID(id).orElseThrow(), rolls)));
     }
 }

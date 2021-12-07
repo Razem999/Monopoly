@@ -2,9 +2,12 @@ package gameLogic;
 
 import gameInterface.PlayerSelection;
 import gameInterface.PlayersDrawable;
+import save.PlayerSave;
+import save.PlayersSave;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 /**
  * The Players class represents all the players currently playing the game
@@ -17,9 +20,10 @@ public class Players {
     private int currentPlayer;
     private boolean currentPlayerHasRolled;
     private boolean currentPlayerHasActed;
-    private List<Player.PlayerChangeListener> playerChangeListeners;
+    private final List<Player.PlayerChangeListener> playerChangeListeners;
     private Optional<GameActions> aiActionHandler;
     private final AIStrategy.Factory aiFactory;
+    private List<AIStrategy.StrategyType> aiPlayers;
 
     public Players(AIStrategy.Factory aiFactory) {
         this.players = new ArrayList<>();
@@ -31,6 +35,19 @@ public class Players {
         this.playerChangeListeners = new ArrayList<>();
 
         this.aiFactory = aiFactory;
+        this.aiPlayers = new ArrayList<>();
+    }
+
+    public Players(List<PlayerSave> players, int currentPlayer, boolean currentPlayerHasRolled, boolean currentPlayerHasActed, AIStrategy.Factory aiFactory) {
+        this.aiActionHandler = Optional.empty();
+        this.playerChangeListeners = new ArrayList<>();
+
+        this.players = players.stream().map(PlayerSave::getPlayer).collect(Collectors.toList());
+        this.currentPlayer = currentPlayer;
+        this.currentPlayerHasRolled = currentPlayerHasRolled;
+        this.currentPlayerHasActed = currentPlayerHasActed;
+        this.aiFactory = aiFactory;
+        this.aiPlayers = new ArrayList<>();
     }
 
     /**This function gets the list of players playing the game
@@ -192,6 +209,7 @@ public class Players {
         for (int i = 0; i < playerSelection.getNumAIPlayers(); i++) {
             AIStrategy.StrategyType randomStrategy = aiStrategies.get(ThreadLocalRandom.current().nextInt(aiStrategies.size()));
             this.players.get(this.players.size() - i - 1).setAIStrategy(randomStrategy);
+            this.aiPlayers.add(randomStrategy);
         }
 
         this.updatePlayerChangeListeners();
@@ -199,6 +217,25 @@ public class Players {
         if (this.getCurrentPlayer().getAIStrategy().isPresent()) {
             this.doAIActions(this.getCurrentPlayer());
         }
+    }
+
+    public void initPlayers(List<AIStrategy.StrategyType> aiPlayers) {
+        this.removePlayerChangeListeners();
+        for (int i = 0; i < aiPlayers.size(); i++) {
+            int playerIndex = this.players.size() - aiPlayers.size() + i;
+            AIStrategy.StrategyType aiStrategy = aiPlayers.get(i);
+            this.players.get(playerIndex).setAIStrategy(aiStrategy);
+        }
+
+        this.updatePlayerChangeListeners();
+
+        if (this.getCurrentPlayer().getAIStrategy().isPresent()) {
+            this.doAIActions(this.getCurrentPlayer());
+        }
+    }
+
+    public PlayersSave save() {
+        return new PlayersSave(this.players.stream().map(Player::save).collect(Collectors.toList()), this.currentPlayer, this.currentPlayerHasRolled, this.currentPlayerHasActed, this.aiPlayers);
     }
 }
 
