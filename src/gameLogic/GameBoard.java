@@ -2,10 +2,12 @@ package gameLogic;
 
 import gameInterface.GameInterface;
 import gameInterface.GameTileDrawable;
+import gameInterface.LanguageConfiguration;
 import tiles.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -40,6 +42,8 @@ public class GameBoard {
         this.jailIndex = 10;
         this.jailTile = new JailTile();
 
+        Map<String, String> streetNames = LanguageConfiguration.getInstance().getStreetNames();
+
         FreeParking freeParking = new FreeParking(gameInterface);
         IncomeTaxTile incomeTaxTile = new IncomeTaxTile(gameInterface, freeParking);
         LuxuryTaxTile luxuryTaxTile = new LuxuryTaxTile(gameInterface, freeParking);
@@ -52,7 +56,7 @@ public class GameBoard {
         this.tiles.add(propertyTiles.get(1));       //3
         this.tiles.add(incomeTaxTile);              //4
 
-        this.tiles.add(new RailroadTile("Reading Railroad", gameInterface, 200));   //5
+        this.tiles.add(new RailroadTile(streetNames.get("readingRailroad"), gameInterface, 200));   //5
         this.tiles.add(propertyTiles.get(2));       //6
         this.tiles.add(new EmptyTile());            //7
         this.tiles.add(propertyTiles.get(3));       //8
@@ -60,11 +64,11 @@ public class GameBoard {
 
         this.tiles.add(this.jailTile);              //10
         this.tiles.add(propertyTiles.get(5));       //11
-        this.tiles.add(new UtilityTile("Electric Company", 150, gameInterface));    //12
+        this.tiles.add(new UtilityTile(streetNames.get("electricCompany"), 150, gameInterface));    //12
         this.tiles.add(propertyTiles.get(6));       //13
         this.tiles.add(propertyTiles.get(7));       //14
 
-        this.tiles.add(new RailroadTile("Pennsylvania Railroad", gameInterface, 200));  //15
+        this.tiles.add(new RailroadTile(streetNames.get("pennsylvaniaRailroad"), gameInterface, 200));  //15
         this.tiles.add(propertyTiles.get(8));       //16
         this.tiles.add(new EmptyTile());            //17
         this.tiles.add(propertyTiles.get(9));       //18
@@ -74,17 +78,17 @@ public class GameBoard {
         this.tiles.add(new EmptyTile());            //22
         this.tiles.add(propertyTiles.get(12));      //23
         this.tiles.add(propertyTiles.get(13));      //24
-        this.tiles.add(new RailroadTile("B. & O. Railroad", gameInterface, 200));   //25
+        this.tiles.add(new RailroadTile(streetNames.get("bORailroad"), gameInterface, 200));   //25
         this.tiles.add(propertyTiles.get(14));      //26
         this.tiles.add(propertyTiles.get(15));      //27
-        this.tiles.add(new UtilityTile("Water Works", 150, gameInterface)); //28
+        this.tiles.add(new UtilityTile(streetNames.get("waterWorks"), 150, gameInterface)); //28
         this.tiles.add(propertyTiles.get(16));      //29
         this.tiles.add(new GoJail());               //30
         this.tiles.add(propertyTiles.get(17));      //31
         this.tiles.add(propertyTiles.get(18));      //32
         this.tiles.add(new EmptyTile());            //33
         this.tiles.add(propertyTiles.get(19));      //34
-        this.tiles.add(new RailroadTile("Short Line Railroad", gameInterface, 200));    //35
+        this.tiles.add(new RailroadTile(streetNames.get("shortLineRailroad"), gameInterface, 200));    //35
         this.tiles.add(new EmptyTile());            //36
         this.tiles.add(propertyTiles.get(20));      //37
         this.tiles.add(luxuryTaxTile);              //38
