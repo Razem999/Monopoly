@@ -235,6 +235,11 @@ public class PropertyTile implements HousingTile {
     @Override
     public void upgradeProperty(Player player, GameBoard gameBoard) {
         if (owner.map(o -> o.equals(player)).orElse(false)) {
+            if (!gameBoard.doesPlayerOwnAllInSet(player, this.propertySet)) {
+                gameInterface.notifyCannotBuyHouseSetReasons(player, this);
+                return;
+            }
+
             if (this.houses < 4) {
                 this.buyHouse(player, gameBoard);
             } else if (this.houses == 4 && !this.hasHotel) {

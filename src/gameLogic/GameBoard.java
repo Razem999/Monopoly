@@ -267,6 +267,22 @@ public class GameBoard {
         return this.getPropertiesFilter(TileFilter.setFilter(propertySet));
     }
 
+    /**This method is used get the tiles within a property set
+     * @param propertySet The set of tiles
+     * @param player The player
+     */
+    public boolean doesPlayerOwnAllInSet(Player player, PropertySet propertySet) {
+        List<GameTile> set = this.getPropertiesUnderSet(propertySet);
+
+        for (GameTile tile : set) {
+            if (!tile.asBuyable().map(t -> t.isOwnedBy(player)).orElse(true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**This method is used to update the number of houses on the board
      * @param house the number of houses added to or removed from the board
      */
