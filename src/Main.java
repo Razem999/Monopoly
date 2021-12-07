@@ -145,6 +145,17 @@ public class Main {
 
     }
 
+    private static void getLanguageSelection() {
+        String[] choices = {"Base", "Canadian"};
+        String input = (String) JOptionPane.showInputDialog(null, "Choose the monopoly version.", "Version Selection", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
+
+        if (input.equals("Base")) {
+            GameVersionConfiguration.getInstance().setConfigFilePath("src/BaseMonopoly.json");
+        } else if (input.equals("Canadian")) {
+            GameVersionConfiguration.getInstance().setConfigFilePath("src/CanadianMonopoly.json");
+        }
+    }
+
     public static void main(String[] args) {
         JFrame mainFrame = new JFrame("Monopoly: The Devil Wants His Money!");
         SaveCreator saveCreator = new SaveCreator();
@@ -153,6 +164,8 @@ public class Main {
         mainFrame.setSize(windowSize);
         Container contentPane = mainFrame.getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+
+        getLanguageSelection();
 
         while (true) {
             GameStartOption gameStartOption = Main.getGameStartChoice();

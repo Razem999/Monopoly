@@ -12,11 +12,12 @@ public class GameVersionConfiguration {
 
     private Map<String, String> streetNames;
     private static GameVersionConfiguration instance;
+    private String configFilePath = "src/CanadianMonopoly.json";
 
     public static GameVersionConfiguration getInstance() {
         if (GameVersionConfiguration.instance == null) {
             instance = new GameVersionConfiguration();
-            instance.readConfigurationFile("src/CanadianMonopoly.json");
+            instance.readConfigurationFile(instance.configFilePath);
         }
         return instance;
     }
@@ -45,6 +46,11 @@ public class GameVersionConfiguration {
         } catch (Exception e) {
 
         }
-        System.out.println(this.streetNames);
     }
+
+    public void setConfigFilePath(String configFilePath) {
+        this.configFilePath = configFilePath;
+        this.readConfigurationFile(this.configFilePath);
+    }
+
 }
