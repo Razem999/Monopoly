@@ -27,6 +27,8 @@ public class PropertyTileBuilder {
     private int rent4h;
     private int rentHotel;
 
+    private static int propertyIDCounter = 0;
+
     /**This is the constructor of tiles.PropertyTileBuilder with parameters
      * @param name This provides the name of the utility tile
      * @param propertySet This provides colour set that the property is a part of
@@ -78,7 +80,9 @@ public class PropertyTileBuilder {
     /**This function returns the property tile with all its information set
      */
     public PropertyTile getPropertyTile() {
-        return new PropertyTile(name, propertySet, gameInterface, cost, pricePerHouse, baseRent, rent1h, rent2h, rent3h, rent4h, rentHotel);
+        PropertyTile tile = new PropertyTile(propertyIDCounter, name, propertySet, gameInterface, cost, pricePerHouse, baseRent, rent1h, rent2h, rent3h, rent4h, rentHotel);
+        propertyIDCounter++;
+        return tile;
     }
 
     /**This function creates and returns all the tiles from the monopoly game

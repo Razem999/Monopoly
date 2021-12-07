@@ -4,6 +4,7 @@ import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
 import gameInterface.GameInterface;
+import save.PropertyTileSave;
 
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
  */
 public class PropertyTile implements HousingTile {
     private final PropertySet propertySet;
+    private final int propertyID;
     private final String name;
     private final int cost;
     private final int pricePerHouse;
@@ -30,6 +32,7 @@ public class PropertyTile implements HousingTile {
     private boolean hasHotel;
 
     /**This is the constructor of tiles.PropertyTile with parameters
+     * @param propertyID This is a unique ID for each property
      * @param name This provides the name of the utility tile
      * @param propertySet This provides colour set that the property is a part of
      * @param gameInterface This provides text for each action the player takes
@@ -42,7 +45,8 @@ public class PropertyTile implements HousingTile {
      * @param rent4h This is the rent of the property tile with 4 houses
      * @param rentHotel This is the rent of the property tile with a hotel
      */
-    public PropertyTile(String name, PropertySet propertySet, GameInterface gameInterface, int cost, int pricePerHouse, int baseRent, int rent1h, int rent2h, int rent3h, int rent4h, int rentHotel) {
+    public PropertyTile(int propertyID, String name, PropertySet propertySet, GameInterface gameInterface, int cost, int pricePerHouse, int baseRent, int rent1h, int rent2h, int rent3h, int rent4h, int rentHotel) {
+        this.propertyID = propertyID;
         this.name = name;
         this.propertySet = propertySet;
         this.gameInterface = gameInterface;
@@ -104,11 +108,21 @@ public class PropertyTile implements HousingTile {
         }
     }
 
+    /**
+     * This method is used to check whether the tile is owned or not, and performs actions accordingly
+     * @param player This is the player that lands on the tile
+     * @param gameBoard This is the board where the tile is situated
+     * @param players This is the list of players playing the game
+     */
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
         this.owner.ifPresent(value -> onLandOccupied(player, value, gameBoard, players));
     }
 
+    /**
+     * This method prints the tile's description
+     * @return This returns the description as a string
+     */
     @Override
     public String tileDescription() {
         String desc = "Name: " + this.name +
@@ -124,21 +138,37 @@ public class PropertyTile implements HousingTile {
         return desc;
     }
 
+    /**
+     * This method is used to get the name of the tile
+     * @return This returns the name as a string
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * This method is used to get the set color this property represents
+     * @return This returns the PropertySet
+     */
     @Override
     public PropertySet getPropertySet() {
         return propertySet;
     }
 
+    /**
+     * This method is used to get the property in this tile
+     * @return This returns null since this is not buyable
+     */
     @Override
     public PropertyTile getPropertyTile() {
         return this;
     }
 
+    /**
+     * This method is used to purchase a property
+     * @param player This is the player that buys the property
+     */
     @Override
     public void buy(Player player) {
         if (this.owner.isPresent()) {
@@ -160,6 +190,11 @@ public class PropertyTile implements HousingTile {
         }
     }
 
+    /**
+     * This method is used to purchase a house for a specific property the player chooses
+     * @param player This is the player purchasing the house
+     * @param gameBoard This is the board where the tile is situated
+     */
     private void buyHouse(Player player, GameBoard gameBoard) {
         if (player.getBalance() < this.pricePerHouse) {
             gameInterface.notifyCannotBuyHouseBalanceReasons(player, this);
@@ -173,6 +208,12 @@ public class PropertyTile implements HousingTile {
         }
     }
 
+    /**
+     * This method is used to purchase a hotel for a specific property the player chooses. The tile the player is
+     * purchasing it for must make sure there is 4 houses in place.
+     * @param player This is the player purchasing the hotel
+     * @param gameBoard This is the board where the tile is situated
+     */
     private void buyHotel(Player player, GameBoard gameBoard) {
         if (player.getBalance() < this.pricePerHouse) {
             gameInterface.notifyCannotBuyHouseBalanceReasons(player, this);
@@ -186,6 +227,11 @@ public class PropertyTile implements HousingTile {
         }
     }
 
+    /**
+     * This method is used to upgrade a specific property on the board
+     * @param player This is the player upgrading the property
+     * @param gameBoard This is the board where the tile is situated
+     */
     @Override
     public void upgradeProperty(Player player, GameBoard gameBoard) {
         if (owner.map(o -> o.equals(player)).orElse(false)) {
@@ -201,16 +247,29 @@ public class PropertyTile implements HousingTile {
         }
     }
 
+    /**
+     * This method is used to check the number of houses in a specific tile
+     * @return This returns an int of the number of houses
+     */
     @Override
     public int numberOfHouses() {
         return this.houses;
     }
 
+    /**
+     * This method is used to transfer ownership of a property to another player
+     * @param newOwner This is the player receiving the property
+     */
     @Override
     public void transferOwnership(Player newOwner) {
         this.owner = Optional.of(newOwner);
     }
 
+    /**
+     * This method is used to end an auction and have the winning bidder pay for the property
+     * @param price This is the amount the winning bidder has bid
+     * @param player This is the player who won the auction
+     */
     @Override
     public void closeAuctionFor(int price, Player player) {
         player.changeBalance(-1 * price);
@@ -218,35 +277,76 @@ public class PropertyTile implements HousingTile {
         gameInterface.notifyPlayerPurchaseConfirm(player, this.name, price);
     }
 
+    /**
+     * This method is used to check whether a property is owned by a specific player or not
+     * @param player This is the player in question
+     * @return
+     */
     @Override
     public boolean isOwnedBy(Player player) {
         return this.owner.map(value -> value.equals(player)).orElse(false);
 
     }
 
+    /**
+     * This method is used to check the property has a owner or not
+     * @return This return true or false depending on the vacancy
+     */
     @Override
     public boolean hasOwner() {
         return this.owner.isPresent();
     }
 
+    /**
+     * This method is used to check the price of the property
+     * @return This returns the cost of the property
+     */
     @Override
     public int getBuyCost() {
         return cost;
     }
 
+    /**
+     * This method is used to check whether a house can be built on this tile or not
+     * @return This returns a tile on which a house can built on
+     */
     @Override
     public Optional<HousingTile> asHousingTile() {
         return Optional.of(this);
     }
 
+    /**
+     * This method is used to check whether the property is buyable or not
+     * @return This returns a tile that can bought
+     */
     @Override
     public Optional<BuyableTile> asBuyable() {
         return Optional.of(this);
     }
 
+    /**
+     * This method is used to check whether a property has a hotel or not
+     * @return This returns true or false
+     */
     @Override
     public boolean hasHotel() {
         return this.hasHotel;
     }
+
+    public void applySave(PropertyTileSave save, Players players) {
+        if (save.getPropertyID() == this.propertyID) {
+            if (save.getOwnerID() != -1) {
+                this.owner = players.getPlayerByID(save.getOwnerID());
+            }
+
+            this.houses = save.getHouses();
+            this.hasHotel = save.getHasHotel();
+        }
+    }
+
+    public PropertyTileSave getSave() {
+        return new PropertyTileSave(this.propertyID, this.owner.map(Player::getPlayerID).orElse(-1), this.houses, this.hasHotel);
+    }
+
 
 }

@@ -58,21 +58,37 @@ public class LuxuryTaxTile implements GameTile {
         return "Luxury Tax";
     }
 
+    /**
+     * This method is used to get the set color this property represents
+     * @return This returns the PropertySet
+     */
     @Override
     public PropertySet getPropertySet() {
         return PropertySet.White;
     }
 
+    /**
+     * This method is used to get the property in this tile
+     * @return This returns null since this is not buyable
+     */
     @Override
     public PropertyTile getPropertyTile() {
         return null;
     }
 
+    /**
+     * This method returns an empty Optional since this is an empty tile
+     * @return an empty Optional
+     */
     @Override
     public Optional<BuyableTile> asBuyable() {
         return Optional.empty();
     }
 
+    /**
+     * This method returns an empty Optional since this is an empty tile
+     * @return an empty Optional
+     */
     @Override
     public Optional<HousingTile> asHousingTile() {
         return Optional.empty();

@@ -4,6 +4,7 @@ import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
 import gameInterface.GameInterface;
+import save.RailroadSave;
 
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class RailroadTile implements BuyableTile {
     private final String name;
     private final int cost;
+    private final int id;
     private int totalOwned;
     private final GameInterface gameInterface;
     private Optional<Player> owner;
@@ -29,7 +31,8 @@ public class RailroadTile implements BuyableTile {
      * @param gameInterface This provides text for each action the player takes
      * @param cost This is the cost of the railroad
      */
-    public RailroadTile(String name, GameInterface gameInterface, int cost) {
+    public RailroadTile(int id, String name, GameInterface gameInterface, int cost) {
+        this.id = id;
         this.name = name;
         this.gameInterface = gameInterface;
         this.owner = Optional.empty();
@@ -175,5 +178,15 @@ public class RailroadTile implements BuyableTile {
     @Override
     public Optional<BuyableTile> asBuyable() {
         return Optional.of(this);
+    }
+
+    public RailroadSave save() {
+        return new RailroadSave(this.id, this.owner.map(Player::getPlayerID).orElse(-1));
+    }
+
+    public void applySave(RailroadSave railroadSave, Players players) {
+        if (railroadSave.getRailroadID() == this.id && railroadSave.getOwnerID() != -1) {
+            this.owner = players.getPlayerByID(railroadSave.getOwnerID());
+        }
     }
 }

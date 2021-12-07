@@ -3,8 +3,10 @@ package tiles;
 import gameLogic.Player;
 import gameLogic.Players;
 import gameLogic.GameBoard;
+import save.JailSave;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,27 +20,55 @@ class JailedPlayerInfo {
     private final Player player;
     private int rollsInJail;
 
+    /**
+     * This is the constructor for tiles.JailedPlayerInfo with parameters
+     * @param player This is the player who could be in Jail
+     */
     JailedPlayerInfo(Player player) {
         this.player = player;
         this.rollsInJail = 0;
     }
 
+    public JailedPlayerInfo(Player player, int rollsInJail) {
+        this.player = player;
+        this.rollsInJail = rollsInJail;
+    }
+
+    /**
+     * This method is used to get the number of attempts of rolls to escape jail
+     * @return This returns the number of attempts
+     */
     public int getRollsInJail() {
         return this.rollsInJail;
     }
 
+    /**
+     * This method is used to get the maximum number of rolls a player is allowed
+     * @return This returns the maximum rolls possible
+     */
     public int getMaxRollsInJail() {
         return 3;
     }
 
+    /**
+     * This method is used to check if a player reached the maximum number of rolls in jail
+     * @return This returns true or false depending on whether the player has maximum number of times or not
+     */
     public boolean hasPlayerMaxedRolls() {
         return this.rollsInJail == this.getMaxRollsInJail();
     }
 
+    /**
+     * This method is used to get the player in jail
+     * @return This returns the player in jail
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * This method is used to increment the number of attempts in escaping jail
+     */
     public void incrementTimesRolled() {
         this.rollsInJail++;
     }
@@ -65,11 +95,22 @@ public class JailTile implements GameTile {
         this.jailedPlayers = new ArrayList<>();
     }
 
+    /**
+     * This method does nothing, meaning any player that rolls and lands on this tile, then they are considered
+     * to be just visiting Jail. They are not in Jail.
+     * @param player This is the player that landed on the tile
+     * @param gameBoard This is the board where the tile is situated
+     * @param players This is the list of players playing the game
+     */
     @Override
     public void onLand(Player player, GameBoard gameBoard, Players players) {
         //do nothing
     }
 
+    /**
+     * This method prints the tile's description
+     * @return This returns the description as a string
+     */
     @Override
     public String tileDescription() {
         StringBuilder jailStringBuilder = new StringBuilder();
@@ -89,16 +130,28 @@ public class JailTile implements GameTile {
         return jailStringBuilder.toString();
     }
 
+    /**
+     * This method is used to get the name of the tile
+     * @return This returns the name as a string
+     */
     @Override
     public String getName() {
         return "Jail";
     }
 
+    /**
+     * This method is used to get the set color this property represents
+     * @return This returns the PropertySet
+     */
     @Override
     public PropertySet getPropertySet() {
         return PropertySet.White;
     }
 
+    /**
+     * This method is used to get the property in this tile
+     * @return This returns null since this is not buyable
+     */
     @Override
     public PropertyTile getPropertyTile() {
         return null;
@@ -171,13 +224,34 @@ public class JailTile implements GameTile {
         return this.findPlayer(player) != -1;
     }
 
+    /**
+     * This method returns an empty Optional since this is an empty tile
+     * @return an empty Optional
+     */
     @Override
     public Optional<BuyableTile> asBuyable() {
         return Optional.empty();
     }
 
+    /**
+     * This method returns an empty Optional since this is an empty tile
+     * @return an empty Optional
+     */
     @Override
     public Optional<HousingTile> asHousingTile() {
         return Optional.empty();
+    }
+
+    public JailSave getSave() {
+        HashMap<Integer, Integer> jailedSave = new HashMap<>();
+        for (JailedPlayerInfo jailedPlayerInfo : this.jailedPlayers) {
+            jailedSave.put(jailedPlayerInfo.getPlayer().getPlayerID(), jailedPlayerInfo.getRollsInJail());
+        }
+
+        return new JailSave(jailedSave);
+    }
+
+    public void applySave(JailSave jailSave, Players players) {
+        jailSave.getJailedPlayers().forEach((id, rolls) -> this.jailedPlayers.add(new JailedPlayerInfo(players.getPlayerByID(id).orElseThrow(), rolls)));
     }
 }

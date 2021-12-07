@@ -4,6 +4,7 @@ import gameLogic.GameActions;
 import gameLogic.GameBoard;
 import gameLogic.Player;
 import gameLogic.Players;
+import save.SaveCreator;
 import tiles.JailTile;
 
 import javax.swing.*;
@@ -31,11 +32,12 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
     private final JButton auctionButton;
     private final JButton payJailFeeButton;
     private final JButton buyHouses;
+    private final JButton saveButton;
 
     /**This is the constructor of GameButtonPanel with parameters
      * @param gameActions These are the players actions they can preform on their turn
      */
-    public GameButtonPanel(GameActions gameActions, GameBoard gameBoard, Players players, Lock actionLock) {
+    public GameButtonPanel(GameActions gameActions, GameBoard gameBoard, Players players, SaveCreator saveCreator, Lock actionLock) {
         super();
 
         this.uiState = UIState.NormalPlayer;
@@ -108,6 +110,9 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
 
         }).start());
 
+        this.saveButton = new JButton("Save");
+        this.saveButton.addActionListener(e -> saveCreator.createSave());
+
         this.setupForNormalPlayers();
     }
 
@@ -123,6 +128,7 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
         this.add(this.buyButton);
         this.add(this.auctionButton);
         this.add(this.buyHouses);
+        this.add(this.saveButton);
 
         this.setBorder(new EmptyBorder(70, 50, 70, 50));
 
@@ -145,6 +151,7 @@ public class GameButtonPanel extends JPanel implements Player.PlayerChangeListen
         this.add(this.auctionButton);
         this.add(this.buyHouses);
         this.add(this.payJailFeeButton);
+        this.add(this.saveButton);
 
         this.setBorder(new EmptyBorder(50, 50, 50, 50));
 

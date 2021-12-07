@@ -9,9 +9,16 @@ public interface AIStrategy extends AuctionBidExecutor {
     }
 
     class Factory {
-        private final GameBoard gameBoard;
+        private GameBoard gameBoard;
 
         public Factory(GameBoard gameBoard) {
+
+        }
+        public Factory() {
+            this.gameBoard = null;
+        }
+
+        public void setGameBoard(GameBoard gameBoard) {
             this.gameBoard = gameBoard;
         }
 
