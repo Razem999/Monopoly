@@ -9,7 +9,9 @@ Screen Layout:
   Top Center to Right: The map with the tiles + their names and player icons
 
 Starting Off:
-  At the begining of the game there is the option to begin a new game or load in a saved file. If you load in a saved file the game will resume from where you left off. If new     game is selected then you can select the number of players and AI at the start of the game. Each Player starts off with $1500 and starts on the go tiles. They will then take     turns rolling and moving around the map as they collect properties and other tiles.
+  At the begining of the game there is the option to begin a new game or load in a saved file. If you load in a saved file the game will resume from where you left off. 
+  If new game is selected then you can select the number of players and AI at the start of the game. Each Player starts off with $1500 and starts on the go tiles. 
+  They will then take turns rolling and moving around the map as they collect properties and other tiles.
 
 Map Controls:
   PageUp Key: Zooms into the map.
