@@ -32,7 +32,8 @@ Player Turn Controls:
   
   Pay Jail Fine: If the player is in jail they then have the option to pay the jail fine.
 
-  Auction: If a Player is on a puchasable tile then the user can select to auction that tile by pressing the auction button. The game will then let the players take turns         bidding
+  Auction: If a Player is on a puchasable tile then the user can select to auction that tile by pressing the auction button. The game will then let the players take turn bidding
+  until there is one player left or everyone refuses to buy the property.
   
   Save: Once clicked the current game state will be saved allowing you to resume at later date.
   
